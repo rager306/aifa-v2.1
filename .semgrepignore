@@ -1,0 +1,34 @@
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Config files
+*.config.js
+*.config.ts
+*.config.mjs
+
+# Documentation
+doc/
+docs/
+*.md
+
+# Tests
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Generated files
+.serena/
+coverage/
+
+# Styles
+*.css
+
+# Logs
+*.log
+logs/

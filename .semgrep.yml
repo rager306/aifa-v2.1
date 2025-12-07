@@ -1,0 +1,403 @@
+rules:
+  # ============================================
+  # ОФИЦИАЛЬНЫЕ РУЛСЕТЫ
+  # ============================================
+
+  # Next.js Security Rules
+  - id: nextjs-security-ruleset
+    patterns:
+      - pattern: |
+          import { ... } from 'next/...'
+    message: "Using Next.js security ruleset"
+    languages: [typescript, javascript]
+    severity: INFO
+    metadata:
+      category: security
+      technology: [nextjs]
+      references:
+        - https://semgrep.dev/p/nextjs
+
+  # TypeScript/JavaScript OWASP Top 10
+  - id: owasp-top-ten
+    patterns:
+      - pattern: |
+          ...
+    message: "OWASP Top 10 security checks"
+    languages: [typescript, javascript]
+    severity: INFO
+    metadata:
+      category: security
+      owasp: "A01:2021 - Broken Access Control"
+
+  # React Security
+  - id: react-security
+    patterns:
+      - pattern-regex: dangerouslySetInnerHTML=\\{\\{\\s*__html:\\s*\\$HTML\\s*\\}\\}
+    message: "Potential XSS via dangerouslySetInnerHTML"
+    languages: [typescript, javascript]
+    severity: WARNING
+    metadata:
+      category: security
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+
+  # ============================================
+  # КАСТОМНЫЕ ПРАВИЛА: AI PROMPT INJECTION
+  # ============================================
+
+  - id: ai-prompt-injection-unsanitized-messages
+    patterns:
+      - pattern: |
+          await streamText({
+            model: $MODEL,
+            messages: $MESSAGES,
+            ...
+          })
+      - pattern-not: |
+          await streamText({
+            model: $MODEL,
+            messages: sanitize($MESSAGES),
+            ...
+          })
+    message: "AI prompt injection risk: messages passed to streamText without sanitization. Validate and sanitize user input before sending to AI model."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/api/chat/**
+        - app/api/**/route.ts
+    metadata:
+      category: security
+      subcategory: [ai-security]
+      cwe: "CWE-94: Improper Control of Generation of Code"
+      confidence: HIGH
+      likelihood: HIGH
+      impact: HIGH
+      references:
+        - https://owasp.org/www-project-top-10-for-large-language-model-applications/
+
+  - id: ai-prompt-injection-direct-user-input
+    patterns:
+      - pattern: |
+          const { messages } = await req.json()
+      - pattern-not-inside: |
+          const schema = z.object({ messages: z.array(...) })
+          const validated = schema.parse(...)
+    message: "Direct use of user input in AI prompts without validation. Use Zod schema to validate message structure."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/api/chat/**
+    metadata:
+      category: security
+      subcategory: [ai-security, input-validation]
+      cwe: "CWE-20: Improper Input Validation"
+
+  - id: ai-file-upload-no-validation
+    patterns:
+      - pattern: |
+          formData.get('file')
+      - pattern-not-inside: |
+          if ($FILE.size > ...) { ... }
+      - pattern-not-inside: |
+          if (!ALLOWED_TYPES.includes($FILE.type)) { ... }
+    message: "File upload without size/type validation in AI components. Validate file.size and file.type before processing."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - components/ai-elements/**
+    metadata:
+      category: security
+      subcategory: [file-upload]
+      cwe: "CWE-434: Unrestricted Upload of File with Dangerous Type"
+
+  - id: ai-system-prompt-exposure
+    patterns:
+      - pattern: |
+          const systemPrompt = "..."
+      - pattern-inside: |
+          export async function POST(...) { ... }
+    message: "System prompt defined in API route may be exposed. Move to environment variables or secure config."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - app/api/**
+    metadata:
+      category: security
+      subcategory: [ai-security]
+
+  # ============================================
+  # КАСТОМНЫЕ ПРАВИЛА: AUTH VULNERABILITIES
+  # ============================================
+
+  - id: auth-weak-fake-authentication
+    patterns:
+      - pattern: |
+          if (email && password) {
+            cookieStore.set({ name: 'auth_session', value: 'authenticated', ... })
+            return { success: true, ... }
+          }
+    message: "CRITICAL: Fake authentication accepts any credentials! Replace with real authentication (bcrypt, JWT, OAuth)."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/@left/(_AUTH)/**
+        - app/**/actions/auth.ts
+    metadata:
+      category: security
+      subcategory: [authentication]
+      cwe: "CWE-287: Improper Authentication"
+      confidence: HIGH
+      likelihood: HIGH
+      impact: CRITICAL
+
+  - id: auth-no-rate-limiting
+    patterns:
+      - pattern: |
+          export async function loginAction(...) {
+            ...
+          }
+      - pattern-not-inside: |
+          const rateLimiter = ...
+          await rateLimiter.check(...)
+    message: "Login action without rate limiting. Implement rate limiting to prevent brute-force attacks (e.g., upstash/ratelimit)."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/**/actions/auth.ts
+    metadata:
+      category: security
+      subcategory: [authentication, rate-limiting]
+      cwe: "CWE-307: Improper Restriction of Excessive Authentication Attempts"
+
+  - id: auth-session-fixation
+    patterns:
+      - pattern: |
+          cookieStore.set({
+            name: 'auth_session',
+            value: $VALUE,
+            ...
+          })
+      - pattern-not: |
+          cookieStore.set({
+            name: 'auth_session',
+            value: crypto.randomUUID(),
+            ...
+          })
+    message: "Session fixation risk: static session value. Use crypto.randomUUID() or secure token generation."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - app/**/actions/auth.ts
+    metadata:
+      category: security
+      subcategory: [session-management]
+      cwe: "CWE-384: Session Fixation"
+
+  - id: auth-no-password-hashing
+    patterns:
+      - pattern: |
+          const password = formData.get('password')
+      - pattern-not-inside: |
+          await bcrypt.compare($PASSWORD, ...)
+      - pattern-not-inside: |
+          await argon2.verify(...)
+    message: "Password used without hashing. Use bcrypt or argon2 for password verification."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/**/actions/auth.ts
+    metadata:
+      category: security
+      subcategory: [cryptography]
+      cwe: "CWE-256: Plaintext Storage of a Password"
+
+  - id: auth-jwt-no-verification
+    patterns:
+      - pattern: |
+          import { ... } from 'jose'
+      - pattern: |
+          const token = cookies().get('...')
+      - pattern-not-inside: |
+          await jwtVerify($TOKEN, ...)
+    message: "JWT token used without verification. Always verify JWT signatures with jwtVerify()."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/**
+        - lib/**
+    metadata:
+      category: security
+      subcategory: [jwt]
+      cwe: "CWE-347: Improper Verification of Cryptographic Signature"
+
+  # ============================================
+  # КАСТОМНЫЕ ПРАВИЛА: XSS & INJECTION
+  # ============================================
+
+  - id: api-xss-error-disclosure
+    patterns:
+      - pattern: |
+          return new Response(
+            JSON.stringify({
+              error: ...,
+              message: error instanceof Error ? error.message : ...,
+            }),
+            ...
+          )
+    message: "Error message disclosure in API response. Sanitize error.message to prevent information leakage."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - app/api/**
+    metadata:
+      category: security
+      subcategory: [information-disclosure]
+      cwe: "CWE-209: Generation of Error Message Containing Sensitive Information"
+
+  - id: api-sql-injection-risk
+    patterns:
+      - pattern: |
+          db.query(`SELECT * FROM ... WHERE ... = ${$USER_INPUT}`)
+      - pattern: |
+          db.execute(`... ${$USER_INPUT} ...`)
+    message: "SQL injection risk: user input in raw query. Use parameterized queries or ORM."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/api/**
+        - lib/**
+    metadata:
+      category: security
+      subcategory: [injection]
+      cwe: "CWE-89: SQL Injection"
+
+  - id: api-nosql-injection
+    patterns:
+      - pattern: |
+          db.collection(...).find({ $FIELD: $USER_INPUT })
+      - pattern-not-inside: |
+          const validated = schema.parse($USER_INPUT)
+    message: "NoSQL injection risk: unvalidated user input in query. Validate with Zod schema."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/api/**
+    metadata:
+      category: security
+      subcategory: [injection]
+      cwe: "CWE-943: Improper Neutralization of Special Elements in Data Query Logic"
+
+  - id: api-cors-wildcard
+    patterns:
+      - pattern: |
+          'Access-Control-Allow-Origin': '*'
+    message: "CORS wildcard allows any origin. Restrict to specific domains in production."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - app/api/**
+    metadata:
+      category: security
+      subcategory: [cors]
+      cwe: "CWE-942: Permissive Cross-domain Policy with Untrusted Domains"
+
+  - id: xss-unsafe-html-rendering
+    patterns:
+      - pattern-regex: <div\\s+dangerouslySetInnerHTML=\\{\\{\\s*__html:\\s*\\$HTML\\s*\\}\\}\\s*/>
+      - pattern-not-inside: |
+          const sanitized = DOMPurify.sanitize($HTML)
+    message: "XSS risk: dangerouslySetInnerHTML without sanitization. Use DOMPurify.sanitize()."
+    languages: [typescript, javascript]
+    severity: ERROR
+    paths:
+      include:
+        - components/**
+        - app/**
+    metadata:
+      category: security
+      subcategory: [xss]
+      cwe: "CWE-79: Cross-site Scripting (XSS)"
+
+  - id: xss-user-content-in-markdown
+    patterns:
+      - pattern-regex: <ReactMarkdown>\\s*\\{\\$USER_CONTENT\\}\\s*</ReactMarkdown>
+      - pattern-not-inside: |
+          <ReactMarkdown
+            components={{
+              a: ({ href, ...props }) => {
+                if (!href?.startsWith('http')) return null
+                ...
+              }
+            }}
+          >
+    message: "XSS risk in markdown rendering. Sanitize links and disable dangerous HTML tags."
+    languages: [typescript, javascript]
+    severity: WARNING
+    paths:
+      include:
+        - components/**
+    metadata:
+      category: security
+      subcategory: [xss]
+
+  # ============================================
+  # ДОПОЛНИТЕЛЬНЫЕ ПРАВИЛА
+  # ============================================
+
+  - id: env-variable-exposure
+    patterns:
+      - pattern: |
+          console.log(process.env.$VAR)
+      - pattern: |
+          console.error(process.env.$VAR)
+    message: "Environment variable logged to console. Remove before production."
+    languages: [typescript, javascript]
+    severity: WARNING
+    metadata:
+      category: security
+      subcategory: [secrets]
+
+  - id: hardcoded-secrets
+    patterns:
+      - pattern: |
+          const apiKey = "..."
+      - pattern: |
+          const secret = "..."
+      - pattern: |
+          const password = "..."
+    message: "Hardcoded secret detected. Use environment variables."
+    languages: [typescript, javascript]
+    severity: ERROR
+    metadata:
+      category: security
+      subcategory: [secrets]
+      cwe: "CWE-798: Use of Hard-coded Credentials"
+
+  - id: unsafe-redirect
+    patterns:
+      - pattern: |
+          redirect($USER_INPUT)
+      - pattern-not-inside: |
+          if ($USER_INPUT.startsWith('/')) { redirect($USER_INPUT) }
+    message: "Open redirect vulnerability. Validate redirect URL is internal."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - app/**
+    metadata:
+      category: security
+      subcategory: [redirect]
+      cwe: "CWE-601: URL Redirection to Untrusted Site"
