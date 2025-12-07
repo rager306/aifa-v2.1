@@ -1,0 +1,38 @@
+// app/api/chat/route.ts
+import { streamText } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai';
+
+const openai = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.OPENAI_BASE_URL || 'https://api.minimax.io/v1',
+});
+
+export async function POST(req: Request) {
+  try {
+    const { messages } = await req.json();
+
+    const result = await streamText({
+      model: openai('MiniMax-M2'),
+      messages,
+      temperature: 1.0,
+      // MiniMax-specific: Enable reasoning split to separate thinking from response
+      extra_body: {
+        reasoning_split: true,
+      },
+    });
+
+    return result.toAIStreamResponse();
+  } catch (error) {
+    console.error('Chat API error:', error);
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to process chat request',
+        message: error instanceof Error ? error.message : 'Unknown error',
+      }),
+      {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
+}

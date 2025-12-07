@@ -91,6 +91,24 @@ const providers = {
       </svg>
     ),
   },
+  minimax: {
+    title: "Open in MiniMax",
+    createUrl: (q: string) =>
+      `https://agent.minimax.io/?${new URLSearchParams({
+        q,
+      })}`,
+    icon: (
+      <svg
+        fill="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>MiniMax AI</title>
+        <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5z" />
+        <path d="M8 12h8v2H8v-2zm0-4h8v2H8V8zm0 8h8v2H8v-2z" />
+      </svg>
+    ),
+  },
   chatgpt: {
     title: "Open in ChatGPT",
     createUrl: (prompt: string) =>
@@ -316,6 +334,26 @@ export const OpenInScira = (props: OpenInSciraProps) => {
       >
         <span className="shrink-0">{providers.scira.icon}</span>
         <span className="flex-1">{providers.scira.title}</span>
+        <ExternalLinkIcon className="size-4 shrink-0" />
+      </a>
+    </DropdownMenuItem>
+  );
+};
+
+export type OpenInMiniMaxProps = ComponentProps<typeof DropdownMenuItem>;
+
+export const OpenInMiniMax = (props: OpenInMiniMaxProps) => {
+  const { query } = useOpenInContext();
+  return (
+    <DropdownMenuItem asChild {...props}>
+      <a
+        className="flex items-center gap-2"
+        href={providers.minimax.createUrl(query)}
+        rel="noopener"
+        target="_blank"
+      >
+        <span className="shrink-0">{providers.minimax.icon}</span>
+        <span className="flex-1">{providers.minimax.title}</span>
         <ExternalLinkIcon className="size-4 shrink-0" />
       </a>
     </DropdownMenuItem>

@@ -17,6 +17,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { SiteHeader } from '@/components/site-header/site-header-wrapper'
 import AifaFooter from '@/components/aifa-footer'
+import { MiniMaxProvider } from '@/lib/minimax-provider'
 
 
 export const metadata: Metadata = constructMetadata({
@@ -142,48 +143,50 @@ export default async function RootLayout({
           fontVariables
         )}
       >
-        
-
-        <ThemeProvider>
-          <LayoutProvider>
-            <ActiveThemeProvider>
-              <div className="bg-background fixed inset-0 flex flex-col overflow-hidden">
-                <SiteHeader />
 
 
-
-                <div className="flex-1 min-h-0 w-full">
-
-                  <div className="h-full flex">
-
-                    <div className="hidden md:flex md:w-0 lg:w-[50%] xl:w-[35%] border-r border-border">
-                      <OnlineStatusProvider>
-                        <div className="h-full w-full overflow-hidden">
-                          {left}
-                        </div>
-                      </OnlineStatusProvider>
-                    </div>
+        <MiniMaxProvider>
+          <ThemeProvider>
+            <LayoutProvider>
+              <ActiveThemeProvider>
+                <div className="bg-background fixed inset-0 flex flex-col overflow-hidden">
+                  <SiteHeader />
 
 
-                    <div className="w-full md:w-full lg:w-[50%] xl:w-[65%] relative">
-                      <main className="absolute inset-0 overflow-y-auto hide-scrollbar">
-                        {rightStatic}
-                      </main>
-                      {rightDynamic}
+
+                  <div className="flex-1 min-h-0 w-full">
+
+                    <div className="h-full flex">
+
+                      <div className="hidden md:flex md:w-0 lg:w-[50%] xl:w-[35%] border-r border-border">
+                        <OnlineStatusProvider>
+                          <div className="h-full w-full overflow-hidden">
+                            {left}
+                          </div>
+                        </OnlineStatusProvider>
+                      </div>
+
+
+                      <div className="w-full md:w-full lg:w-[50%] xl:w-[65%] relative">
+                        <main className="absolute inset-0 overflow-y-auto hide-scrollbar">
+                          {rightStatic}
+                        </main>
+                        {rightDynamic}
+                      </div>
                     </div>
                   </div>
+
+
+
+
+                  <AifaFooter />
                 </div>
-                
 
 
-
-                <AifaFooter />
-              </div>
-
-              
-            </ActiveThemeProvider>
-          </LayoutProvider>
-        </ThemeProvider>
+              </ActiveThemeProvider>
+            </LayoutProvider>
+          </ThemeProvider>
+        </MiniMaxProvider>
 
         {/* No JavaScript fallback message */}
         <noscript>
