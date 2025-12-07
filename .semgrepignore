@@ -12,16 +12,6 @@ node_modules/
 *.config.ts
 *.config.mjs
 
-# Documentation
-doc/
-docs/
-*.md
-
-# Tests
-__tests__/
-*.test.ts
-*.spec.ts
-
 # Generated files
 .serena/
 coverage/

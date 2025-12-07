@@ -3,37 +3,46 @@ rules:
   # ОФИЦИАЛЬНЫЕ РУЛСЕТЫ
   # ============================================
 
-  # Next.js Security Rules
-  - id: nextjs-security-ruleset
+  # Next.js Security - Dynamic Import
+  - id: nextjs-dynamic-import
     patterns:
       - pattern: |
-          import { ... } from 'next/...'
-    message: "Using Next.js security ruleset"
+          import($FILE_PATH)
+      - pattern-not-regex: |
+          import\(['"`]/\.\./
+    message: "Dynamic import without path validation. Ensure path is statically analyzable or properly validated."
     languages: [typescript, javascript]
-    severity: INFO
+    severity: WARNING
     metadata:
       category: security
       technology: [nextjs]
-      references:
-        - https://semgrep.dev/p/nextjs
+      cwe: "CWE-20: Improper Input Validation"
 
-  # TypeScript/JavaScript OWASP Top 10
-  - id: owasp-top-ten
+  # OWASP A01:2021 - Broken Access Control
+  - id: owasp-broken-access-control
     patterns:
       - pattern: |
-          ...
-    message: "OWASP Top 10 security checks"
+          if ($USER.role !== $REQUIRED_ROLE) {
+            throw new Error(...)
+          }
+      - pattern-not-inside: |
+          if ($USER.role !== $REQUIRED_ROLE && $USER.role !== 'admin') {
+            ...
+          }
+    message: "Broken access control: role check may be bypassed. Always check for ALL required roles including admin."
     languages: [typescript, javascript]
-    severity: INFO
+    severity: ERROR
     metadata:
       category: security
       owasp: "A01:2021 - Broken Access Control"
+      cwe: "CWE-284: Improper Access Control"
 
-  # React Security
-  - id: react-security
+  # React Security - dangerouslySetInnerHTML
+  - id: react-dangerouslysetinnerhtml
     patterns:
-      - pattern-regex: dangerouslySetInnerHTML=\\{\\{\\s*__html:\\s*\\$HTML\\s*\\}\\}
-    message: "Potential XSS via dangerouslySetInnerHTML"
+      - pattern-regex: |
+          dangerouslySetInnerHTML=\\{\\{\\s*__html:\\s*
+    message: "Potential XSS via dangerouslySetInnerHTML. Ensure expression is properly sanitized."
     languages: [typescript, javascript]
     severity: WARNING
     metadata:
@@ -127,6 +136,73 @@ rules:
     metadata:
       category: security
       subcategory: [ai-security]
+
+  # ============================================
+  # AI COMPONENT RULES: components/ai-elements/**
+  # ============================================
+
+  - id: ai-component-user-input-to-messages
+    patterns:
+      - pattern: |
+          setMessages($MESSAGES)
+      - pattern-inside: |
+          function $FUNC(...) {
+            ...
+          }
+      - pattern-not-inside: |
+          setMessages(z.array($SCHEMA).parse($MESSAGES))
+    message: "User input passed to AI messages without validation in component. Use Zod schema to validate before setting messages."
+    languages: [typescript]
+    severity: ERROR
+    paths:
+      include:
+        - components/ai-elements/**
+    metadata:
+      category: security
+      subcategory: [ai-security, component-input]
+      cwe: "CWE-20: Improper Input Validation"
+
+  - id: ai-component-unchecked-props
+    patterns:
+      - pattern: |
+          <$COMPONENT onSubmit={$HANDLER} />
+      - pattern-inside: |
+          function $HANDLER($EVENT) {
+            ...
+            const $PROMPT = $EVENT.target.$FIELD.value
+            ...
+          }
+      - pattern-not-inside: |
+          const $PROMPT = z.string().min(1).parse($EVENT.target.$FIELD.value)
+    message: "User input from form fields used in AI prompt without validation. Sanitize and validate input before AI processing."
+    languages: [typescript, javascript]
+    severity: ERROR
+    paths:
+      include:
+        - components/ai-elements/**
+    metadata:
+      category: security
+      subcategory: [ai-security, form-input]
+      cwe: "CWE-20: Improper Input Validation"
+
+  - id: ai-component-file-content-unsanitized
+    patterns:
+      - pattern: |
+          const content = $FILE.content
+          ...
+          addMessage(...)
+      - pattern-not-inside: |
+          const content = sanitize($FILE.content)
+    message: "File content used in AI messages without sanitization. Sanitize file content to prevent prompt injection."
+    languages: [typescript]
+    severity: WARNING
+    paths:
+      include:
+        - components/ai-elements/**
+    metadata:
+      category: security
+      subcategory: [ai-security, file-upload]
+      cwe: "CWE-94: Improper Control of Generation of Code"
 
   # ============================================
   # КАСТОМНЫЕ ПРАВИЛА: AUTH VULNERABILITIES
@@ -315,7 +391,8 @@ rules:
 
   - id: xss-unsafe-html-rendering
     patterns:
-      - pattern-regex: <div\\s+dangerouslySetInnerHTML=\\{\\{\\s*__html:\\s*\\$HTML\\s*\\}\\}\\s*/>
+      - pattern: |
+          <$ELEMENT dangerouslySetInnerHTML={{ __html: $HTML }} />
       - pattern-not-inside: |
           const sanitized = DOMPurify.sanitize($HTML)
     message: "XSS risk: dangerouslySetInnerHTML without sanitization. Use DOMPurify.sanitize()."
@@ -332,14 +409,12 @@ rules:
 
   - id: xss-user-content-in-markdown
     patterns:
-      - pattern-regex: <ReactMarkdown>\\s*\\{\\$USER_CONTENT\\}\\s*</ReactMarkdown>
+      - pattern-regex: |
+          <ReactMarkdown[^>]*>\\s*\\{\\$CONTENT\\}
       - pattern-not-inside: |
           <ReactMarkdown
             components={{
-              a: ({ href, ...props }) => {
-                if (!href?.startsWith('http')) return null
-                ...
-              }
+              a: $COMPONENT
             }}
           >
     message: "XSS risk in markdown rendering. Sanitize links and disable dangerous HTML tags."

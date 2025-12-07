@@ -20,7 +20,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --frozen-lockfile
+        run: npm ci
+
+      - name: Install uv
+        run: pipx install uv
 
       - name: Run Semgrep
         run: npm run semgrep:ci
