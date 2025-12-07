@@ -15,13 +15,9 @@ export async function POST(req: Request) {
       model: openai('MiniMax-M2'),
       messages,
       temperature: 1.0,
-      // MiniMax-specific: Enable reasoning split to separate thinking from response
-      extra_body: {
-        reasoning_split: true,
-      },
     });
 
-    return result.toAIStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
     console.error('Chat API error:', error);
     return new Response(

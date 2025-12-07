@@ -1,0 +1,108 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "app/layout.tsx",
+    "app/error.tsx",
+    "app/global-not-found.tsx",
+    "app/manifest.ts",
+    "app/robots.ts",
+    "app/sitemap.ts",
+    "app/@left/layout.tsx",
+    "app/@left/default.tsx",
+    "app/@left/loading.tsx",
+    "app/@left/(_CHAT)/page.tsx",
+    "app/@left/(_CHAT)/chat/page.tsx",
+    "app/@left/(_AUTH)/login/page.tsx",
+    "app/@rightStatic/layout.tsx",
+    "app/@rightStatic/page.tsx",
+    "app/@rightStatic/default.tsx",
+    "app/@rightStatic/error.tsx",
+    "app/@rightStatic/@modal/default.tsx",
+    "app/@rightStatic/@modal/(...)interception_modal/lead-form/page.tsx",
+    "app/@rightStatic/@modal/(...)interception_chat/page.tsx",
+    "app/@rightStatic/(_INTERCEPTION_MODAL)/thank-you/page.tsx",
+    "app/@rightStatic/(_INTERCEPTION_MODAL)/interception_modal/lead-form/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_HOME)/home/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_HOME)/about-aifa/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_HOME)/hire-me/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_HOME)/privacy-policy/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/dynamic-generation/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/static-generation/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/parallel-routing/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/strategic-partnership-ai-vs-seo/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_EXAMPLES)/examples/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_EXAMPLES)/examples/loading-example/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_EXAMPLES)/examples/error-example/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_EXAMPLES)/examples/privacy-policy-example/page.tsx",
+    "app/@rightStatic/(_PUBLIC)/(_EXAMPLES)/examples/404-example/page.tsx",
+    "app/@rightDynamic/layout.tsx",
+    "app/@rightDynamic/default.tsx",
+    "app/@rightDynamic/loading.tsx",
+    "app/@rightDynamic/[...slug]/page.tsx",
+    "app/api/chat/route.ts",
+    "app/@rightStatic/(_INTERCEPTION_MODAL)/(_server)/api/lead-form/route.ts"
+  ],
+  "project": [
+    "**/*.{js,jsx,ts,tsx,mjs}",
+    "!**/*.test.{js,jsx,ts,tsx}",
+    "!**/*.spec.{js,jsx,ts,tsx}"
+  ],
+  "ignore": [
+    "node_modules/**",
+    ".next/**",
+    "out/**",
+    "build/**",
+    "dist/**",
+    "coverage/**",
+    "*.config.{js,mjs,ts}",
+    "next-env.d.ts",
+    ".vercel/**",
+    "public/**",
+    "doc/**",
+    ".serena/**",
+    "components/ai-elements/**",
+    "components/ui/**",
+    "hooks/**",
+    "lib/events.ts",
+    "lib/seo-generators.ts",
+    "lib/themes.ts"
+  ],
+  "ignoreDependencies": [
+    "@eslint/eslintrc",
+    "eslint-config-next",
+    "tw-animate-css",
+    "@radix-ui/react-accordion",
+    "@radix-ui/react-progress",
+    "@radix-ui/react-tooltip",
+    "@xyflow/react",
+    "embla-carousel-react",
+    "jose",
+    "next-pwa",
+    "react-resizable-panels",
+    "rehype-pretty-code",
+    "shiki",
+    "tokenlens"
+  ],
+  "next": {
+    "entry": [
+      "next.config.mjs",
+      "app/layout.tsx",
+      "app/@left/layout.tsx",
+      "app/@rightStatic/layout.tsx",
+      "app/@rightDynamic/layout.tsx"
+    ]
+  },
+  "typescript": {
+    "entry": ["tsconfig.json"]
+  },
+  "eslint": {
+    "entry": ["eslint.config.mjs"]
+  },
+  "tailwind": {
+    "entry": ["tailwind.config.ts"]
+  },
+  "postcss": {
+    "entry": ["postcss.config.mjs"]
+  }
+}

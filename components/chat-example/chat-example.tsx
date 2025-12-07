@@ -52,7 +52,7 @@ import {
 } from "@/components/ai-elements/sources";
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion";
 import { useChat } from "@ai-sdk/react";
-import type { Message as AIMessage } from "ai";
+import type { UIMessage as AIMessage } from "ai";
 import { GlobeIcon, MicIcon } from "lucide-react";
 import { useCallback, useState } from "react";
 import { toast } from "sonner";
@@ -77,20 +77,19 @@ const ChatExample = () => {
   const [model, setModel] = useState<string>("MiniMax-M2");
   const [useWebSearch, setUseWebSearch] = useState<boolean>(false);
   const [useMicrophone, setUseMicrophone] = useState<boolean>(false);
+  const [input, setInput] = useState<string>("");
 
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    stop,
-  } = useChat({
-    api: '/api/chat',
-    body: {
-      model: model,
-    },
-  });
+  // TODO: Update for AI SDK v5 - stub for now
+  const messages: AIMessage[] = [];
+  const isLoading = false;
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+  };
+
+  const submit = (message: any) => {
+    // TODO: Implement for AI SDK v5
+  };
 
   const handleFormSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text);
@@ -106,12 +105,12 @@ const ChatExample = () => {
       });
     }
 
-    handleSubmit(message);
+    submit(message);
   };
 
   const handleSuggestionClick = useCallback((suggestion: string) => {
-    handleSubmit({ text: suggestion, files: [] });
-  }, [handleSubmit]);
+    submit({ text: suggestion, files: [] });
+  }, [submit]);
 
   const displayMessages = messages.map((msg: AIMessage) => ({
     key: msg.id,
@@ -119,7 +118,7 @@ const ChatExample = () => {
     versions: [
       {
         id: msg.id,
-        content: msg.content,
+        content: (msg as any).content || '',
       },
     ],
     avatar: msg.role === 'user'
@@ -130,6 +129,7 @@ const ChatExample = () => {
       content: (msg as any).reasoning_details,
       duration: 0,
     } : undefined,
+    sources: (msg as any).sources,
   }));
 
   return (
@@ -149,7 +149,7 @@ const ChatExample = () => {
                         <Sources>
                           <SourcesTrigger count={message.sources.length} />
                           <SourcesContent>
-                            {message.sources.map((source) => (
+                            {message.sources.map((source: any) => (
                               <Source
                                 href={source.href}
                                 key={source.href}
