@@ -16,23 +16,23 @@
       "**/providers/**/*.{ts,tsx,js,jsx}",
       "**/config/**/*.{ts,tsx,js,jsx}",
       "**/types/**/*.{ts,tsx,js,jsx}",
-      "!**/node_modules",
-      "!**/.next",
-      "!**/out",
-      "!**/build",
-      "!**/dist",
-      "!**/.serena",
-      "!**/next-env.d.ts",
-      "!**/*.tsbuildinfo",
-      "!**/knip-report.json",
-      "!**/snyk-test-report.json",
-      "!**/semgrep-report.json",
-      "!**/semgrep.sarif",
-      "!**/.vercel",
-      "!**/coverage",
-      "!**/public/**/*.js",
-      "!**/*.config.js",
-      "!**/*.config.mjs"
+      "!!**/node_modules/**",
+      "!!**/.next/**",
+      "!!**/out/**",
+      "!!**/build/**",
+      "!!**/dist/**",
+      "!!**/.serena/**",
+      "!!**/next-env.d.ts",
+      "!!**/*.tsbuildinfo",
+      "!!**/knip-report.json",
+      "!!**/snyk-test-report.json",
+      "!!**/semgrep-report.json",
+      "!!**/semgrep.sarif",
+      "!!**/.vercel/**",
+      "!!**/coverage/**",
+      "!!**/public/**/*.js",
+      "!!**/*.config.js",
+      "!!**/*.config.mjs"
     ]
   },
   "formatter": {
@@ -99,6 +99,16 @@
   "overrides": [
     {
       "includes": ["**/components/ai-elements/**/*.{ts,tsx}"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "warn"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/components/ai-elements/prompt-input.tsx"],
       "linter": {
         "rules": {
           "suspicious": {
