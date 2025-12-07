@@ -1,0 +1,18 @@
+{
+  "language-settings": {
+    "javascript": {
+      "packageManager": "npm",
+      "targetFile": "package.json",
+      "lockFile": "package-lock.json"
+    }
+  },
+  "exclude": {
+    "global": [
+      ".next/**",
+      "out/**",
+      "public/**"
+    ]
+  },
+  "severity-threshold": "medium",
+  "fail-on": "upgradable"
+}

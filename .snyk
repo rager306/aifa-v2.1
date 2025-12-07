@@ -1,0 +1,35 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+
+# Ignore specific vulnerabilities
+ignore:
+  # Inflight - No upgrade available, transitive dependency through next-pwa
+  'SNYK-JS-INFLIGHT-6095116':
+    - '*':
+        reason: 'No upgrade available, transitive dependency through next-pwa which is a development PWA plugin'
+        expires: '2025-12-31T00:00:00.000Z'
+
+  # mdast-util-to-hast - Fixed in newer version but requires streamdown upgrade
+  'SNYK-JS-MDASTUTILTOHAST-14157221':
+    - '*':
+        reason: 'Transitive dependency through streamdown and react-markdown, requires upstream upgrade'
+        expires: '2025-12-31T00:00:00.000Z'
+
+  # serialize-javascript - Transitive through workbox-webpack-plugin in next-pwa
+  'SNYK-JS-SERIALIZEJAVASCRIPT-6147607':
+    - '*':
+        reason: 'Transitive dependency through next-pwa workbox plugin, development-only use'
+        expires: '2025-12-31T00:00:00.000Z'
+
+# Patch configuration
+patch: {}
+
+# Exclude paths from scanning
+exclude:
+  global:
+    - .next/**
+    - out/**
+    - node_modules/**
+    - coverage/**
+    - doc/**
+    - .serena/**
