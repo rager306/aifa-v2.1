@@ -14,6 +14,7 @@ import { ActiveThemeProvider } from '@/providers/active-theme'
 import { ThemeProvider } from '@/providers/theme-provider'
 import { LayoutProvider } from '@/hooks/use-layout'
 import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { SiteHeader } from '@/components/site-header/site-header-wrapper'
 import AifaFooter from '@/components/aifa-footer'
 
@@ -223,6 +224,7 @@ export default async function RootLayout({
             gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!}
           />
         )}
+        <SpeedInsights />
       </body>
     </html>
   )
