@@ -71,6 +71,16 @@ This uploads a snapshot to the Snyk dashboard for continuous monitoring.
 
 ## Snyk Integration
 
+### Configuration
+
+Snyk is configured through multiple mechanisms:
+
+1. **`.snyk` Policy File**: Contains vulnerability ignore rules, patches, and path exclusions
+2. **Package Scripts**: Configuration flags are embedded in npm scripts in `package.json`:
+   - `--severity-threshold=medium` - Only report medium severity and above
+3. **Build Exclusions**: Paths excluded from scanning:
+   - `.next/**`, `out/**`, `node_modules/**`, `coverage/**`, `doc/**`, `.serena/**`
+
 ### Available Commands
 
 | Command | Purpose | When to Use |

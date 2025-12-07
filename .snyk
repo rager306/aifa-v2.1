@@ -3,10 +3,10 @@ version: v1.25.0
 
 # Ignore specific vulnerabilities
 ignore:
-  # Inflight - No upgrade available, transitive dependency through next-pwa
+  # Inflight - No upgrade available, transitive dependency through next-pwa (not used)
   'SNYK-JS-INFLIGHT-6095116':
     - '*':
-        reason: 'No upgrade available, transitive dependency through next-pwa which is a development PWA plugin'
+        reason: 'Vulnerable code not included in production bundles - next-pwa is installed but not actively used in next.config.mjs'
         expires: '2025-12-31T00:00:00.000Z'
 
   # mdast-util-to-hast - Fixed in newer version but requires streamdown upgrade
@@ -15,10 +15,10 @@ ignore:
         reason: 'Transitive dependency through streamdown and react-markdown, requires upstream upgrade'
         expires: '2025-12-31T00:00:00.000Z'
 
-  # serialize-javascript - Transitive through workbox-webpack-plugin in next-pwa
+  # serialize-javascript - Transitive through workbox-webpack-plugin in next-pwa (not used)
   'SNYK-JS-SERIALIZEJAVASCRIPT-6147607':
     - '*':
-        reason: 'Transitive dependency through next-pwa workbox plugin, development-only use'
+        reason: 'Vulnerable code not included in production bundles - next-pwa is installed but not actively configured or used'
         expires: '2025-12-31T00:00:00.000Z'
 
 # Patch configuration

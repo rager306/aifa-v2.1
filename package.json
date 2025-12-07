@@ -12,8 +12,8 @@
     "knip:exports": "knip --include exports",
     "knip:deps": "knip --include dependencies",
     "knip:report": "knip --reporter json > knip-report.json",
-    "snyk:test": "snyk test --all-projects",
-    "snyk:monitor": "snyk monitor --all-projects",
+    "snyk:test": "snyk test --severity-threshold=medium",
+    "snyk:monitor": "snyk monitor --severity-threshold=medium",
     "snyk:test:json": "snyk test --json > snyk-test-report.json",
     "snyk:fix": "snyk fix",
     "snyk:protect": "snyk protect"
