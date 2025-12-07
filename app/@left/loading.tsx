@@ -1,18 +1,19 @@
 //app/@left/loading.tsx
-import { appConfig, getLoadingIllustration } from "@/config/app-config";
-import Image from "next/image";
 
-export const dynamic = 'force-static';
-export const revalidate = false;
+import Image from "next/image"
+import { appConfig, getLoadingIllustration } from "@/config/app-config"
 
+export const dynamic = "force-static"
+export const revalidate = false
 
 export default function LoadingPage() {
   // Get illustration paths
-  const darkPath = getLoadingIllustration("dark");
-  const lightPath = getLoadingIllustration("light");
+  const darkPath = getLoadingIllustration("dark")
+  const lightPath = getLoadingIllustration("light")
 
-  const darkSrc = darkPath && typeof darkPath === 'string' && darkPath.length > 0 ? darkPath : null;
-  const lightSrc = lightPath && typeof lightPath === 'string' && lightPath.length > 0 ? lightPath : null;
+  const darkSrc = darkPath && typeof darkPath === "string" && darkPath.length > 0 ? darkPath : null
+  const lightSrc =
+    lightPath && typeof lightPath === "string" && lightPath.length > 0 ? lightPath : null
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
@@ -23,7 +24,7 @@ export default function LoadingPage() {
           alt="Loading illustration"
           width={400}
           height={400}
-         priority={false}
+          priority={false}
           className="pointer-events-none mb-5 mt-6 dark:block hidden"
         />
       )}
@@ -50,5 +51,5 @@ export default function LoadingPage() {
         {appConfig.messages?.loading?.title || "Loading..."}
       </p>
     </div>
-  );
+  )
 }

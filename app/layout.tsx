@@ -1,65 +1,61 @@
 // app/layout.tsx
-import type { Metadata, Viewport } from 'next'
-import { constructMetadata } from '@/lib/construct-metadata'
-import { META_THEME_COLORS, appConfig } from '@/config/app-config'
+import type { Metadata, Viewport } from "next"
+import { appConfig, META_THEME_COLORS } from "@/config/app-config"
+import { constructMetadata } from "@/lib/construct-metadata"
 import { fontVariables } from "@/lib/fonts"
-import './styles/globals.css'
-import { Toaster } from "sonner";
-import { CookieBanner } from '@/components/cookie-banner/cookie-banner'
-import { GoogleAnalytics } from '@next/third-parties/google'
-import { OnlineStatusProvider } from '@/providers/online-status-provider'
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { cn } from '@/lib/utils'
-import { ActiveThemeProvider } from '@/providers/active-theme'
-import { ThemeProvider } from '@/providers/theme-provider'
-import { LayoutProvider } from '@/hooks/use-layout'
-import { Analytics } from '@vercel/analytics/next'
+import "./styles/globals.css"
+import { GoogleAnalytics } from "@next/third-parties/google"
+import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
-import { SiteHeader } from '@/components/site-header/site-header-wrapper'
-import AifaFooter from '@/components/aifa-footer'
-import { MiniMaxProvider } from '@/lib/minimax-provider'
-
+import { Toaster } from "sonner"
+import AifaFooter from "@/components/aifa-footer"
+import { CookieBanner } from "@/components/cookie-banner/cookie-banner"
+import { SiteHeader } from "@/components/site-header/site-header-wrapper"
+import { TailwindIndicator } from "@/components/tailwind-indicator"
+import { LayoutProvider } from "@/hooks/use-layout"
+import { MiniMaxProvider } from "@/lib/minimax-provider"
+import { cn } from "@/lib/utils"
+import { ActiveThemeProvider } from "@/providers/active-theme"
+import { OnlineStatusProvider } from "@/providers/online-status-provider"
+import { ThemeProvider } from "@/providers/theme-provider"
 
 export const metadata: Metadata = constructMetadata({
-  pathname: '/',
+  pathname: "/",
 })
 
-
 export const viewport: Viewport = {
-  width: 'device-width',
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
-  viewportFit: 'cover',
-  colorScheme: 'light dark',
+  viewportFit: "cover",
+  colorScheme: "light dark",
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: appConfig.pwa.backgroundColor },
-    { media: '(prefers-color-scheme: dark)', color: appConfig.pwa.themeColor },
+    { media: "(prefers-color-scheme: light)", color: appConfig.pwa.backgroundColor },
+    { media: "(prefers-color-scheme: dark)", color: appConfig.pwa.themeColor },
   ],
 }
 
-
 const jsonLdWebSite = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
+  "@context": "https://schema.org",
+  "@type": "WebSite",
   name: appConfig.name,
   url: appConfig.url,
   description: appConfig.description,
   inLanguage: appConfig.lang,
   potentialAction: {
-    '@type': 'SearchAction',
+    "@type": "SearchAction",
     target: {
-      '@type': 'EntryPoint',
+      "@type": "EntryPoint",
       urlTemplate: `${appConfig.url}/search?q={search_term_string}`,
     },
-    'query-input': 'required name=search_term_string',
+    "query-input": "required name=search_term_string",
   },
 }
 
-
 const jsonLdOrganization = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
+  "@context": "https://schema.org",
+  "@type": "Organization",
   name: appConfig.name,
   url: appConfig.url,
   logo: `${appConfig.url}${appConfig.logo}`,
@@ -67,29 +63,26 @@ const jsonLdOrganization = {
   email: appConfig.mailSupport,
   sameAs: [
     appConfig.seo?.social?.github,
-    appConfig.seo?.social?.twitter
-      ? `https://twitter.com/${appConfig.seo.social.twitter}`
-      : null,
+    appConfig.seo?.social?.twitter ? `https://twitter.com/${appConfig.seo.social.twitter}` : null,
     appConfig.seo?.social?.linkedin,
     appConfig.seo?.social?.facebook,
   ].filter(Boolean),
   contactPoint: {
-    '@type': 'ContactPoint',
+    "@type": "ContactPoint",
     email: appConfig.mailSupport,
-    contactType: 'Customer Support',
+    contactType: "Customer Support",
     availableLanguage: appConfig.seo?.locales || [appConfig.lang],
   },
 }
-
 
 export default async function RootLayout({
   left,
   rightStatic,
   rightDynamic,
 }: {
-  left: React.ReactNode;
-  rightStatic: React.ReactNode;
-  rightDynamic: React.ReactNode;
+  left: React.ReactNode
+  rightStatic: React.ReactNode
+  rightDynamic: React.ReactNode
 }) {
   return (
     <html lang={appConfig.lang} suppressHydrationWarning>
@@ -140,11 +133,9 @@ export default async function RootLayout({
       <body
         className={cn(
           "text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] [--header-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] ",
-          fontVariables
+          fontVariables,
         )}
       >
-
-
         <MiniMaxProvider>
           <ThemeProvider>
             <LayoutProvider>
@@ -152,20 +143,13 @@ export default async function RootLayout({
                 <div className="bg-background fixed inset-0 flex flex-col overflow-hidden">
                   <SiteHeader />
 
-
-
                   <div className="flex-1 min-h-0 w-full">
-
                     <div className="h-full flex">
-
                       <div className="hidden md:flex md:w-0 lg:w-[50%] xl:w-[35%] border-r border-border">
                         <OnlineStatusProvider>
-                          <div className="h-full w-full overflow-hidden">
-                            {left}
-                          </div>
+                          <div className="h-full w-full overflow-hidden">{left}</div>
                         </OnlineStatusProvider>
                       </div>
-
 
                       <div className="w-full md:w-full lg:w-[50%] xl:w-[65%] relative">
                         <main className="absolute inset-0 overflow-y-auto hide-scrollbar">
@@ -176,13 +160,8 @@ export default async function RootLayout({
                     </div>
                   </div>
 
-
-
-
                   <AifaFooter />
                 </div>
-
-
               </ActiveThemeProvider>
             </LayoutProvider>
           </ThemeProvider>
@@ -209,7 +188,8 @@ export default async function RootLayout({
                       JavaScript is disabled
                     </strong>
                     <p className="mt-1 text-[13px] leading-relaxed text-neutral-200/90">
-                      Core content is available, but some features may be limited. Enable JavaScript for the best experience.
+                      Core content is available, but some features may be limited. Enable JavaScript
+                      for the best experience.
                     </p>
                   </div>
                 </div>
@@ -219,13 +199,10 @@ export default async function RootLayout({
         </noscript>
 
         <CookieBanner />
-        {process.env.NODE_ENV === "development" && (
-        <TailwindIndicator />)}
+        {process.env.NODE_ENV === "development" && <TailwindIndicator />}
         <Toaster position="top-center" />
         {process.env.NODE_ENV === "production" && (
-          <GoogleAnalytics
-            gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!}
-          />
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} />
         )}
         <SpeedInsights />
       </body>

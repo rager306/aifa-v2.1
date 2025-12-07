@@ -1,62 +1,65 @@
 // app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/page.tsx
 
-import { constructMetadata } from '@/lib/construct-metadata';
-import { appConfig } from '@/config/app-config';
-import type { Metadata } from 'next';
-import { PageWrapperConfig, SeoPageWrapper } from '@/components/seo-page-wrapper/seo-page-wrapper';
-import { StructuredDataWrapper } from '@/components/seo-page-wrapper/structured-data-wrapper';
-import FeaturesPageComponent from './(_components)/features-page-component';
+import type { Metadata } from "next"
+import {
+  type PageWrapperConfig,
+  SeoPageWrapper,
+} from "@/components/seo-page-wrapper/seo-page-wrapper"
+import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
+import { appConfig } from "@/config/app-config"
+import { constructMetadata } from "@/lib/construct-metadata"
+import FeaturesPageComponent from "./(_components)/features-page-component"
 
 // ============================================================================
 // META CONFIGURATION
 // ============================================================================
 
 export const metadata: Metadata = constructMetadata({
-  title: 'Features — Advanced Next.js Routing & SEO Capabilities',
+  title: "Features — Advanced Next.js Routing & SEO Capabilities",
   description:
-    'Comprehensive guide to AIFA starter features including parallel routing, intercepting routes, SEO optimization, PWA capabilities, and modern web development patterns with Next.js 15 and React 19.',
-  image: '/images/pic3.png',
-  pathname: '/features',
-  locale: 'en',
-  contentType: 'website',
+    "Comprehensive guide to AIFA starter features including parallel routing, intercepting routes, SEO optimization, PWA capabilities, and modern web development patterns with Next.js 15 and React 19.",
+  image: "/images/pic3.png",
+  pathname: "/features",
+  locale: "en",
+  contentType: "website",
   noIndex: false,
   noFollow: false,
   author: {
-    name: 'Roman Bolshiyanov (Armstrong)',
-    email: 'bolshiyanov@gmail.com',
-    url: 'https://t.me/bolshiyanov',
-    image: '/images/pic3.png',
-    bio: 'AI/Web3/Next Architect delivering business-ready solutions that orchestrate frontend, backend, and go-to-market.',
-    jobTitle: 'AI/Web3/Next Architect',
+    name: "Roman Bolshiyanov (Armstrong)",
+    email: "bolshiyanov@gmail.com",
+    url: "https://t.me/bolshiyanov",
+    image: "/images/pic3.png",
+    bio: "AI/Web3/Next Architect delivering business-ready solutions that orchestrate frontend, backend, and go-to-market.",
+    jobTitle: "AI/Web3/Next Architect",
     twitter: undefined,
-    linkedin: 'roman-bolshiyanov',
+    linkedin: "roman-bolshiyanov",
     facebook: undefined,
   },
-});
+})
 
 // ============================================================================
 // JSON-LD HELPER FUNCTIONS
 // ============================================================================
 
 type BreadcrumbItem = {
-  name: string;
-  path: string;
-};
+  name: string
+  path: string
+}
 
 /**
  * Build BreadcrumbList JSON-LD schema
  */
 function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       name: item.name,
       item: item.path ? `${appConfig.url}${item.path}` : appConfig.url,
     })),
-  };
+  }
 }
 
 /**
@@ -64,17 +67,18 @@ function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
  */
 function buildCollectionPageJsonLd() {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'AIFA Features Overview',
-    description: 'Comprehensive collection of advanced Next.js routing patterns, SEO optimization techniques, and modern web development features.',
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "AIFA Features Overview",
+    description:
+      "Comprehensive collection of advanced Next.js routing patterns, SEO optimization techniques, and modern web development features.",
     url: `${appConfig.url}/features`,
     isPartOf: {
-      '@type': 'WebSite',
+      "@type": "WebSite",
       name: appConfig.name,
       url: appConfig.url,
     },
-  };
+  }
 }
 
 // ============================================================================
@@ -83,52 +87,53 @@ function buildCollectionPageJsonLd() {
 
 const PAGE_CONFIG: PageWrapperConfig = {
   topSpacing: 80,
-   variant:"feature",
+  variant: "feature",
   breadcrumbs: [
-    { name: 'Home', path: '/' },
-    { name: 'Features', path: '/features' },
+    { name: "Home", path: "/" },
+    { name: "Features", path: "/features" },
   ],
-  
+
   badges: [
-    { text: 'Routing' },
-    { text: 'SEO' },
-    { text: 'PWA' },
-    { text: 'Performance' },
-    { text: 'Accessibility' },
-    { text: 'Next.js 15' },
+    { text: "Routing" },
+    { text: "SEO" },
+    { text: "PWA" },
+    { text: "Performance" },
+    { text: "Accessibility" },
+    { text: "Next.js 15" },
   ],
   showBadges: true,
-  
+
   hero: {
-    title: 'AIFA Starter Features',
-    subtitle: 'Explore comprehensive documentation covering advanced routing patterns, SEO optimization, PWA capabilities, and modern web development best practices with Next.js 15 and React 19.',
+    title: "AIFA Starter Features",
+    subtitle:
+      "Explore comprehensive documentation covering advanced routing patterns, SEO optimization, PWA capabilities, and modern web development best practices with Next.js 15 and React 19.",
     images: {
-      horizontal: '/images/pic3.png',
-      vertical: '/images/pic3.png',
-      square: '/images/pic3.png',
-      alt: 'AIFA Features Overview',
+      horizontal: "/images/pic3.png",
+      vertical: "/images/pic3.png",
+      square: "/images/pic3.png",
+      alt: "AIFA Features Overview",
     },
     author: {
-      name: 'Roman Bolshiyanov (Armstrong)',
-      role: 'AI / Web3 / Next Architect',
+      name: "Roman Bolshiyanov (Armstrong)",
+      role: "AI / Web3 / Next Architect",
       avatar: appConfig.logo,
     },
     cta: {
       primary: {
-        text: 'Get Starter',
-        href: 'https://github.com/aifa-agi/aifa-v2.1',
+        text: "Get Starter",
+        href: "https://github.com/aifa-agi/aifa-v2.1",
       },
       secondary: {
-        text: 'Check Modal',
-        href: '/interception_modal/lead-form',
+        text: "Check Modal",
+        href: "/interception_modal/lead-form",
       },
     },
   },
   showHero: true,
-  
+
   faqs: [],
   showFaq: false,
-};
+}
 
 // ============================================================================
 // PAGE COMPONENT (Server Component)
@@ -136,8 +141,8 @@ const PAGE_CONFIG: PageWrapperConfig = {
 
 export default function Page() {
   // Generate JSON-LD schemas in page.tsx
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs);
-  const collectionPageJsonLd = buildCollectionPageJsonLd();
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs)
+  const collectionPageJsonLd = buildCollectionPageJsonLd()
 
   return (
     <>
@@ -150,5 +155,5 @@ export default function Page() {
         <FeaturesPageComponent />
       </SeoPageWrapper>
     </>
-  );
+  )
 }

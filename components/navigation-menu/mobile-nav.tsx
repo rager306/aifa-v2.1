@@ -1,21 +1,16 @@
 // components/navigation-menu/mobile-nav.tsx
 "use client"
 
-import * as React from "react"
-import Link from "next/link"
-import { useRouter, usePathname } from "next/navigation"
 import Image from "next/image"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { MenuCategory } from "@/types/menu-types"
-import { appConfig } from "@/config/app-config"
+import Link from "next/link"
+import { usePathname, useRouter } from "next/navigation"
+import * as React from "react"
 import { AnimatedAIButton } from "@/components/animated-ai-button"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { appConfig } from "@/config/app-config"
+import { cn } from "@/lib/utils"
+import type { MenuCategory } from "@/types/menu-types"
 
 interface MobileNavProps {
   categories: MenuCategory[]
@@ -66,7 +61,7 @@ function MobileNavLink({
       className={cn(
         "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         isActive && "bg-accent text-accent-foreground",
-        className
+        className,
       )}
       {...props}
     >
@@ -90,9 +85,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
 
   // Filter out any "Home" category from data to avoid duplicates
   const otherCategories = React.useMemo(() => {
-    return (filteredCategories ?? []).filter(
-      (c) => (c?.title ?? "").toLowerCase() !== "home"
-    )
+    return (filteredCategories ?? []).filter((c) => (c?.title ?? "").toLowerCase() !== "home")
   }, [filteredCategories])
 
   // Home categories (only those named "Home")
@@ -102,7 +95,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
       .map((category) => ({
         ...category,
         pages: (category.pages ?? []).filter(
-          (page) => (page?.title ?? "").toLowerCase() !== "home"
+          (page) => (page?.title ?? "").toLowerCase() !== "home",
         ),
       }))
       .filter((category) => category.pages.length > 0)
@@ -115,7 +108,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
           variant="ghost"
           className={cn(
             "extend-touch-target h-8 touch-manipulation items-center justify-start gap-2 pr-2 pl-0 hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 active:bg-transparent dark:hover:bg-transparent",
-            className
+            className,
           )}
         >
           <span className="h-8 items-center text-base leading-none font-medium text-white hidden sm:flex">
@@ -126,13 +119,13 @@ export function MobileNav({ categories, className }: MobileNavProps) {
               <span
                 className={cn(
                   "absolute left-0 block h-0.5 w-4 bg-white transition-all duration-100",
-                  open ? "top-[0.4rem] -rotate-45" : "top-1"
+                  open ? "top-[0.4rem] -rotate-45" : "top-1",
                 )}
               />
               <span
                 className={cn(
                   "absolute left-0 block h-0.5 w-4 bg-white transition-all duration-100",
-                  open ? "top-[0.4rem] rotate-45" : "top-2.5"
+                  open ? "top-[0.4rem] rotate-45" : "top-2.5",
                 )}
               />
             </div>
@@ -156,7 +149,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
               onClick={handleCloseMenu}
               className={cn(
                 "flex flex-col justify-start rounded-md bg-gradient-to-b from-muted/50 to-muted p-4 no-underline outline-none transition-colors hover:bg-accent",
-                pathname === "/" && "bg-accent"
+                pathname === "/" && "bg-accent",
               )}
             >
               <div className="mb-3 flex justify-center">
@@ -181,9 +174,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
 
           {/* 2) Chat action (always second, visible only on mobile: flex md:hidden) */}
           <div className="flex flex-col gap-4 lg:hidden">
-            <div className="text-muted-foreground text-sm font-medium">
-              Chat
-            </div>
+            <div className="text-muted-foreground text-sm font-medium">Chat</div>
             <div className="flex">
               <AnimatedAIButton onNavigate={handleCloseMenu} />
             </div>
@@ -197,9 +188,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
 
             return (
               <div key={category.title} className="flex flex-col gap-4">
-                <div className="text-muted-foreground text-sm font-medium">
-                  {category.title}
-                </div>
+                <div className="text-muted-foreground text-sm font-medium">{category.title}</div>
 
                 <div className="flex flex-col gap-3">
                   {category.pages.slice(0, 10).map((page) => {
@@ -212,9 +201,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
                         onOpenChange={setOpen}
                         isActive={pathname === page.href}
                       >
-                        <div className="text-sm font-medium capitalize">
-                          {page.title}
-                        </div>
+                        <div className="text-sm font-medium capitalize">{page.title}</div>
                         {page.description && (
                           <p className="text-xs text-muted-foreground line-clamp-1">
                             {page.description}
@@ -246,9 +233,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
 
             return (
               <div key={category.title} className="flex flex-col gap-4">
-                <div className="text-muted-foreground text-sm font-medium">
-                  {category.title}
-                </div>
+                <div className="text-muted-foreground text-sm font-medium">{category.title}</div>
 
                 <div className="flex flex-col gap-3">
                   {category.pages.slice(0, 10).map((page) => {
@@ -261,9 +246,7 @@ export function MobileNav({ categories, className }: MobileNavProps) {
                         onOpenChange={setOpen}
                         isActive={pathname === page.href}
                       >
-                        <div className="text-sm font-medium capitalize">
-                          {page.title}
-                        </div>
+                        <div className="text-sm font-medium capitalize">{page.title}</div>
                         {page.description && (
                           <p className="text-xs text-muted-foreground line-clamp-1">
                             {page.description}

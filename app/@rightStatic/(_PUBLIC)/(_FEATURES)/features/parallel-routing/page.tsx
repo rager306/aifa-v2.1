@@ -1,14 +1,14 @@
 // app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/parallel-routing/page.tsx
 
-import { constructMetadata } from "@/lib/construct-metadata";
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 import {
-  PageWrapperConfig,
+  type PageWrapperConfig,
   SeoPageWrapper,
-} from "@/components/seo-page-wrapper/seo-page-wrapper";
-import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper";
-import { appConfig } from "@/config/app-config";
-import { ArticleContent } from "./(_components)/article-content";
+} from "@/components/seo-page-wrapper/seo-page-wrapper"
+import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
+import { appConfig } from "@/config/app-config"
+import { constructMetadata } from "@/lib/construct-metadata"
+import { ArticleContent } from "./(_components)/article-content"
 
 /* ============================================
  * META CONFIGURATION
@@ -34,20 +34,20 @@ export const metadata: Metadata = constructMetadata({
     linkedin: "roman-bolshiyanov",
     facebook: undefined,
   },
-});
+})
 
 /* ============================================
  * JSON-LD HELPER TYPES
  * ============================================ */
 type BreadcrumbItem = {
-  name: string;
-  path: string;
-};
+  name: string
+  path: string
+}
 
 type FAQItem = {
-  question: string;
-  answer: string;
-};
+  question: string
+  answer: string
+}
 
 /* ============================================
  * JSON-LD HELPERS
@@ -62,12 +62,12 @@ function buildBreadcrumbJsonLd(items: BreadcrumbItem[]) {
       name: item.name,
       item: item.path ? `${appConfig.url}${item.path}` : appConfig.url,
     })),
-  };
+  }
 }
 
 function buildFaqJsonLd(items: FAQItem[]) {
   if (!items.length) {
-    return null;
+    return null
   }
 
   return {
@@ -81,7 +81,7 @@ function buildFaqJsonLd(items: FAQItem[]) {
         text: item.answer,
       },
     })),
-  };
+  }
 }
 
 /* ============================================
@@ -107,8 +107,7 @@ const PAGE_CONFIG: PageWrapperConfig = {
   showBadges: true,
 
   hero: {
-    title:
-      "Parallel Routing — Running Independent UI Flows in a Single AIFA Layout",
+    title: "Parallel Routing — Running Independent UI Flows in a Single AIFA Layout",
     subtitle:
       "AIFA uses Next.js parallel routes to host an AI chat in the left slot and static SEO pages in the right slot, ensuring independent navigation, error isolation, and resilient UX on every device.",
     images: {
@@ -119,17 +118,17 @@ const PAGE_CONFIG: PageWrapperConfig = {
     },
     author: {
       name: "Roman Bolshiyanov (Armstrong)",
-      role: 'AI / Web3 / SEO / Next Architect',
+      role: "AI / Web3 / SEO / Next Architect",
       avatar: appConfig.logo,
     },
-   cta: {
+    cta: {
       primary: {
-        text: 'Get Starter',
-        href: 'https://github.com/aifa-agi/aifa-v2.1',
+        text: "Get Starter",
+        href: "https://github.com/aifa-agi/aifa-v2.1",
       },
       secondary: {
-        text: 'Check Modal',
-        href: '/interception_modal/lead-form',
+        text: "Check Modal",
+        href: "/interception_modal/lead-form",
       },
     },
   },
@@ -187,14 +186,14 @@ const PAGE_CONFIG: PageWrapperConfig = {
     },
   ],
   showFaq: true,
-};
+}
 
 /* ============================================
  * PAGE COMPONENT
  * ============================================ */
 export default function ParallelRoutingPage() {
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs!);
-  const faqJsonLd = buildFaqJsonLd(PAGE_CONFIG.faqs ?? []);
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs!)
+  const faqJsonLd = buildFaqJsonLd(PAGE_CONFIG.faqs ?? [])
 
   return (
     <>
@@ -205,5 +204,5 @@ export default function ParallelRoutingPage() {
         <ArticleContent />
       </SeoPageWrapper>
     </>
-  );
+  )
 }

@@ -2,13 +2,7 @@
 
 "use client"
 
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
 const DEFAULT_THEME = "default"
 
@@ -26,9 +20,7 @@ export function ActiveThemeProvider({
   children: ReactNode
   initialTheme?: string
 }) {
-  const [activeTheme, setActiveTheme] = useState<string>(
-    () => initialTheme || DEFAULT_THEME
-  )
+  const [activeTheme, setActiveTheme] = useState<string>(() => initialTheme || DEFAULT_THEME)
 
   useEffect(() => {
     Array.from(document.body.classList)

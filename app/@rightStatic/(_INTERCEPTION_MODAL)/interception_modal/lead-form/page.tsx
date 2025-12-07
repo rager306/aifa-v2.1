@@ -1,15 +1,15 @@
 //app/@rightStatic/(_INTERCEPTION_MODAL)/interception_modal/lead-form/page.tsx
-"use client";
+"use client"
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Home } from "lucide-react";
-import { appConfig } from "@/config/app-config";
-import { getModalTranslation } from "../../(_shared)/(_translations)/get-modal-translation";
+import { Home } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { appConfig } from "@/config/app-config"
+import { getModalTranslation } from "../../(_shared)/(_translations)/get-modal-translation"
 
 // Client component with translation support
 function LeadFormPageContent() {
-  const { t } = getModalTranslation();
+  const { t } = getModalTranslation()
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
@@ -22,12 +22,8 @@ function LeadFormPageContent() {
             </div>
 
             {/* Title and description */}
-            <h1 className="text-2xl font-bold mb-2">
-              {appConfig.short_name}
-            </h1>
-            <p className="text-muted-foreground">
-              {appConfig.description}
-            </p>
+            <h1 className="text-2xl font-bold mb-2">{appConfig.short_name}</h1>
+            <p className="text-muted-foreground">{appConfig.description}</p>
           </div>
 
           {/* Navigation button */}
@@ -41,16 +37,14 @@ function LeadFormPageContent() {
           </Link>
 
           {/* Help text */}
-          <p className="text-sm text-muted-foreground mt-4">
-            {t("Use Form on Homepage")}
-          </p>
+          <p className="text-sm text-muted-foreground mt-4">{t("Use Form on Homepage")}</p>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function LeadFormPage() {
   // Return client component with translation support
-  return <LeadFormPageContent />;
+  return <LeadFormPageContent />
 }

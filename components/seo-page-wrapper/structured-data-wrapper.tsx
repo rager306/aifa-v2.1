@@ -1,17 +1,13 @@
 //components/seo-page-wrapper/structured-data-wrapper.tsx
 
-'use client'
+"use client"
 
 type Props = {
   data: Record<string, unknown>
 }
 
-
 export function StructuredDataWrapper({ data }: Props) {
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   )
 }

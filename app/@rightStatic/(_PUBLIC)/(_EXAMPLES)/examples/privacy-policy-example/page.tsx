@@ -1,52 +1,49 @@
 //app/privacy-policy/page.tsx
-import type { Metadata } from 'next';
-import { Card } from '@/components/ui/card';
-import Link from 'next/link';
-
+import type { Metadata } from "next"
+import Link from "next/link"
+import { Card } from "@/components/ui/card"
+import { appConfig } from "@/config/app-config"
 // SEO: use your existing constructMetadata helper
-import { constructMetadata } from '@/lib/construct-metadata';
-import { appConfig } from '@/config/app-config';
+import { constructMetadata } from "@/lib/construct-metadata"
 
 // Generates Metadata for this page using your shared helper
 export const metadata: Metadata = constructMetadata({
-  title: 'Privacy Policy',
+  title: "Privacy Policy",
   description:
-    'Learn how we collect, use, and protect your personal data. This is an example Privacy Policy page for demonstration purposes.',
+    "Learn how we collect, use, and protect your personal data. This is an example Privacy Policy page for demonstration purposes.",
   // image omitted intentionally -> your constructMetadata uses default OG image fallback
-  pathname: '/privacy-policy',
-  contentType: 'documentation',
+  pathname: "/privacy-policy",
+  contentType: "documentation",
   // Optionally block indexing in example mode, remove when ready:
   // noIndex: true,
-});
+})
 
 export default function PrivacyPolicyPage() {
   // Example placeholders you can bind from config or env
-  const companyName = appConfig?.short_name ?? 'AIFA';
-  const contactEmail = appConfig?.mailSupport ?? 'support@example.com';
-  const companyUrl = appConfig?.url ?? 'https://example.com';
-  const lastUpdated = '2025-10-01';
+  const companyName = appConfig?.short_name ?? "AIFA"
+  const contactEmail = appConfig?.mailSupport ?? "support@example.com"
+  const companyUrl = appConfig?.url ?? "https://example.com"
+  const lastUpdated = "2025-10-01"
 
   return (
     <main className="container mx-auto px-4 py-10">
-        <div className='h-20'/>
+      <div className="h-20" />
       {/* Header */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Privacy Policy</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Last updated: {lastUpdated}
-        </p>
+        <p className="text-sm text-muted-foreground mt-1">Last updated: {lastUpdated}</p>
       </header>
 
       {/* Overview */}
       <section className="mb-8">
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            This page explains how {companyName} (“we”, “us”, or “our”) collects, uses, and
-            protects your personal information when you use our website and services.
-            This is an example Privacy Policy for demonstration purposes only.
+            This page explains how {companyName} (“we”, “us”, or “our”) collects, uses, and protects
+            your personal information when you use our website and services. This is an example
+            Privacy Policy for demonstration purposes only.
           </p>
           <p className="text-sm text-muted-foreground">
-            By using our services at{' '}
+            By using our services at{" "}
             <Link href={companyUrl} className="underline underline-offset-4">
               {companyUrl}
             </Link>
@@ -61,20 +58,20 @@ export default function PrivacyPolicyPage() {
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
             <li>
-              Account data: name, email address, authentication identifiers (via your chosen
-              auth provider).
+              Account data: name, email address, authentication identifiers (via your chosen auth
+              provider).
             </li>
             <li>
               Usage data: pages visited, interactions, performance metrics, device and browser
               metadata.
             </li>
             <li>
-              Payment data: collected and processed by our payment processor (e.g., Stripe).
-              We do not store full card details on our servers.
+              Payment data: collected and processed by our payment processor (e.g., Stripe). We do
+              not store full card details on our servers.
             </li>
             <li>
-              Cookies and local storage: used for essential functionality, security,
-              preferences, and analytics where applicable.
+              Cookies and local storage: used for essential functionality, security, preferences,
+              and analytics where applicable.
             </li>
           </ul>
         </Card>
@@ -126,9 +123,9 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-xl font-semibold mb-3">Data Retention & Security</h2>
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            We retain data only as long as necessary for the purposes outlined above or as
-            required by law. We apply technical and organizational measures to protect your
-            information; no method of transmission or storage is 100% secure.
+            We retain data only as long as necessary for the purposes outlined above or as required
+            by law. We apply technical and organizational measures to protect your information; no
+            method of transmission or storage is 100% secure.
           </p>
         </Card>
       </section>
@@ -143,7 +140,7 @@ export default function PrivacyPolicyPage() {
             <li>Data portability and withdrawal of consent where applicable.</li>
           </ul>
           <p className="text-sm text-muted-foreground">
-            To exercise your rights, contact us at{' '}
+            To exercise your rights, contact us at{" "}
             <a href={`mailto:${contactEmail}`} className="underline underline-offset-4">
               {contactEmail}
             </a>
@@ -157,8 +154,8 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-xl font-semibold mb-3">International Transfers</h2>
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            If data is transferred across borders, we use appropriate safeguards (e.g.,
-            standard contractual clauses) to protect your information.
+            If data is transferred across borders, we use appropriate safeguards (e.g., standard
+            contractual clauses) to protect your information.
           </p>
         </Card>
       </section>
@@ -168,8 +165,8 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-xl font-semibold mb-3">Changes to This Policy</h2>
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            We may update this Privacy Policy from time to time. We will post the updated
-            version here and adjust the “Last updated” date above.
+            We may update this Privacy Policy from time to time. We will post the updated version
+            here and adjust the “Last updated” date above.
           </p>
         </Card>
       </section>
@@ -179,7 +176,7 @@ export default function PrivacyPolicyPage() {
         <h2 className="text-xl font-semibold mb-3">Contact Us</h2>
         <Card className="rounded-lg border border-border bg-card px-6 py-5 space-y-3">
           <p className="text-sm text-muted-foreground">
-            If you have questions about this Privacy Policy or our practices, contact us at{' '}
+            If you have questions about this Privacy Policy or our practices, contact us at{" "}
             <a href={`mailto:${contactEmail}`} className="underline underline-offset-4">
               {contactEmail}
             </a>
@@ -188,5 +185,5 @@ export default function PrivacyPolicyPage() {
         </Card>
       </section>
     </main>
-  );
+  )
 }

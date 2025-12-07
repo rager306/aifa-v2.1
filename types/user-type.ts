@@ -1,24 +1,22 @@
 // aifa-v2/types/user-type.ts
 
 export const userType: UserType[] = [
-  
-   "guest",
+  "guest",
   "architect",
   "admin",
   "editor",
   "authUser",
   "subscriber",
   "customer",
-  "apiUser"
-];
- 
+  "apiUser",
+]
 
 export type UserType =
-   "guest"|
-  "architect"|
-  "admin"|
-  "editor"|
-  "authUser"|
-  "subscriber"|
-  "customer"|
-  "apiUser"
+  | "guest"
+  | "architect"
+  | "admin"
+  | "editor"
+  | "authUser"
+  | "subscriber"
+  | "customer"
+  | "apiUser"

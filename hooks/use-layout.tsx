@@ -22,9 +22,7 @@ interface LayoutProviderState {
 }
 
 const isServer = typeof window === "undefined"
-const LayoutContext = React.createContext<LayoutProviderState | undefined>(
-  undefined
-)
+const LayoutContext = React.createContext<LayoutProviderState | undefined>(undefined)
 
 const saveToLS = (storageKey: string, value: string) => {
   try {
@@ -88,7 +86,7 @@ const Layout = ({
       if (Array.isArray(attribute)) attribute.forEach(handleAttribute)
       else handleAttribute(attribute)
     },
-    [attrs, attribute, value]
+    [attrs, attribute, value],
   )
 
   const setLayout = React.useCallback(
@@ -104,7 +102,7 @@ const Layout = ({
         saveToLS(storageKey, value)
       }
     },
-    [storageKey]
+    [storageKey],
   )
 
   // localStorage event handling
@@ -141,14 +139,10 @@ const Layout = ({
       setLayout,
       forcedLayout,
     }),
-    [layout, setLayout, forcedLayout, isHydrated, defaultLayout]
+    [layout, setLayout, forcedLayout, isHydrated, defaultLayout],
   )
 
-  return (
-    <LayoutContext.Provider value={providerValue}>
-      {children}
-    </LayoutContext.Provider>
-  )
+  return <LayoutContext.Provider value={providerValue}>{children}</LayoutContext.Provider>
 }
 
 const LayoutProvider = (props: LayoutProviderProps) => {

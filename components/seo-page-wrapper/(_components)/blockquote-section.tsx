@@ -1,74 +1,74 @@
 //components/seo-page-wrapper/(_components)/blockquote-section.tsx
-'use client';
+"use client"
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from "react"
 
 export type BlockquoteConfig = {
-  text: string;
-};
+  text: string
+}
 
 interface BlockquoteProps {
-  config: BlockquoteConfig;
-  show?: boolean;
+  config: BlockquoteConfig
+  show?: boolean
 }
 
 export function BlockquoteSection({ config, show = true }: BlockquoteProps) {
-  const { text } = config;
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
-  const [isAnimating, setIsAnimating] = useState(false);
-  
+  const { text } = config
+  const [highlightedIndex, setHighlightedIndex] = useState(-1)
+  const [isAnimating, setIsAnimating] = useState(false)
+
   // ✅ Правильная типизация useRef
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const animationFrameRef = useRef<number>(0);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const animationFrameRef = useRef<number>(0)
 
   useEffect(() => {
-    if (!show || !text) return;
+    if (!show || !text) return
 
     // Start animation after component mount
     const startDelay = setTimeout(() => {
-      startAnimation();
-    }, 500);
+      startAnimation()
+    }, 500)
 
     return () => {
-      clearTimeout(startDelay);
+      clearTimeout(startDelay)
       if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+        clearTimeout(timeoutRef.current)
       }
-    };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show, text]);
+  }, [show, text])
 
   const startAnimation = () => {
-    setIsAnimating(true);
-    setHighlightedIndex(-1);
-    animationFrameRef.current = 0;
-    animateNextChar(0);
-  };
+    setIsAnimating(true)
+    setHighlightedIndex(-1)
+    animationFrameRef.current = 0
+    animateNextChar(0)
+  }
 
   const animateNextChar = (index: number) => {
     if (index >= text.length) {
       // Animation complete - pause for 3 seconds then restart
-      setIsAnimating(false);
-      
+      setIsAnimating(false)
+
       timeoutRef.current = setTimeout(() => {
-        setHighlightedIndex(-1);
+        setHighlightedIndex(-1)
         // Restart animation after brief pause
         timeoutRef.current = setTimeout(() => {
-          startAnimation();
-        }, 100);
-      }, 3000);
-      return;
+          startAnimation()
+        }, 100)
+      }, 3000)
+      return
     }
 
-    setHighlightedIndex(index);
+    setHighlightedIndex(index)
 
     // Variable delay to simulate stream-like behavior
-    const delay = getRandomDelay(text[index]);
-    
+    const delay = getRandomDelay(text[index])
+
     timeoutRef.current = setTimeout(() => {
-      animateNextChar(index + 1);
-    }, delay);
-  };
+      animateNextChar(index + 1)
+    }, delay)
+  }
 
   /**
    * Generate random delay to simulate StreamText behavior
@@ -79,50 +79,44 @@ export function BlockquoteSection({ config, show = true }: BlockquoteProps) {
   const getRandomDelay = (char: string): number => {
     // Random pause (10% chance of longer delay)
     if (Math.random() < 0.1) {
-      return Math.random() * 300 + 200; // 200-500ms pause
+      return Math.random() * 300 + 200 // 200-500ms pause
     }
 
     // Punctuation gets slightly longer pause
-    if (['.', ',', '!', '?', ';', ':'].includes(char)) {
-      return Math.random() * 100 + 80; // 80-180ms
+    if ([".", ",", "!", "?", ";", ":"].includes(char)) {
+      return Math.random() * 100 + 80 // 80-180ms
     }
 
     // Spaces are quick
-    if (char === ' ') {
-      return Math.random() * 30 + 20; // 20-50ms
+    if (char === " ") {
+      return Math.random() * 30 + 20 // 20-50ms
     }
 
     // Regular characters with variable speed
-    return Math.random() * 60 + 30; // 30-90ms
-  };
+    return Math.random() * 60 + 30 // 30-90ms
+  }
 
-  if (!show) return null;
+  if (!show) return null
 
   return (
     <blockquote className="my-6  border-l-2 border-primary pl-6 italic text-xl">
       <span className="inline">
-        {text.split('').map((char, index) => {
-          const isHighlighted = index <= highlightedIndex;
-          
+        {text.split("").map((char, index) => {
+          const isHighlighted = index <= highlightedIndex
+
           return (
             <span
               key={index}
               className={`
                 transition-all duration-150 ease-in-out
-                ${isHighlighted 
-                  ? 'bg-primary/10  text-primary font-medium' 
-                  : 'text-foreground'
-                }
+                ${isHighlighted ? "bg-primary/10  text-primary font-medium" : "text-foreground"}
               `}
             >
               {char}
             </span>
-          );
+          )
         })}
       </span>
-      
-    
-      
     </blockquote>
-  );
+  )
 }

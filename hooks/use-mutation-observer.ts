@@ -1,4 +1,3 @@
-
 //hooks/use-mutation-observer.ts
 
 import * as React from "react"
@@ -11,7 +10,7 @@ export const useMutationObserver = (
     characterData: true,
     childList: true,
     subtree: true,
-  }
+  },
 ) => {
   React.useEffect(() => {
     if (ref.current) {

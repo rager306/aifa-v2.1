@@ -7,6 +7,12 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "biome:check": "biome check .",
+    "biome:fix": "biome check --write .",
+    "biome:format": "biome format --write .",
+    "biome:lint": "biome lint .",
+    "biome:ci": "biome ci .",
+    "lint:all": "npm run lint && npm run biome:check",
     "knip": "knip",
     "knip:files": "knip --include files",
     "knip:exports": "knip --include exports",
@@ -77,6 +83,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.8",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",

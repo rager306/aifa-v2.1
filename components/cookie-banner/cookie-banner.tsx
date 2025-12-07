@@ -1,80 +1,80 @@
-"use client";
+"use client"
 
-import { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
-import Cookies from "js-cookie"; // client-only dependency
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { X, Settings, BarChart3, Target, Shield } from "lucide-react";
-import { appConfig } from "@/config/app-config";
-import { getCookieTranslation } from "./cookie-translation";
+import Cookies from "js-cookie" // client-only dependency
+import { BarChart3, Settings, Shield, Target, X } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { useEffect, useMemo, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { appConfig } from "@/config/app-config"
+import { getCookieTranslation } from "./cookie-translation"
 
 type CookieConsent = {
-  essential: boolean;
-  analytics: boolean;
-  marketing: boolean;
-  timestamp: number;
-  version: string;
-};
+  essential: boolean
+  analytics: boolean
+  marketing: boolean
+  timestamp: number
+  version: string
+}
 
-const COOKIE_CONSENT_KEY = "cookie-consent";
-const CONSENT_VERSION = "2025.2";
-const CONSENT_EXPIRY_DAYS = 180;
+const COOKIE_CONSENT_KEY = "cookie-consent"
+const CONSENT_VERSION = "2025.2"
+const CONSENT_EXPIRY_DAYS = 180
 
 function formatI18n(template: string, params: Record<string, string | number> = {}) {
   return template.replace(/\{(\w+)\}/g, (_, key) => {
-    const val = params[key];
-    return val === undefined || val === null ? `{${key}}` : String(val);
-  });
+    const val = params[key]
+    return val === undefined || val === null ? `{${key}}` : String(val)
+  })
 }
 
 export function CookieBanner() {
   // Translation helper uses static JSON by appConfig.lang; no browser-only deps inside hook.
-  const { t } = getCookieTranslation();
+  const { t } = getCookieTranslation()
 
-  const [isVisible, setIsVisible] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  const [isVisible, setIsVisible] = useState(false)
+  const [showDetails, setShowDetails] = useState(false)
   const [consent, setConsent] = useState<CookieConsent>({
     essential: true,
     analytics: false,
     marketing: false,
     timestamp: Date.now(),
     version: CONSENT_VERSION,
-  });
+  })
 
-  const brandName = useMemo(() => appConfig.short_name?.trim() || "Our Service", []);
-  const supportMail = useMemo(() => appConfig.mailSupport?.trim() || "support@example.com", []);
-  const siteUrl = useMemo(() => appConfig.url?.trim() || "", []);
-  const brandLogo = useMemo(() => appConfig.logo || "/logo.png", []);
+  const brandName = useMemo(() => appConfig.short_name?.trim() || "Our Service", [])
+  const supportMail = useMemo(() => appConfig.mailSupport?.trim() || "support@example.com", [])
+  const siteUrl = useMemo(() => appConfig.url?.trim() || "", [])
+  const brandLogo = useMemo(() => appConfig.logo || "/logo.png", [])
 
   const consentExpiryText = formatI18n(
     t("Consent Expiry Template") || "Consent expires in {days} days",
-    { days: CONSENT_EXPIRY_DAYS }
-  );
+    { days: CONSENT_EXPIRY_DAYS },
+  )
 
   useEffect(() => {
     // Read existing consent from browser cookie
-    const existingConsent = Cookies.get(COOKIE_CONSENT_KEY);
+    const existingConsent = Cookies.get(COOKIE_CONSENT_KEY)
     if (!existingConsent) {
-      const timer = setTimeout(() => setIsVisible(true), 200);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setIsVisible(true), 200)
+      return () => clearTimeout(timer)
     }
     try {
-      const parsed = JSON.parse(existingConsent) as CookieConsent;
-      setConsent(parsed);
-      applyConsent(parsed);
+      const parsed = JSON.parse(existingConsent) as CookieConsent
+      setConsent(parsed)
+      applyConsent(parsed)
     } catch {
-      setIsVisible(true);
+      setIsVisible(true)
     }
-  }, []);
+  }, [])
 
   /**
    * Apply user consent preferences to Google Analytics and Facebook Pixel
    * This function uses the Google Consent Mode V2 API to dynamically update
    * the consent state for analytics and advertising based on user choice
-   * 
+   *
    * @param consentData - The user's consent preferences object
-   * 
+   *
    * Why this is needed:
    * - Google Consent Mode V2 requires explicit consent signals for GDPR compliance
    * - It allows Google tags to adjust behavior based on user consent
@@ -83,63 +83,63 @@ export function CookieBanner() {
    */
   const applyConsent = (consentData: CookieConsent) => {
     // Extra guard; in client components window is available at runtime.
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") return
 
     /**
      * Analytics consent (Google Analytics via @next/third-parties)
-     * 
+     *
      * How it works:
      * - If user grants analytics consent, we call gtag('consent', 'update', {...})
      * - This updates the consent state from 'denied' (default) to 'granted'
      * - Google Analytics then starts collecting full measurement data
      * - The 'analytics_storage' parameter controls cookie creation for analytics
-     * 
+     *
      * Reference: https://developers.google.com/tag-platform/security/guides/consent
      */
     if (consentData.analytics) {
       if (window.gtag && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID) {
-        window.gtag("consent", "update", { 
-          analytics_storage: "granted" 
-        });
-        window.gtag("config", process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID);
+        window.gtag("consent", "update", {
+          analytics_storage: "granted",
+        })
+        window.gtag("config", process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID)
       }
     } else {
       if (window.gtag) {
-        window.gtag("consent", "update", { 
-          analytics_storage: "denied" 
-        });
+        window.gtag("consent", "update", {
+          analytics_storage: "denied",
+        })
       }
     }
 
     /**
      * Marketing consent (Facebook Pixel)
-     * 
+     *
      * How it works:
      * - Facebook Pixel respects the 'consent' API similar to Google
      * - 'grant' allows Facebook to set cookies and track conversions
      * - 'revoke' prevents Facebook from setting tracking cookies
-     * 
+     *
      * Note: This requires Facebook Pixel to be initialized separately
      */
     if (consentData.marketing) {
       if (window.fbq && process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID) {
-        window.fbq("consent", "grant");
+        window.fbq("consent", "grant")
       }
     } else {
       if (window.fbq) {
-        window.fbq("consent", "revoke");
+        window.fbq("consent", "revoke")
       }
     }
-  };
+  }
 
   /**
    * Save user consent preferences to a first-party cookie
-   * 
+   *
    * How it works:
    * - Uses js-cookie library to create a consent cookie on your domain
    * - This is a FIRST-PARTY cookie (not third-party) so it's not blocked by browsers
    * - The cookie stores user preferences and is read on subsequent visits
-   * 
+   *
    * Cookie attributes explained:
    * - expires: Cookie lifetime in days (180 days = 6 months)
    * - secure: Cookie only sent over HTTPS in production (prevents man-in-the-middle attacks)
@@ -148,27 +148,27 @@ export function CookieBanner() {
    *   - 'lax' is the best balance between security and usability
    *   - 'none' would require 'secure: true' and is only needed for cross-site embeds
    * - path: '/' makes cookie available across entire site
-   * 
+   *
    * Why 'lax' instead of 'strict':
    * - 'strict' would break user experience if they click a link from email or external site
    * - 'lax' still protects against CSRF attacks for state-changing requests (POST, PUT, DELETE)
    * - For a consent cookie (read-only data), 'lax' is the recommended setting
-   * 
+   *
    * Reference: https://web.dev/samesite-cookies-explained/
    */
   const saveConsent = (consentData: CookieConsent) => {
     Cookies.set(COOKIE_CONSENT_KEY, JSON.stringify(consentData), {
       expires: CONSENT_EXPIRY_DAYS,
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-      sameSite: 'lax', // CHANGED from 'strict' - allows top-level navigation
-      path: '/' // Available across entire site
-    });
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: "lax", // CHANGED from 'strict' - allows top-level navigation
+      path: "/", // Available across entire site
+    })
 
     // Apply the consent to third-party services
-    applyConsent(consentData);
-    
+    applyConsent(consentData)
+
     // Hide the banner
-    setIsVisible(false);
+    setIsVisible(false)
 
     /**
      * Send consent event to Google Tag Manager dataLayer
@@ -182,9 +182,9 @@ export function CookieBanner() {
         consent_marketing: consentData.marketing,
         consent_version: consentData.version,
         consent_timestamp: consentData.timestamp,
-      });
+      })
     }
-  };
+  }
 
   const handleAcceptAll = () => {
     const newConsent: CookieConsent = {
@@ -193,9 +193,9 @@ export function CookieBanner() {
       marketing: true,
       timestamp: Date.now(),
       version: CONSENT_VERSION,
-    };
-    saveConsent(newConsent);
-  };
+    }
+    saveConsent(newConsent)
+  }
 
   const handleRejectAll = () => {
     const newConsent: CookieConsent = {
@@ -204,31 +204,31 @@ export function CookieBanner() {
       marketing: false,
       timestamp: Date.now(),
       version: CONSENT_VERSION,
-    };
-    saveConsent(newConsent);
-  };
+    }
+    saveConsent(newConsent)
+  }
 
   const handleSavePreferences = () => {
     const newConsent: CookieConsent = {
       ...consent,
       timestamp: Date.now(),
       version: CONSENT_VERSION,
-    };
-    saveConsent(newConsent);
-  };
+    }
+    saveConsent(newConsent)
+  }
 
-  if (!isVisible) return null;
+  if (!isVisible) return null
 
-  const infoLead = t("Cookie Info Lead") || "We use cookies and similar technologies";
+  const infoLead = t("Cookie Info Lead") || "We use cookies and similar technologies"
   const infoBody = formatI18n(
     t("Cookie Info Body") ||
-    "We and selected partners use cookies on {site} to analyze usage, enhance features, personalize experiences, and tailor advertising. You can accept, reject, or manage categories.",
-    { site: siteUrl }
-  );
+      "We and selected partners use cookies on {site} to analyze usage, enhance features, personalize experiences, and tailor advertising. You can accept, reject, or manage categories.",
+    { site: siteUrl },
+  )
   const privacySubtitle = formatI18n(
     t("Customize Privacy Preferences") || "{brand} — customize your privacy preferences",
-    { brand: brandName }
-  );
+    { brand: brandName },
+  )
 
   return (
     <>
@@ -288,19 +288,11 @@ export function CookieBanner() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-2 md:gap-3 min-w-0">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowDetails(true)}
-                >
+                <Button variant="outline" size="sm" onClick={() => setShowDetails(true)}>
                   <Settings className="w-4 h-4 mr-2" />
                   {t("Manage Preferences") || "Manage Preferences"}
                 </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleRejectAll}
-                >
+                <Button variant="outline" size="sm" onClick={handleRejectAll}>
                   {t("Reject All Cookies") || "Reject All"}
                 </Button>
                 <Button
@@ -328,9 +320,7 @@ export function CookieBanner() {
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                       {t("Cookie Settings") || "Cookie Settings"}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {privacySubtitle}
-                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{privacySubtitle}</p>
                   </div>
                 </div>
                 <Button
@@ -474,5 +464,5 @@ export function CookieBanner() {
         </div>
       </div>
     </>
-  );
+  )
 }

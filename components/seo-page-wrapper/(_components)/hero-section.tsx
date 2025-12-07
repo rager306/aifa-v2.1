@@ -1,58 +1,58 @@
 //components/seo-page-wrapper/(_components)/hero-section.tsx
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+
+import Image from "next/image"
+import Link from "next/link"
+import React from "react"
 
 /**
  * Type definitions for Hero Section
  */
 export type HeroImages = {
-  horizontal: string; // 16:9
-  vertical: string;   // 9:16
-  square: string;     // 1:1
-  alt: string;
-};
+  horizontal: string // 16:9
+  vertical: string // 9:16
+  square: string // 1:1
+  alt: string
+}
 
 export type AuthorInfo = {
-  name: string;
-  role: string;
-  avatar: string;
-};
+  name: string
+  role: string
+  avatar: string
+}
 
 export type CTAButtons = {
   primary: {
-    text: string;
-    href: string;
-  };
+    text: string
+    href: string
+  }
   secondary: {
-    text: string;
-    href: string;
-  };
-};
+    text: string
+    href: string
+  }
+}
 
 export type HeroConfig = {
-  title: string;
-  subtitle: string;
-  images: HeroImages;
-  author: AuthorInfo;
-  cta: CTAButtons;
-
-};
+  title: string
+  subtitle: string
+  images: HeroImages
+  author: AuthorInfo
+  cta: CTAButtons
+}
 
 /**
  * Props for HeroSection component
  */
 interface HeroSectionProps {
-  config: HeroConfig;
-  show?: boolean;
+  config: HeroConfig
+  show?: boolean
   variant: "landing" | "blog" | "feature"
 }
 
 /**
  * HeroSection Component - Server Component
- * 
+ *
  * Responsive hero section with explicit breakpoint handling:
- * 
+ *
  * Breakpoint Strategy:
  * - xs (0-640px):    Single column + Horizontal image (16:9)
  * - sm (640-768px):  Single column + Horizontal image (16:9)
@@ -60,18 +60,18 @@ interface HeroSectionProps {
  * - lg (1024-1280px): Single column + Horizontal image (16:9)
  * - xl (1280-1536px): Two columns + Vertical image (9:16)
  * - 2xl (1536px+):   Two columns + Square image (1:1)
- * 
+ *
  * This component uses CSS media queries (Tailwind breakpoints) for responsive behavior,
  * making it fully compatible with React Server Components (no client-side JS needed).
- * 
+ *
  * @param config - Hero section configuration object
  * @param show - Optional visibility flag, defaults to true
  */
 export function HeroSection({ config, show = true, variant }: HeroSectionProps) {
   if (!show) {
-    return null;
+    return null
   }
-  const { title, subtitle, images, author, cta } = config;
+  const { title, subtitle, images, author, cta } = config
   if (variant === "feature") {
     return (
       <section className="px-4 mb-12" aria-labelledby="hero-title">
@@ -83,9 +83,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             {title}
           </h1>
 
-          <p className="text-base text-muted-foreground">
-            {subtitle}
-          </p>
+          <p className="text-base text-muted-foreground">{subtitle}</p>
 
           {/* Horizontal Image */}
           <div className="relative">
@@ -98,7 +96,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
                   height={450}
                   className="h-full w-full object-contain"
                   priority={false}
-                  
                 />
               </div>
             </div>
@@ -117,12 +114,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {author.name}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {author.role}
-              </span>
+              <span className="text-sm font-medium text-foreground">{author.name}</span>
+              <span className="text-xs text-muted-foreground">{author.role}</span>
             </div>
           </div>
 
@@ -137,20 +130,17 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             <Link
               href={cta.secondary.href}
               className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
             >
               {cta.secondary.text}
             </Link>
           </div>
         </div>
-      </section>)
+      </section>
+    )
   }
-
-
 
   return (
     <section className="px-4 mb-12" aria-labelledby="hero-title">
-
       {/* XS: Single column + Horizontal (0-640px) */}
       <div className="block sm:hidden">
         <div className="space-y-5">
@@ -161,9 +151,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             {title}
           </h1>
 
-          <p className="text-base text-muted-foreground">
-            {subtitle}
-          </p>
+          <p className="text-base text-muted-foreground">{subtitle}</p>
 
           {/* Horizontal Image */}
           <div className="relative">
@@ -194,12 +182,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {author.name}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {author.role}
-              </span>
+              <span className="text-sm font-medium text-foreground">{author.name}</span>
+              <span className="text-xs text-muted-foreground">{author.role}</span>
             </div>
           </div>
 
@@ -214,7 +198,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             <Link
               href={cta.secondary.href}
               className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
             >
               {cta.secondary.text}
             </Link>
@@ -232,9 +215,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             {title}
           </h1>
 
-          <p className="text-lg text-muted-foreground">
-            {subtitle}
-          </p>
+          <p className="text-lg text-muted-foreground">{subtitle}</p>
 
           {/* Horizontal Image */}
           <div className="relative">
@@ -247,7 +228,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
                   height={450}
                   className="h-full w-full object-contain"
                   priority={false}
-                  
                 />
               </div>
             </div>
@@ -266,12 +246,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {author.name}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {author.role}
-              </span>
+              <span className="text-sm font-medium text-foreground">{author.name}</span>
+              <span className="text-xs text-muted-foreground">{author.role}</span>
             </div>
           </div>
 
@@ -286,7 +262,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             <Link
               href={cta.secondary.href}
               className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
             >
               {cta.secondary.text}
             </Link>
@@ -305,9 +280,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               {title}
             </h1>
 
-            <p className="text-lg text-muted-foreground">
-              {subtitle}
-            </p>
+            <p className="text-lg text-muted-foreground">{subtitle}</p>
 
             {/* Author */}
             <div className="flex items-center gap-4">
@@ -322,12 +295,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground">
-                  {author.name}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {author.role}
-                </span>
+                <span className="text-sm font-medium text-foreground">{author.name}</span>
+                <span className="text-xs text-muted-foreground">{author.role}</span>
               </div>
             </div>
 
@@ -342,7 +311,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               <Link
                 href={cta.secondary.href}
                 className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
               >
                 {cta.secondary.text}
               </Link>
@@ -377,9 +345,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             {title}
           </h1>
 
-          <p className="text-lg text-muted-foreground">
-            {subtitle}
-          </p>
+          <p className="text-lg text-muted-foreground">{subtitle}</p>
 
           {/* Horizontal Image */}
           <div className="relative">
@@ -410,12 +376,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">
-                {author.name}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {author.role}
-              </span>
+              <span className="text-sm font-medium text-foreground">{author.name}</span>
+              <span className="text-xs text-muted-foreground">{author.role}</span>
             </div>
           </div>
 
@@ -430,7 +392,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
             <Link
               href={cta.secondary.href}
               className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
             >
               {cta.secondary.text}
             </Link>
@@ -449,9 +410,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               {title}
             </h1>
 
-            <p className="text-lg text-muted-foreground">
-              {subtitle}
-            </p>
+            <p className="text-lg text-muted-foreground">{subtitle}</p>
 
             {/* Author */}
             <div className="flex items-center gap-4">
@@ -466,12 +425,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground">
-                  {author.name}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {author.role}
-                </span>
+                <span className="text-sm font-medium text-foreground">{author.name}</span>
+                <span className="text-xs text-muted-foreground">{author.role}</span>
               </div>
             </div>
 
@@ -486,7 +441,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               <Link
                 href={cta.secondary.href}
                 className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
               >
                 {cta.secondary.text}
               </Link>
@@ -522,9 +476,7 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               {title}
             </h1>
 
-            <p className="text-lg text-muted-foreground">
-              {subtitle}
-            </p>
+            <p className="text-lg text-muted-foreground">{subtitle}</p>
 
             {/* Author */}
             <div className="flex items-center gap-4">
@@ -539,12 +491,8 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-medium text-foreground">
-                  {author.name}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {author.role}
-                </span>
+                <span className="text-sm font-medium text-foreground">{author.name}</span>
+                <span className="text-xs text-muted-foreground">{author.role}</span>
               </div>
             </div>
 
@@ -559,7 +507,6 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
               <Link
                 href={cta.secondary.href}
                 className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors"
-
               >
                 {cta.secondary.text}
               </Link>
@@ -584,5 +531,5 @@ export function HeroSection({ config, show = true, variant }: HeroSectionProps) 
         </div>
       </div>
     </section>
-  );
+  )
 }

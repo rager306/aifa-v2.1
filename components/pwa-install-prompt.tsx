@@ -1,137 +1,137 @@
 //components/pwa-install-prompt.tsx
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import { X, Download, Bell } from 'lucide-react';
-import { appConfig } from '@/config/app-config';
+import { Bell, Download, X } from "lucide-react"
+import { useEffect, useState } from "react"
+import { appConfig } from "@/config/app-config"
 
 interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>
 }
 
 interface PWAInstallPromptProps {
-  dismissDuration?: number; // milliseconds to hide after dismiss
+  dismissDuration?: number // milliseconds to hide after dismiss
 }
 
 export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromptProps) {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showPrompt, setShowPrompt] = useState(false);
-  const [isInstalled, setIsInstalled] = useState(false);
-  const [showBadge, setShowBadge] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
-  const [isAndroid, setIsAndroid] = useState(false);
-  const [primaryColor, setPrimaryColor] = useState('#3b82f6');
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [showPrompt, setShowPrompt] = useState(false)
+  const [isInstalled, setIsInstalled] = useState(false)
+  const [showBadge, setShowBadge] = useState(false)
+  const [isIOS, setIsIOS] = useState(false)
+  const [isAndroid, setIsAndroid] = useState(false)
+  const [primaryColor, setPrimaryColor] = useState("#3b82f6")
 
   useEffect(() => {
     // Set primary color from CSS variables
-    const color = 'primary' 
-    setPrimaryColor(color);
+    const color = "primary"
+    setPrimaryColor(color)
 
     // Detect platform
-    const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
-    const isIOSDevice = /iPad|iPhone|iPod/.test(userAgent);
-    const isAndroidDevice = /Android/.test(userAgent);
+    const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : ""
+    const isIOSDevice = /iPad|iPhone|iPod/.test(userAgent)
+    const isAndroidDevice = /Android/.test(userAgent)
 
-    setIsIOS(isIOSDevice);
-    setIsAndroid(isAndroidDevice);
+    setIsIOS(isIOSDevice)
+    setIsAndroid(isAndroidDevice)
 
     // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsInstalled(true);
-      return;
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      setIsInstalled(true)
+      return
     }
 
     // Check localStorage for dismiss timestamp
-    const lastDismissed = localStorage.getItem('pwa-install-dismissed');
+    const lastDismissed = localStorage.getItem("pwa-install-dismissed")
     if (lastDismissed) {
-      const dismissedTime = parseInt(lastDismissed, 10);
-      const now = Date.now();
+      const dismissedTime = parseInt(lastDismissed, 10)
+      const now = Date.now()
 
       if (now - dismissedTime < dismissDuration) {
-        return;
+        return
       }
     }
 
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setShowBadge(true); // Show badge instead of full prompt
-    };
+      e.preventDefault()
+      setDeferredPrompt(e as BeforeInstallPromptEvent)
+      setShowBadge(true) // Show badge instead of full prompt
+    }
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
 
     // Listen for app installed event
     const handleAppInstalled = () => {
-      console.log('[PWA] App installed successfully');
-      setIsInstalled(true);
-      setShowPrompt(false);
-      setShowBadge(false);
-      localStorage.removeItem('pwa-install-dismissed');
-    };
+      console.log("[PWA] App installed successfully")
+      setIsInstalled(true)
+      setShowPrompt(false)
+      setShowBadge(false)
+      localStorage.removeItem("pwa-install-dismissed")
+    }
 
-    window.addEventListener('appinstalled', handleAppInstalled);
+    window.addEventListener("appinstalled", handleAppInstalled)
 
     // Listen for display mode changes
-    const mediaQueryList = window.matchMedia('(display-mode: standalone)');
+    const mediaQueryList = window.matchMedia("(display-mode: standalone)")
     const handleDisplayModeChange = (e: MediaQueryListEvent) => {
       if (e.matches) {
-        setIsInstalled(true);
-        setShowPrompt(false);
-        setShowBadge(false);
+        setIsInstalled(true)
+        setShowPrompt(false)
+        setShowBadge(false)
       }
-    };
+    }
 
-    mediaQueryList.addEventListener('change', handleDisplayModeChange);
+    mediaQueryList.addEventListener("change", handleDisplayModeChange)
 
     return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-      window.removeEventListener('appinstalled', handleAppInstalled);
-      mediaQueryList.removeEventListener('change', handleDisplayModeChange);
-    };
-  }, [dismissDuration]);
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt)
+      window.removeEventListener("appinstalled", handleAppInstalled)
+      mediaQueryList.removeEventListener("change", handleDisplayModeChange)
+    }
+  }, [dismissDuration])
 
   const handleBadgeClick = () => {
-    setShowPrompt(true);
-  };
+    setShowPrompt(true)
+  }
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) return
 
     try {
-      await deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
+      await deferredPrompt.prompt()
+      const { outcome } = await deferredPrompt.userChoice
 
-      if (outcome === 'accepted') {
-        console.log('[PWA] Installation accepted');
-        setShowPrompt(false);
-        setShowBadge(false);
+      if (outcome === "accepted") {
+        console.log("[PWA] Installation accepted")
+        setShowPrompt(false)
+        setShowBadge(false)
       } else {
-        console.log('[PWA] Installation dismissed by user');
-        handleDismiss();
+        console.log("[PWA] Installation dismissed by user")
+        handleDismiss()
       }
 
-      setDeferredPrompt(null);
+      setDeferredPrompt(null)
     } catch (error) {
-      console.error('[PWA] Installation failed:', error);
+      console.error("[PWA] Installation failed:", error)
     }
-  };
+  }
 
   const handleDismiss = () => {
-    setShowPrompt(false);
-    localStorage.setItem('pwa-install-dismissed', Date.now().toString());
-  };
+    setShowPrompt(false)
+    localStorage.setItem("pwa-install-dismissed", Date.now().toString())
+  }
 
   const handleIOSInstall = () => {
     alert(
-      `To install ${appConfig.name}:\n\n1. Tap the Share button\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"`
-    );
-  };
+      `To install ${appConfig.name}:\n\n1. Tap the Share button\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"`,
+    )
+  }
 
   // Don't render if app is already installed
   if (isInstalled) {
-    return null;
+    return null
   }
 
   return (
@@ -152,8 +152,8 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
           `}
           style={{
             backgroundColor: primaryColor,
-            color: 'white',
-            boxShadow: `0 4px 12px rgba(0, 0, 0, 0.15)`,
+            color: "white",
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
           }}
           role="button"
           aria-label="Install app"
@@ -189,23 +189,20 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
               className="bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden"
               style={{
                 borderTopColor: primaryColor,
-                borderTopWidth: '3px',
+                borderTopWidth: "3px",
               }}
             >
               {/* Header */}
-              <div
-                className="px-6 py-4 text-white"
-                style={{ backgroundColor: primaryColor }}
-              >
+              <div className="px-6 py-4 text-white" style={{ backgroundColor: primaryColor }}>
                 <div className="flex items-center gap-3 mb-2">
                   <Download className="w-5 h-5" />
                   <h2 id="pwa-install-title" className="text-lg font-semibold">
-                    {isIOS ? 'Add to Home Screen' : `Install ${appConfig.short_name}`}
+                    {isIOS ? "Add to Home Screen" : `Install ${appConfig.short_name}`}
                   </h2>
                 </div>
                 <p id="pwa-install-description" className="text-sm opacity-90">
                   {isIOS
-                    ? 'Get quick access to the app from your home screen'
+                    ? "Get quick access to the app from your home screen"
                     : `Get ${appConfig.short_name} on your device for offline access`}
                 </p>
               </div>
@@ -255,9 +252,9 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
                     backgroundColor: primaryColor,
                     outlineColor: primaryColor,
                   }}
-                  aria-label={isIOS ? 'Add to Home Screen' : 'Install app'}
+                  aria-label={isIOS ? "Add to Home Screen" : "Install app"}
                 >
-                  {isIOS ? 'Add' : 'Install'}
+                  {isIOS ? "Add" : "Install"}
                 </button>
               </div>
 
@@ -280,5 +277,5 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
         </>
       )}
     </>
-  );
+  )
 }

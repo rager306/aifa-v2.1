@@ -2,20 +2,19 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { LoginForm } from "./(_client)/(_ui_components)/auth-login-form"
 
-
 /**
  * Desktop login page for left panel
- * 
+ *
  * Displayed in the left ResizablePanel on desktop screens when user
  * navigates to /login route. Uses the shared LoginForm component.
- * 
+ *
  * Features:
  * - Server Component (no client-side JS needed for rendering)
  * - Progressive enhancement (works without JS)
  * - Automatic redirect to /chat after successful login
  * - Consistent styling with Card components
  * - Centered layout with responsive padding
- * 
+ *
  * Route: /login (rendered in @left slot)
  */
 export default function LoginPage() {
@@ -25,9 +24,7 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle>Login to your account</CardTitle>
-            <CardDescription>
-              Enter your email below to login to your account
-            </CardDescription>
+            <CardDescription>Enter your email below to login to your account</CardDescription>
           </CardHeader>
           <CardContent>
             {/* 
@@ -37,7 +34,7 @@ export default function LoginPage() {
               - Error/success messages
               - Auto redirect to /chat after login
             */}
-            <LoginForm/>
+            <LoginForm />
           </CardContent>
         </Card>
       </div>

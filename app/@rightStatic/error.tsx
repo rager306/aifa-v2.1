@@ -1,27 +1,26 @@
 //app/error.tsx
 
-'use client';
+"use client"
 
-import { useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { appConfig, getErrorIllustration } from '@/config/app-config';
+import Image from "next/image"
+import Link from "next/link"
+import { useEffect } from "react"
+import { appConfig, getErrorIllustration } from "@/config/app-config"
 
 interface ErrorProps {
-  error: Error & { digest?: string };
-  reset: () => void;
+  error: Error & { digest?: string }
+  reset: () => void
 }
 
 export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
-    console.error('[Error Boundary]', error.message, error.digest);
-  }, [error]);
+    console.error("[Error Boundary]", error.message, error.digest)
+  }, [error])
 
   const isDark =
-    typeof window !== 'undefined' &&
-    window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches
 
-  const errorImage = getErrorIllustration('500', isDark ? 'dark' : 'light');
+  const errorImage = getErrorIllustration("500", isDark ? "dark" : "light")
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-12 text-center">
@@ -32,8 +31,7 @@ export default function Error({ error, reset }: ErrorProps) {
           width={400}
           height={300}
           className="h-auto w-full"
-        priority={false}
-                
+          priority={false}
         />
       </div>
 
@@ -62,7 +60,6 @@ export default function Error({ error, reset }: ErrorProps) {
           Try Again
         </button>
 
-       
         <Link
           href="/"
           className="rounded-lg border border-border px-6 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
@@ -72,7 +69,7 @@ export default function Error({ error, reset }: ErrorProps) {
       </div>
 
       <p className="text-xs text-muted-foreground">
-        If this problem persists, please contact{' '}
+        If this problem persists, please contact{" "}
         <a
           href={`mailto:${appConfig.mailSupport}`}
           className="font-medium text-primary hover:underline"
@@ -81,5 +78,5 @@ export default function Error({ error, reset }: ErrorProps) {
         </a>
       </p>
     </div>
-  );
+  )
 }

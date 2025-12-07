@@ -1,12 +1,10 @@
 // components/navigation-menu/main-nav.tsx
 "use client"
 
-import * as React from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-
-import { appConfig } from "@/config/app-config"
-import { cn } from "@/lib/utils"
+import * as React from "react"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,8 +13,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-import { MenuCategory } from "@/types/menu-types"
-import Image from "next/image"
+import { appConfig } from "@/config/app-config"
+import { cn } from "@/lib/utils"
+import type { MenuCategory } from "@/types/menu-types"
 
 interface MainNavProps {
   items: MenuCategory[]
@@ -67,7 +66,7 @@ export function MainNav({ items, className }: MainNavProps) {
                 <NavigationMenuTrigger
                   className={cn(
                     "text-sm font-medium transition-colors hover:text-white bg-transparent hover:bg-transparent",
-                    isActive ? "text-white" : "text-white/70"
+                    isActive ? "text-white" : "text-white/70",
                   )}
                 >
                   {category.title}
@@ -88,7 +87,7 @@ export function MainNav({ items, className }: MainNavProps) {
                               height={128}
                               className="h-[128px] w-[128px] object-cover"
                               priority={false}
-                  placeholder="blur"
+                              placeholder="blur"
                             />
                           </div>
                           <div className="mb-2 text-lg font-medium text-left capitalize">
@@ -113,7 +112,7 @@ export function MainNav({ items, className }: MainNavProps) {
                           >
                             {page.description}
                           </ListItem>
-                        )
+                        ),
                     )}
 
                     {/* If more than 10 pages, show "View All" */}
@@ -139,7 +138,7 @@ export function MainNav({ items, className }: MainNavProps) {
               <NavigationMenuTrigger
                 className={cn(
                   "text-sm font-medium transition-colors hover:text-white bg-transparent hover:bg-transparent",
-                  isActive ? "text-white" : "text-white/70"
+                  isActive ? "text-white" : "text-white/70",
                 )}
               >
                 {category.title}
@@ -158,7 +157,7 @@ export function MainNav({ items, className }: MainNavProps) {
                         >
                           {page.description}
                         </ListItem>
-                      )
+                      ),
                   )}
 
                   {/* If more than 10 pages, show "View All" */}
@@ -187,32 +186,27 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
   isActive?: boolean
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  ListItemProps
->(({ className, title, children, href, isActive = false, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <Link
-          href={href!}
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            isActive && "bg-accent text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="line-clamp-1 text-sm font-medium leading-none capitalize">
-            {title}
-          </div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  )
-})
+const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+  ({ className, title, children, href, isActive = false, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <Link
+            href={href!}
+            ref={ref}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              isActive && "bg-accent text-accent-foreground",
+              className,
+            )}
+            {...props}
+          >
+            <div className="line-clamp-1 text-sm font-medium leading-none capitalize">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          </Link>
+        </NavigationMenuLink>
+      </li>
+    )
+  },
+)
 ListItem.displayName = "ListItem"

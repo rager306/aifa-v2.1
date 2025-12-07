@@ -1,7 +1,7 @@
 // components/seo-pages/pages/about-aifa/about-aifa-page-component.tsx
 
-import { Card } from '@/components/ui/card';
-import Link from 'next/link';
+import Link from "next/link"
+import { Card } from "@/components/ui/card"
 
 /**
  * StatusPill component for service labels
@@ -11,40 +11,38 @@ function StatusPill({ label }: { label: string }) {
     <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
       {label}
     </span>
-  );
+  )
 }
 
 /**
  * About AIFA Page Component
- * 
+ *
  * Note: Hero, Breadcrumbs, Badges, and FAQ are handled by SeoPageWrapper
  * This component contains only the main content sections
  */
 export default function ArticleContent() {
   // Email and Telegram configuration for CTA section
-  const email = 'bolshiyanov@gmail.com';
-  const mailSubject = encodeURIComponent('AIFA Architecture — Collaboration Request');
+  const email = "bolshiyanov@gmail.com"
+  const mailSubject = encodeURIComponent("AIFA Architecture — Collaboration Request")
   const mailBody = encodeURIComponent(
     [
-      'Hi Roman!',
-      '',
-      'I would like to discuss AIFA architecture for my project:',
-      '- Using Next.js parallel routing',
-      '- AI chat integration',
-      '- Fractal architecture for scaling',
-      '',
-      'Please suggest a couple of convenient time slots for a call.',
-      '',
-      'Thank you!',
-    ].join('\n')
-  );
-  const mailtoHref = `mailto:${email}?subject=${mailSubject}&body=${mailBody}`;
-  const telegramHref = 'https://t.me/bolshiyanov';
+      "Hi Roman!",
+      "",
+      "I would like to discuss AIFA architecture for my project:",
+      "- Using Next.js parallel routing",
+      "- AI chat integration",
+      "- Fractal architecture for scaling",
+      "",
+      "Please suggest a couple of convenient time slots for a call.",
+      "",
+      "Thank you!",
+    ].join("\n"),
+  )
+  const mailtoHref = `mailto:${email}?subject=${mailSubject}&body=${mailBody}`
+  const telegramHref = "https://t.me/bolshiyanov"
 
   return (
     <>
-      
-
       {/* Current Architecture v1.0 */}
       <section className="mb-12" aria-labelledby="current-architecture">
         <h2 id="current-architecture" className="text-2xl font-semibold text-foreground mb-6">
@@ -57,7 +55,8 @@ export default function ArticleContent() {
               <StatusPill label="Core" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Next.js 15 parallel and intercepting routes for optimal performance and user experience.
+              Next.js 15 parallel and intercepting routes for optimal performance and user
+              experience.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Left slot: authentication + AI chat (dynamic)</li>
@@ -102,7 +101,8 @@ export default function ArticleContent() {
               <StatusPill label="Integration" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Built-in AI chat for user support + external API for mobile and third-party applications.
+              Built-in AI chat for user support + external API for mobile and third-party
+              applications.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>On-site support via AI</li>
@@ -140,7 +140,8 @@ export default function ArticleContent() {
               <StatusPill label="Modular" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Each fractal is an independent entity with its own API endpoint, recursively including other fractals.
+              Each fractal is an independent entity with its own API endpoint, recursively including
+              other fractals.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Complete module autonomy</li>
@@ -190,24 +191,25 @@ export default function ArticleContent() {
           <Card className="p-6 space-y-3">
             <h3 className="text-lg font-medium">SaaS + AI Chat Support</h3>
             <p className="text-sm text-muted-foreground">
-              Quickly deploy your own AI model for user support on the website and via external API for mobile apps.
-              Roles, multi-language, and SEO out of the box.
+              Quickly deploy your own AI model for user support on the website and via external API
+              for mobile apps. Roles, multi-language, and SEO out of the box.
             </p>
           </Card>
 
           <Card className="p-6 space-y-3">
             <h3 className="text-lg font-medium">Content Platforms with Admin Panel</h3>
             <p className="text-sm text-muted-foreground">
-              Static content for instant loading and SEO + dynamic application with role-based access for editors,
-              managers, and administrators.
+              Static content for instant loading and SEO + dynamic application with role-based
+              access for editors, managers, and administrators.
             </p>
           </Card>
 
           <Card className="p-6 space-y-3">
             <h3 className="text-lg font-medium">Complex Multi-role Applications (Future)</h3>
             <p className="text-sm text-muted-foreground">
-              With fractal architecture (Q4 2025), architects will be able to visually design complex applications
-              where AI generates components in real-time based on task descriptions.
+              With fractal architecture (Q4 2025), architects will be able to visually design
+              complex applications where AI generates components in real-time based on task
+              descriptions.
             </p>
           </Card>
         </div>
@@ -219,8 +221,8 @@ export default function ArticleContent() {
           Want to use AIFA in your project?
         </h2>
         <p className="text-sm text-muted-foreground mb-4">
-          Current version v1.0 with parallel routing is available now. Fractal architecture coming Q4 2025.
-          Let&apos;s discuss adaptation to your needs.
+          Current version v1.0 with parallel routing is available now. Fractal architecture coming
+          Q4 2025. Let&apos;s discuss adaptation to your needs.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
@@ -240,5 +242,5 @@ export default function ArticleContent() {
         </div>
       </section>
     </>
-  );
+  )
 }

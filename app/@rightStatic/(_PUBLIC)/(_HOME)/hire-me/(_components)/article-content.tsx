@@ -1,6 +1,6 @@
 //app/@rightStatic/(_PUBLIC)/(_HOME)/hire-me/(_components)/hire-me-page-component.tsx
 
-import { Card } from '@/components/ui/card';
+import { Card } from "@/components/ui/card"
 
 /**
  * StatusPill component for service labels
@@ -10,19 +10,18 @@ function StatusPill({ label }: { label: string }) {
     <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
       {label}
     </span>
-  );
+  )
 }
 
 /**
  * Hire Me Page Component
- * 
+ *
  * Note: Hero, Breadcrumbs, Badges, and FAQ are handled by SeoPageWrapper
  * This component contains only the main content sections
  */
 export default function ArticleContent() {
   return (
     <>
-      
       {/* Services */}
       <section className="mb-12" aria-labelledby="services">
         <h2 id="services" className="text-2xl font-semibold text-foreground mb-6">
@@ -35,7 +34,8 @@ export default function ArticleContent() {
               <StatusPill label="Strategy" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Practical AI integration into existing processes with measurable impact and cost control.
+              Practical AI integration into existing processes with measurable impact and cost
+              control.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Assessment, roadmap, KPIs</li>
@@ -91,5 +91,5 @@ export default function ArticleContent() {
         </div>
       </section>
     </>
-  );
+  )
 }

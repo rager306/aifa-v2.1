@@ -1,41 +1,34 @@
 //app/@rightStatic/(_PUBLIC)/404-example/page.tsx
-import type { Metadata } from 'next';
-import Link from 'next/link';
-
+import type { Metadata } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { getErrorIllustration } from "@/config/app-config"
 // SEO: use your existing constructMetadata helper
-import { constructMetadata } from '@/lib/construct-metadata';
-import {  getErrorIllustration } from '@/config/app-config';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
+import { constructMetadata } from "@/lib/construct-metadata"
 
 // Generates Metadata for this page using your shared helper
 export const metadata: Metadata = constructMetadata({
-  title: 'Privacy Policy',
+  title: "Privacy Policy",
   description:
-    'Learn how we collect, use, and protect your personal data. This is an example Privacy Policy page for demonstration purposes.',
+    "Learn how we collect, use, and protect your personal data. This is an example Privacy Policy page for demonstration purposes.",
   // image omitted intentionally -> your constructMetadata uses default OG image fallback
-  pathname: '/privacy-policy',
-  contentType: 'documentation',
+  pathname: "/privacy-policy",
+  contentType: "documentation",
   // Optionally block indexing in example mode, remove when ready:
   // noIndex: true,
-});
+})
 
 export default function PrivacyPolicyPage() {
+  const darkPath = getErrorIllustration("404", "dark")
+  const lightPath = getErrorIllustration("404", "light")
 
-  const darkPath = getErrorIllustration("404", "dark");
-  const lightPath = getErrorIllustration("404", "light");
-
-  const darkSrc =
-    darkPath && typeof darkPath === "string" && darkPath.length > 0
-      ? darkPath
-      : null;
+  const darkSrc = darkPath && typeof darkPath === "string" && darkPath.length > 0 ? darkPath : null
   const lightSrc =
-    lightPath && typeof lightPath === "string" && lightPath.length > 0
-      ? lightPath
-      : null;
+    lightPath && typeof lightPath === "string" && lightPath.length > 0 ? lightPath : null
   return (
     <main className="container mx-auto px-4 py-10">
-      <div className='h-20' />
+      <div className="h-20" />
       <div className="flex flex-col min-h-screen items-center justify-center p-6">
         {/* Error illustrations (theme-aware) */}
         <div className="flex-1 flex flex-col items-center justify-center w-full max-w-2xl">
@@ -64,9 +57,7 @@ export default function PrivacyPolicyPage() {
           )}
 
           {/* Error heading */}
-          <h1 className="text-foreground text-6xl font-bold mb-4">
-            404
-          </h1>
+          <h1 className="text-foreground text-6xl font-bold mb-4">404</h1>
 
           {/* Error title */}
           <h2 className="text-foreground text-3xl font-semibold mb-3 text-center">
@@ -75,9 +66,8 @@ export default function PrivacyPolicyPage() {
 
           {/* Error description */}
           <p className="text-muted-foreground text-lg text-center mb-8 max-w-md">
-            Could not find the requested resource. The page you are
-            looking for might have been removed or is temporarily
-            unavailable.
+            Could not find the requested resource. The page you are looking for might have been
+            removed or is temporarily unavailable.
           </p>
 
           {/* Action buttons */}
@@ -90,10 +80,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </div>
-
-
-
-
     </main>
-  );
+  )
 }

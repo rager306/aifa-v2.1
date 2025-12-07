@@ -1,10 +1,6 @@
 //lib/fonts.ts
 
-import {
-  Geist_Mono as FontMono,
-  Geist as FontSans,
-  Inter,
-} from "next/font/google"
+import { Geist_Mono as FontMono, Geist as FontSans, Inter } from "next/font/google"
 
 import { cn } from "@/lib/utils"
 
@@ -41,5 +37,5 @@ export const fontVariables = cn(
   fontMono.variable,
   fontInter.variable,
   fontGeist.variable,
-  fontGeistBold.variable
+  fontGeistBold.variable,
 )

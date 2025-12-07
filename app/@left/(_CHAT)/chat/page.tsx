@@ -1,11 +1,7 @@
-"use client";
+"use client"
 
-import ChatExample from "@/components/chat-example/chat-example";
-
-
+import ChatExample from "@/components/chat-example/chat-example"
 
 export default function Page() {
-  return (
-    <ChatExample/>
-  )
+  return <ChatExample />
 }

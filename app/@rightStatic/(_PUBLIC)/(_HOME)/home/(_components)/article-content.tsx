@@ -1,8 +1,8 @@
 // components/seo-pages/pages/home/home-page-component.tsx
 
-import Link from 'next/link';
-import { Card } from '@/components/ui/card';
-import FeaturesPageComponent from '@/app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/(_components)/features-page-component';
+import Link from "next/link"
+import FeaturesPageComponent from "@/app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/(_components)/features-page-component"
+import { Card } from "@/components/ui/card"
 
 /**
  * StatusPill component for feature labels
@@ -12,20 +12,18 @@ function StatusPill({ label }: { label: string }) {
     <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
       {label}
     </span>
-  );
+  )
 }
 
 /**
  * Home Page Component
- * 
+ *
  * Note: Hero, Breadcrumbs, Badges, and FAQ are handled by SeoPageWrapper
  * This component contains only the main content sections
  */
 export default function ArticleContent() {
   return (
     <>
-    
-
       <FeaturesPageComponent />
 
       {/* Features Section */}
@@ -41,7 +39,9 @@ export default function ArticleContent() {
               <StatusPill label="SSR/SSG ready" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Semantic metadata, Open Graph, Twitter cards, structured data (JSON-LD) and canonical control baked-in. Works with app router parallel/intercept routes without sacrificing crawlability.
+              Semantic metadata, Open Graph, Twitter cards, structured data (JSON-LD) and canonical
+              control baked-in. Works with app router parallel/intercept routes without sacrificing
+              crawlability.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Metadata API + JSON-LD helpers</li>
@@ -57,7 +57,8 @@ export default function ArticleContent() {
               <StatusPill label="Offline-ready" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Installable PWA with service worker caching. Right-slot pages keep working offline, using cached HTML + hydrated state for a seamless experience.
+              Installable PWA with service worker caching. Right-slot pages keep working offline,
+              using cached HTML + hydrated state for a seamless experience.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Precaching for shell and assets</li>
@@ -73,7 +74,8 @@ export default function ArticleContent() {
               <StatusPill label="UX signals" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Built-in online/offline detector triggers UI indicators similar to YouTube. Dynamic pages show clear badges when connection is lost.
+              Built-in online/offline detector triggers UI indicators similar to YouTube. Dynamic
+              pages show clear badges when connection is lost.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Navigator.onLine + SW events</li>
@@ -89,7 +91,8 @@ export default function ArticleContent() {
               <StatusPill label="Client-first UX" />
             </div>
             <p className="text-sm text-muted-foreground">
-              A dedicated dynamic route optimized for app-like navigation and zero reloads. Ideal for post-login experiences while SEO pages stay static.
+              A dedicated dynamic route optimized for app-like navigation and zero reloads. Ideal
+              for post-login experiences while SEO pages stay static.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Parallel slots for isolated UI</li>
@@ -105,7 +108,8 @@ export default function ArticleContent() {
               <StatusPill label="Secure access" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Role-based access controls unlock the dynamic segment after sign-up. Protects admin flows while keeping public pages crawlable.
+              Role-based access controls unlock the dynamic segment after sign-up. Protects admin
+              flows while keeping public pages crawlable.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Server guards in layouts</li>
@@ -121,7 +125,8 @@ export default function ArticleContent() {
               <StatusPill label="UI primitives" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Ready-to-use AI UI primitives compatible with modern chat patterns: message list, composer, tool-calls, function results, and more.
+              Ready-to-use AI UI primitives compatible with modern chat patterns: message list,
+              composer, tool-calls, function results, and more.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Tool-calling aware components</li>
@@ -137,7 +142,8 @@ export default function ArticleContent() {
               <StatusPill label="Integration-ready" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Starter demonstrates AI patterns in any slot. Current build ships with a mock AI layer; next iterations include real model integrations.
+              Starter demonstrates AI patterns in any slot. Current build ships with a mock AI
+              layer; next iterations include real model integrations.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Server/edge handlers</li>
@@ -153,7 +159,8 @@ export default function ArticleContent() {
               <StatusPill label="Design system" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Clean, accessible, and composable UI components. Extend via tokens and tailwind utilities to keep your design consistent and fast.
+              Clean, accessible, and composable UI components. Extend via tokens and tailwind
+              utilities to keep your design consistent and fast.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Accessible primitives</li>
@@ -169,7 +176,9 @@ export default function ArticleContent() {
               <StatusPill label="Progressive enhancement" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Core content renders and stays usable without JavaScript execution. Your site not only loads instantly but remains crawlable and accessible even when aggressive blockers disable intrusive scripts.
+              Core content renders and stays usable without JavaScript execution. Your site not only
+              loads instantly but remains crawlable and accessible even when aggressive blockers
+              disable intrusive scripts.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Server-rendered HTML for critical content</li>
@@ -185,7 +194,9 @@ export default function ArticleContent() {
               <StatusPill label="GDPR/CPRA‑aware" />
             </div>
             <p className="text-sm text-muted-foreground">
-              The project includes a legally compliant cookie banner: clear notice, category‑based consent (strictly necessary, functional, analytics, etc.), opt‑in/opt‑out controls, and stored preferences.
+              The project includes a legally compliant cookie banner: clear notice, category‑based
+              consent (strictly necessary, functional, analytics, etc.), opt‑in/opt‑out controls,
+              and stored preferences.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Granular consent per category</li>
@@ -201,7 +212,9 @@ export default function ArticleContent() {
               <StatusPill label="Modal route optimized" />
             </div>
             <p className="text-sm text-muted-foreground">
-              The lead magnet starter uses an intercepting route: the form opens as a modal without leaving the current page, improving conversion while keeping the main marketing page SEO‑friendly.
+              The lead magnet starter uses an intercepting route: the form opens as a modal without
+              leaving the current page, improving conversion while keeping the main marketing page
+              SEO‑friendly.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Intercepted route for modal CTAs</li>
@@ -217,7 +230,8 @@ export default function ArticleContent() {
               <StatusPill label="Global edge" />
             </div>
             <p className="text-sm text-muted-foreground">
-              Deployment tuned for App Router: edge functions, image optimization, and ISR work out-of-the-box with zero-config previews.
+              Deployment tuned for App Router: edge functions, image optimization, and ISR work
+              out-of-the-box with zero-config previews.
             </p>
             <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
               <li>Preview deployments</li>
@@ -240,7 +254,8 @@ export default function ArticleContent() {
                 Explore advanced routing, AI-ready chat, and PWA offline-first UX
               </h3>
               <p className="text-sm text-muted-foreground">
-                Get started with a production-grade starter that combines the best practices for modern web development.
+                Get started with a production-grade starter that combines the best practices for
+                modern web development.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -263,5 +278,5 @@ export default function ArticleContent() {
         </Card>
       </section>
     </>
-  );
+  )
 }

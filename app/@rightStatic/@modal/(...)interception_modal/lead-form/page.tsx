@@ -1,79 +1,77 @@
 //app/@rightStatic/@modal/(...)interception_modal/lead-form/page.tsx
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import { X, CheckCircle, Send } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { getModalTranslation } from "@/app/@rightStatic/(_INTERCEPTION_MODAL)/(_shared)/(_translations)/get-modal-translation";
+import { CheckCircle, Send, X } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { getModalTranslation } from "@/app/@rightStatic/(_INTERCEPTION_MODAL)/(_shared)/(_translations)/get-modal-translation"
+import { Button } from "@/components/ui/button"
 
 type FormErrors = {
-  name?: string[];
-  phone?: string[];
-  email?: string[];
-};
+  name?: string[]
+  phone?: string[]
+  email?: string[]
+}
 
 type ApiResponse = {
-  success: boolean;
-  message?: string;
-  errors?: FormErrors;
-  mock?: boolean;
-};
+  success: boolean
+  message?: string
+  errors?: FormErrors
+  mock?: boolean
+}
 
 export default function LeadFormModal() {
-  console.log("(...)interception_modal/lead-form/page.tsx loaded"); 
+  console.log("(...)interception_modal/lead-form/page.tsx loaded")
 
-  const router = useRouter();
-  const { t } = getModalTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [message, setMessage] = useState<string>("");
-
+  const router = useRouter()
+  const { t } = getModalTranslation()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [message, setMessage] = useState<string>("")
 
   useEffect(() => {
-    if (!isSuccess) return;
+    if (!isSuccess) return
 
     const timer = setTimeout(() => {
-      console.log("[Modal] Success! Closing modal and redirecting to /thank-you");
+      console.log("[Modal] Success! Closing modal and redirecting to /thank-you")
 
       setTimeout(() => {
-        router.push("/thank-you");
-      }, 50);
+        router.push("/thank-you")
+      }, 50)
+    }, 2000)
 
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [isSuccess, router]);
+    return () => clearTimeout(timer)
+  }, [isSuccess, router])
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       if (isSubmitting || isSuccess) {
-        return;
+        return
       }
-      router.back();
+      router.back()
     }
-  };
+  }
 
   const handleClose = () => {
     if (isSubmitting) {
-      return;
+      return
     }
-    router.back();
-  };
+    router.back()
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrors({});
-    setMessage("");
+    e.preventDefault()
+    setIsSubmitting(true)
+    setErrors({})
+    setMessage("")
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget)
     const data = {
       name: formData.get("name") as string,
       phone: formData.get("phone") as string,
       email: formData.get("email") as string,
-    };
+    }
 
     try {
       const response = await fetch("/api/lead-form", {
@@ -82,28 +80,28 @@ export default function LeadFormModal() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      });
+      })
 
-      const result: ApiResponse = await response.json();
+      const result: ApiResponse = await response.json()
 
       if (result.success) {
-        console.log("[Modal] Form submitted successfully");
-        setIsSuccess(true);
+        console.log("[Modal] Form submitted successfully")
+        setIsSuccess(true)
       } else {
         if (result.errors) {
-          setErrors(result.errors);
+          setErrors(result.errors)
         }
         if (result.message) {
-          setMessage(result.message);
+          setMessage(result.message)
         }
       }
     } catch (error) {
-      console.error("[Modal] Submit error:", error);
-      setMessage(t("Submit Error"));
+      console.error("[Modal] Submit error:", error)
+      setMessage(t("Submit Error"))
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   if (isSuccess) {
     return (
@@ -117,19 +115,13 @@ export default function LeadFormModal() {
         >
           <div className="text-center">
             <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4 animate-pulse" />
-            <h2 className="text-2xl font-bold mb-4">
-              {t("Lead Form Submitted")}
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              {t("Lead Form Thank You")}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {t("Auto Close Window")}
-            </p>
+            <h2 className="text-2xl font-bold mb-4">{t("Lead Form Submitted")}</h2>
+            <p className="text-muted-foreground mb-6">{t("Lead Form Thank You")}</p>
+            <p className="text-sm text-muted-foreground">{t("Auto Close Window")}</p>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -158,10 +150,7 @@ export default function LeadFormModal() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="name" className="block text-sm font-medium mb-2">
                 {t("Name")} {t("Required Field")}
               </label>
               <input
@@ -177,18 +166,11 @@ export default function LeadFormModal() {
                           disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder={t("Name Placeholder")}
               />
-              {errors.name && (
-                <p className="mt-1 text-sm text-destructive">
-                  {errors.name[0]}
-                </p>
-              )}
+              {errors.name && <p className="mt-1 text-sm text-destructive">{errors.name[0]}</p>}
             </div>
 
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="phone" className="block text-sm font-medium mb-2">
                 {t("Phone")} {t("Required Field")}
               </label>
               <input
@@ -204,18 +186,11 @@ export default function LeadFormModal() {
                           disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder={t("Phone Placeholder")}
               />
-              {errors.phone && (
-                <p className="mt-1 text-sm text-destructive">
-                  {errors.phone[0]}
-                </p>
-              )}
+              {errors.phone && <p className="mt-1 text-sm text-destructive">{errors.phone[0]}</p>}
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium mb-2"
-              >
+              <label htmlFor="email" className="block text-sm font-medium mb-2">
                 {t("Email")} {t("Required Field")}
               </label>
               <input
@@ -231,11 +206,7 @@ export default function LeadFormModal() {
                           disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder={t("Email Placeholder")}
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-destructive">
-                  {errors.email[0]}
-                </p>
-              )}
+              {errors.email && <p className="mt-1 text-sm text-destructive">{errors.email[0]}</p>}
             </div>
 
             {message && (
@@ -267,11 +238,9 @@ export default function LeadFormModal() {
             </div>
           </form>
 
-          <p className="text-xs text-muted-foreground text-center mt-4">
-            {t("Privacy Agreement")}
-          </p>
+          <p className="text-xs text-muted-foreground text-center mt-4">{t("Privacy Agreement")}</p>
         </div>
       </div>
     </div>
-  );
+  )
 }

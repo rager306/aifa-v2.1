@@ -1,7 +1,6 @@
 // app/@rightStatic/(_PUBLIC)/features/parallel-routing/components/article-content.tsx
 
-import { CodeBlock } from "../../(_components)/code-block";
-
+import { CodeBlock } from "../../(_components)/code-block"
 
 export const CODE_SNIPPETS = {
   rootParallelLayout: `// app/layout.tsx — Root layout with parallel slots
@@ -224,21 +223,33 @@ export default function ChatDrawerModal() {
 `,
 }
 
-
 export function ArticleContent() {
   return (
     <article className="prose prose-slate dark:prose-invert max-w-none">
-
       <p>
-        Imagine you need to run two independent UI flows on the same URL: an AI chat assistant on the left and a static, SEO-optimized page on the right. The chat must keep its state, remember the conversation, and continue working while the right side freely navigates between documentation pages, product listings, or dashboards. At the same time, the right side must be resilient: it may fail, show errors, or reload entirely without ever killing the chat. Which technology would you choose to implement such a system?
+        Imagine you need to run two independent UI flows on the same URL: an AI chat assistant on
+        the left and a static, SEO-optimized page on the right. The chat must keep its state,
+        remember the conversation, and continue working while the right side freely navigates
+        between documentation pages, product listings, or dashboards. At the same time, the right
+        side must be resilient: it may fail, show errors, or reload entirely without ever killing
+        the chat. Which technology would you choose to implement such a system?
       </p>
 
       <p>
-        A naive solution would be to build everything as one big client-side application with global state. But this quickly becomes fragile: a single error on the right can break the whole tree, including the chat. Another option would be to use multiple iframes or microfrontends, but that adds heavy complexity in communication, SEO, and performance. In practice, what you really want is a single layout hosting multiple, independent &quot;streams&quot; of UI that can fail, load, and recover separately.
+        A naive solution would be to build everything as one big client-side application with global
+        state. But this quickly becomes fragile: a single error on the right can break the whole
+        tree, including the chat. Another option would be to use multiple iframes or microfrontends,
+        but that adds heavy complexity in communication, SEO, and performance. In practice, what you
+        really want is a single layout hosting multiple, independent &quot;streams&quot; of UI that
+        can fail, load, and recover separately.
       </p>
 
       <p>
-        This is exactly the problem that Next.js parallel routes are designed to solve. They let you render multiple, independent UI segments—called slots—inside one layout, each with its own navigation, loading, and error boundaries. For AIFA, this pattern became the natural foundation to combine a left-side AI chat flow with a right-side content flow, while preserving both resilience and SEO guarantees.
+        This is exactly the problem that Next.js parallel routes are designed to solve. They let you
+        render multiple, independent UI segments—called slots—inside one layout, each with its own
+        navigation, loading, and error boundaries. For AIFA, this pattern became the natural
+        foundation to combine a left-side AI chat flow with a right-side content flow, while
+        preserving both resilience and SEO guarantees.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -246,26 +257,35 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        At first glance, you might think: &quot;I can just put a chat component on the left and a content component on the right, no special routing needed.&quot; Technically this is possible, but it ignores several hard constraints that appear in real-world systems:
+        At first glance, you might think: &quot;I can just put a chat component on the left and a
+        content component on the right, no special routing needed.&quot; Technically this is
+        possible, but it ignores several hard constraints that appear in real-world systems:
       </p>
 
       <ul className="list-disc pl-6 space-y-2">
         <li>
-          <strong>Error isolation</strong>: if the right side throws an error, the left chat must not be unmounted or reset.
+          <strong>Error isolation</strong>: if the right side throws an error, the left chat must
+          not be unmounted or reset.
         </li>
         <li>
-          <strong>Navigation independence</strong>: navigating between pages on the right must not reload or re-initialize the chat.
+          <strong>Navigation independence</strong>: navigating between pages on the right must not
+          reload or re-initialize the chat.
         </li>
         <li>
-          <strong>SEO requirements</strong>: the right slot must be statically rendered HTML, indexable and usable even without JavaScript.
+          <strong>SEO requirements</strong>: the right slot must be statically rendered HTML,
+          indexable and usable even without JavaScript.
         </li>
         <li>
-          <strong>Resource control</strong>: dynamic features like dashboards or admin panels should not load for anonymous users.
+          <strong>Resource control</strong>: dynamic features like dashboards or admin panels should
+          not load for anonymous users.
         </li>
       </ul>
 
       <p>
-        Basic component composition does not give you independent route lifecycles. Nor does it give you separate loading and error states per visual region. To get all of this, you need routing-level primitives that treat slots as first-class citizens. That is exactly what parallel routes bring to the App Router.
+        Basic component composition does not give you independent route lifecycles. Nor does it give
+        you separate loading and error states per visual region. To get all of this, you need
+        routing-level primitives that treat slots as first-class citizens. That is exactly what
+        parallel routes bring to the App Router.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -273,7 +293,11 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        Parallel routing in Next.js is built on the concept of slots. Instead of rendering exactly one page per layout, you define multiple named slots using the <code className="bg-muted px-2 py-1 rounded">@folder</code> convention. Each slot represents an independent UI &quot;channel&quot; that the parent layout receives as a prop. You can then decide where and how to render each slot on the screen.
+        Parallel routing in Next.js is built on the concept of slots. Instead of rendering exactly
+        one page per layout, you define multiple named slots using the{" "}
+        <code className="bg-muted px-2 py-1 rounded">@folder</code> convention. Each slot represents
+        an independent UI &quot;channel&quot; that the parent layout receives as a prop. You can
+        then decide where and how to render each slot on the screen.
       </p>
 
       <CodeBlock
@@ -283,11 +307,18 @@ export function ArticleContent() {
       />
 
       <p className="text-sm text-muted-foreground">
-        In this layout, the <code className="bg-muted px-2 py-1 rounded">left</code>, <code className="bg-muted px-2 py-1 rounded">rightStatic</code>, and <code className="bg-muted px-2 py-1 rounded">rightDynamic</code> slots are passed from the routing layer as independent React nodes. The layout decides their spatial arrangement—but their navigation and error handling are managed separately by the App Router.
+        In this layout, the <code className="bg-muted px-2 py-1 rounded">left</code>,{" "}
+        <code className="bg-muted px-2 py-1 rounded">rightStatic</code>, and{" "}
+        <code className="bg-muted px-2 py-1 rounded">rightDynamic</code> slots are passed from the
+        routing layer as independent React nodes. The layout decides their spatial arrangement—but
+        their navigation and error handling are managed separately by the App Router.
       </p>
 
       <p>
-        This structure is particularly suitable for our scenario: the left slot can host an AI chat flow that persists across navigation, while the right slots can change content independently. When the user clicks on links, only the relevant slot updates. The chat remains mounted, keeping its conversation and internal state intact.
+        This structure is particularly suitable for our scenario: the left slot can host an AI chat
+        flow that persists across navigation, while the right slots can change content
+        independently. When the user clicks on links, only the relevant slot updates. The chat
+        remains mounted, keeping its conversation and internal state intact.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -295,7 +326,11 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        In the first version of the AIFA architecture, the primary goal was not just to have two independent flows. The main challenge was to build a static site that can work even without JavaScript, while still providing dynamic AI-powered experiences. This means the right-hand content had to remain a true static, SEO-first stream, generated at build time and served via CDN, with no JavaScript dependency for core content.
+        In the first version of the AIFA architecture, the primary goal was not just to have two
+        independent flows. The main challenge was to build a static site that can work even without
+        JavaScript, while still providing dynamic AI-powered experiences. This means the right-hand
+        content had to remain a true static, SEO-first stream, generated at build time and served
+        via CDN, with no JavaScript dependency for core content.
       </p>
 
       <CodeBlock
@@ -305,11 +340,19 @@ export function ArticleContent() {
       />
 
       <p className="text-sm text-muted-foreground">
-        Notice that the static layout is a pure server component: no <code className="bg-muted px-2 py-1 rounded">&apos;use client&apos;</code>, no route-level <code className="bg-muted px-2 py-1 rounded">loading.tsx</code>. This ensures the HTML is fully rendered on the server and remains accessible to users and crawlers even if JavaScript is disabled.
+        Notice that the static layout is a pure server component: no{" "}
+        <code className="bg-muted px-2 py-1 rounded">&apos;use client&apos;</code>, no route-level{" "}
+        <code className="bg-muted px-2 py-1 rounded">loading.tsx</code>. This ensures the HTML is
+        fully rendered on the server and remains accessible to users and crawlers even if JavaScript
+        is disabled.
       </p>
 
       <p>
-        All documentation pages, marketing sections, and feature descriptions live inside this slot. They benefit from Static Site Generation, JSON-LD schemas, and well-structured metadata—exactly what you need to dominate search results. Yet, because they are part of a parallel routing setup, they do not own the entire screen; they share it harmoniously with the left AI stream.
+        All documentation pages, marketing sections, and feature descriptions live inside this slot.
+        They benefit from Static Site Generation, JSON-LD schemas, and well-structured
+        metadata—exactly what you need to dominate search results. Yet, because they are part of a
+        parallel routing setup, they do not own the entire screen; they share it harmoniously with
+        the left AI stream.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -317,7 +360,10 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        One of the powerful aspects of parallel routes is that each slot can have its own logic for when and how it appears. AIFA leverages this by making the dynamic right slot conditional on authentication. Anonymous users see only the static content, while authenticated users get an overlay with dynamic tools: admin panels, dashboards, advanced controls.
+        One of the powerful aspects of parallel routes is that each slot can have its own logic for
+        when and how it appears. AIFA leverages this by making the dynamic right slot conditional on
+        authentication. Anonymous users see only the static content, while authenticated users get
+        an overlay with dynamic tools: admin panels, dashboards, advanced controls.
       </p>
 
       <CodeBlock
@@ -333,7 +379,13 @@ export function ArticleContent() {
       />
 
       <p>
-        This pattern ensures that your static content is always available and indexable, while dynamic flows are progressively layered on top. Crucially, if something goes wrong in the dynamic slot—an API error, a rendering bug, or a runtime exception—the static content remains unaffected. Each slot can have its own <code className="bg-muted px-2 py-1 rounded">error.tsx</code> and <code className="bg-muted px-2 py-1 rounded">loading.tsx</code>, giving you fine-grained control over resilience.
+        This pattern ensures that your static content is always available and indexable, while
+        dynamic flows are progressively layered on top. Crucially, if something goes wrong in the
+        dynamic slot—an API error, a rendering bug, or a runtime exception—the static content
+        remains unaffected. Each slot can have its own{" "}
+        <code className="bg-muted px-2 py-1 rounded">error.tsx</code> and{" "}
+        <code className="bg-muted px-2 py-1 rounded">loading.tsx</code>, giving you fine-grained
+        control over resilience.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -341,7 +393,12 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        Now consider the specific goal mentioned in our architecture: building a system that can generate components for the right slot using a chat-bot located in the left slot. The chat interacts with a vector store, receives instructions from the user, and may even trigger creation of UI artifacts that appear on the right. For this to feel natural, the chat must never reset when the right-side content changes. It acts as the &quot;brain&quot; of the experience—constantly thinking, while the right side paints the results.
+        Now consider the specific goal mentioned in our architecture: building a system that can
+        generate components for the right slot using a chat-bot located in the left slot. The chat
+        interacts with a vector store, receives instructions from the user, and may even trigger
+        creation of UI artifacts that appear on the right. For this to feel natural, the chat must
+        never reset when the right-side content changes. It acts as the &quot;brain&quot; of the
+        experience—constantly thinking, while the right side paints the results.
       </p>
 
       <CodeBlock
@@ -351,7 +408,10 @@ export function ArticleContent() {
       />
 
       <p>
-        Parallel routes make this architecture intuitive. The chat occupies its own slot with its own routing subtree. The right slot is free to navigate, reload, and even crash without touching the chat&apos;s React tree. This separation is not a hack—it is a first-class concept in the routing layer, which is exactly what you want when designing for reliability.
+        Parallel routes make this architecture intuitive. The chat occupies its own slot with its
+        own routing subtree. The right slot is free to navigate, reload, and even crash without
+        touching the chat&apos;s React tree. This separation is not a hack—it is a first-class
+        concept in the routing layer, which is exactly what you want when designing for reliability.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -359,7 +419,10 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        On desktop, the idea of two parallel streams is obvious: chat on the left, content on the right. On mobile, however, you cannot afford to permanently show both. Yet, abandoning the pattern entirely on small screens would mean losing the mental model and much of the UX advantages. AIFA solves this with intercepting routes.
+        On desktop, the idea of two parallel streams is obvious: chat on the left, content on the
+        right. On mobile, however, you cannot afford to permanently show both. Yet, abandoning the
+        pattern entirely on small screens would mean losing the mental model and much of the UX
+        advantages. AIFA solves this with intercepting routes.
       </p>
 
       <CodeBlock
@@ -369,7 +432,11 @@ export function ArticleContent() {
       />
 
       <p>
-        Here, opening the chat on mobile doesn&apos;t navigate away from the static page. Instead, the chat appears as a modal drawer managed by an intercepting route. The underlying static slot remains part of the parallel routing graph; it is simply temporarily covered. This keeps the architecture consistent across viewports while adapting the visual representation to constrained screen sizes.
+        Here, opening the chat on mobile doesn&apos;t navigate away from the static page. Instead,
+        the chat appears as a modal drawer managed by an intercepting route. The underlying static
+        slot remains part of the parallel routing graph; it is simply temporarily covered. This
+        keeps the architecture consistent across viewports while adapting the visual representation
+        to constrained screen sizes.
       </p>
 
       <h3 className="text-2xl font-semibold mt-8 mb-4">
@@ -377,11 +444,16 @@ export function ArticleContent() {
       </h3>
 
       <p>
-        Could you build all of this without Next.js parallel routes? Yes—but at a significant cost. You would have to invent your own slot system, manually orchestrate independent React trees, implement custom error and loading boundaries per region, and somehow keep navigation state synchronized. Each of these problems is solvable, but together they become a framework-level concern.
+        Could you build all of this without Next.js parallel routes? Yes—but at a significant cost.
+        You would have to invent your own slot system, manually orchestrate independent React trees,
+        implement custom error and loading boundaries per region, and somehow keep navigation state
+        synchronized. Each of these problems is solvable, but together they become a framework-level
+        concern.
       </p>
 
       <p>
-        Next.js parallel routes give you a ready-made, battle-tested abstraction for these scenarios. They allow you to:
+        Next.js parallel routes give you a ready-made, battle-tested abstraction for these
+        scenarios. They allow you to:
       </p>
 
       <ul className="list-disc pl-6 space-y-2">
@@ -398,12 +470,17 @@ export function ArticleContent() {
       />
 
       <p className="text-sm text-muted-foreground">
-        The page above is just one example of how you can document and expose this pattern in your own product. The real power comes from reusing the same architectural skeleton—left, rightStatic, rightDynamic—across different feature pages, dashboards, and flows.
+        The page above is just one example of how you can document and expose this pattern in your
+        own product. The real power comes from reusing the same architectural skeleton—left,
+        rightStatic, rightDynamic—across different feature pages, dashboards, and flows.
       </p>
 
       <p className="text-lg font-medium mt-8">
-        In other words, parallel routes are not just a routing trick; they are the backbone of a reliable, AI-centric, SEO-friendly architecture. They let you design web applications where independent streams—like an AI chat and a static content flow—coexist, fail, and evolve without dragging each other down.
+        In other words, parallel routes are not just a routing trick; they are the backbone of a
+        reliable, AI-centric, SEO-friendly architecture. They let you design web applications where
+        independent streams—like an AI chat and a static content flow—coexist, fail, and evolve
+        without dragging each other down.
       </p>
     </article>
-  );
+  )
 }

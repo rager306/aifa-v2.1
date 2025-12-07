@@ -1,141 +1,141 @@
 //app/robots.ts
 
-import type { MetadataRoute } from 'next';
-import { appConfig } from '@/config/app-config';
+import type { MetadataRoute } from "next"
+import { appConfig } from "@/config/app-config"
 
-export const dynamic = 'force-static';
-export const revalidate = 86400; // 24 hours
+export const dynamic = "force-static"
+export const revalidate = 86400 // 24 hours
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = appConfig.seo?.canonicalBase ?? appConfig.url;
-  const isDisallowAll = appConfig.seo?.indexing === 'disallow';
+  const baseUrl = appConfig.seo?.canonicalBase ?? appConfig.url
+  const isDisallowAll = appConfig.seo?.indexing === "disallow"
 
   if (isDisallowAll) {
     return {
       rules: {
-        userAgent: '*',
-        disallow: '/',
+        userAgent: "*",
+        disallow: "/",
       },
       sitemap: appConfig.seo?.sitemapUrl,
       host: baseUrl,
-    };
+    }
   }
 
-  const disallowPaths = appConfig.seo?.disallowPaths ?? [];
+  const disallowPaths = appConfig.seo?.disallowPaths ?? []
 
   return {
     rules: [
       {
-        userAgent: 'Googlebot',
-        allow: '/',
+        userAgent: "Googlebot",
+        allow: "/",
         disallow: disallowPaths,
       },
       {
-        userAgent: 'Bingbot',
-        allow: '/',
-        disallow: disallowPaths,
-        crawlDelay: 1,
-      },
-      {
-        userAgent: 'Yandexbot',
-        allow: '/',
+        userAgent: "Bingbot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'AdsBot-Google',
-        allow: '/',
+        userAgent: "Yandexbot",
+        allow: "/",
+        disallow: disallowPaths,
+        crawlDelay: 1,
       },
       {
-        userAgent: 'AdsBot-Google-Mobile',
-        allow: '/',
+        userAgent: "AdsBot-Google",
+        allow: "/",
       },
       {
-        userAgent: 'MJ12bot',
+        userAgent: "AdsBot-Google-Mobile",
+        allow: "/",
+      },
+      {
+        userAgent: "MJ12bot",
         crawlDelay: 2,
       },
       {
-        userAgent: 'DuckDuckBot',
-        allow: '/',
+        userAgent: "DuckDuckBot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'Slurp',
-        allow: '/',
+        userAgent: "Slurp",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'Baiduspider',
-        allow: '/',
+        userAgent: "Baiduspider",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'facebookexternalhit',
-        allow: '/',
+        userAgent: "facebookexternalhit",
+        allow: "/",
       },
       {
-        userAgent: 'Twitterbot',
-        allow: '/',
+        userAgent: "Twitterbot",
+        allow: "/",
       },
       {
-        userAgent: 'LinkedInBot',
-        allow: '/',
+        userAgent: "LinkedInBot",
+        allow: "/",
       },
       {
-        userAgent: 'GPTBot',
-        allow: '/',
+        userAgent: "GPTBot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'CCBot',
-        allow: '/',
+        userAgent: "CCBot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'anthropic-ai',
-        allow: '/',
+        userAgent: "anthropic-ai",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'Claude-Web',
-        allow: '/',
+        userAgent: "Claude-Web",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'PerplexityBot',
-        allow: '/',
+        userAgent: "PerplexityBot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'omgilibot',
-        allow: '/',
+        userAgent: "omgilibot",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: 'omgili',
-        allow: '/',
+        userAgent: "omgili",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
       {
-        userAgent: '*',
-        allow: '/',
+        userAgent: "*",
+        allow: "/",
         disallow: disallowPaths,
         crawlDelay: 1,
       },
     ],
     sitemap: appConfig.seo?.sitemapUrl,
     host: baseUrl,
-  };
+  }
 }
 
 /*

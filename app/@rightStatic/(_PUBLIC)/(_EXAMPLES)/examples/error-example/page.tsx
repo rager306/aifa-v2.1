@@ -1,5 +1,5 @@
 // app/@rightStatic/(_PUBLIC)/error-example/page.tsx
-'use client';
+"use client"
 
 /**
  * Understanding:
@@ -8,21 +8,20 @@
  * - Reuse the same image extraction pattern for consistency with 404/error pages.
  */
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { getErrorIllustration, appConfig } from '@/config/app-config';
+import Image from "next/image"
+import Link from "next/link"
+import { appConfig, getErrorIllustration } from "@/config/app-config"
 
 export default function ErrorExamplePage() {
-  const darkPath = getErrorIllustration('500', 'dark');
-  const lightPath = getErrorIllustration('500', 'light');
+  const darkPath = getErrorIllustration("500", "dark")
+  const lightPath = getErrorIllustration("500", "light")
 
-  const darkSrc =
-    darkPath && typeof darkPath === 'string' && darkPath.length > 0 ? darkPath : null;
+  const darkSrc = darkPath && typeof darkPath === "string" && darkPath.length > 0 ? darkPath : null
   const lightSrc =
-    lightPath && typeof lightPath === 'string' && lightPath.length > 0 ? lightPath : null;
+    lightPath && typeof lightPath === "string" && lightPath.length > 0 ? lightPath : null
 
   const fakeMessage =
-    'This is a FAKE error message for demonstration. When a real error occurs on this page, you will see the actual error details here.';
+    "This is a FAKE error message for demonstration. When a real error occurs on this page, you will see the actual error details here."
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 py-12 text-center">
@@ -58,10 +57,15 @@ export default function ErrorExamplePage() {
         </p>
       </div>
 
-      <div className="max-w-sm space-y-2 rounded-lg bg-muted p-4" aria-live="polite" aria-atomic="true">
+      <div
+        className="max-w-sm space-y-2 rounded-lg bg-muted p-4"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <p className="text-xs font-mono text-muted-foreground">Error Details:</p>
         <p className="text-xs font-mono text-destructive">
-          This is a FAKE error message for demonstration. When a real error occurs on this page, you will see the actual error details here.
+          This is a FAKE error message for demonstration. When a real error occurs on this page, you
+          will see the actual error details here.
         </p>
       </div>
 
@@ -80,5 +84,5 @@ export default function ErrorExamplePage() {
         </a>
       </div>
     </main>
-  );
+  )
 }

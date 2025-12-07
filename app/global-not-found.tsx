@@ -1,37 +1,32 @@
 // app/global-not-found.tsx
-import { SiteHeader } from "@/components/site-header/site-header-wrapper";
-import { Button } from "@/components/ui/button";
-import { appConfig, getErrorIllustration, META_THEME_COLORS } from "@/config/app-config";
-import { LayoutProvider } from "@/hooks/use-layout";
-import { fontVariables } from "@/lib/fonts";
-import { cn } from "@/lib/utils";
-import { ActiveThemeProvider } from "@/providers/active-theme";
-import { ThemeProvider } from "@/providers/theme-provider";
-import { Analytics } from "@vercel/analytics/next";
-import Script from "next/script"; // ✅ ДОБАВЛЕНО: Импорт Script компонента
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import './styles/globals.css'
+
+import { Analytics } from "@vercel/analytics/next"
+import type { Metadata } from "next"
+import Image from "next/image"
+import Link from "next/link"
+import Script from "next/script" // ✅ ДОБАВЛЕНО: Импорт Script компонента
+import { SiteHeader } from "@/components/site-header/site-header-wrapper"
+import { Button } from "@/components/ui/button"
+import { appConfig, getErrorIllustration, META_THEME_COLORS } from "@/config/app-config"
+import { LayoutProvider } from "@/hooks/use-layout"
+import { fontVariables } from "@/lib/fonts"
+import { cn } from "@/lib/utils"
+import { ActiveThemeProvider } from "@/providers/active-theme"
+import { ThemeProvider } from "@/providers/theme-provider"
+import "./styles/globals.css"
 export const metadata: Metadata = {
   title: "Not Found",
   description: "The page you are looking for does not exist.",
-};
-
+}
 
 export default function GlobalNotFoundPage() {
   // Получение путей иллюстраций для ошибки 404
-  const darkPath = getErrorIllustration("404", "dark");
-  const lightPath = getErrorIllustration("404", "light");
+  const darkPath = getErrorIllustration("404", "dark")
+  const lightPath = getErrorIllustration("404", "light")
 
-  const darkSrc =
-    darkPath && typeof darkPath === "string" && darkPath.length > 0
-      ? darkPath
-      : null;
+  const darkSrc = darkPath && typeof darkPath === "string" && darkPath.length > 0 ? darkPath : null
   const lightSrc =
-    lightPath && typeof lightPath === "string" && lightPath.length > 0
-      ? lightPath
-      : null;
+    lightPath && typeof lightPath === "string" && lightPath.length > 0 ? lightPath : null
 
   return (
     <html lang={appConfig.lang} suppressHydrationWarning>
@@ -41,21 +36,12 @@ export default function GlobalNotFoundPage() {
         {/* PWA-related meta tags */}
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta
-          name="apple-mobile-web-app-status-bar-style"
-          content="black-translucent"
-        />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content={appConfig.short_name} />
         <meta name="application-name" content={appConfig.short_name} />
-        <meta
-          name="msapplication-TileColor"
-          content={appConfig.pwa.themeColor}
-        />
+        <meta name="msapplication-TileColor" content={appConfig.pwa.themeColor} />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        <meta
-          name="format-detection"
-          content="telephone=no, date=no, email=no, address=no"
-        />
+        <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         <meta name="theme-color" content={META_THEME_COLORS.light} />
 
         {/* Скрипт для установки темы перед рендерингом */}
@@ -75,16 +61,12 @@ export default function GlobalNotFoundPage() {
         />
 
         {/* ✅ ИСПРАВЛЕНО: Используется компонент Script вместо встроенного скрипта */}
-        <Script
-          src="/register-sw.js"
-          strategy="beforeInteractive"
-          async={false}
-        />
+        <Script src="/register-sw.js" strategy="beforeInteractive" async={false} />
       </head>
       <body
         className={cn(
           "text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] [--header-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]",
-          fontVariables
+          fontVariables,
         )}
       >
         <ThemeProvider>
@@ -121,9 +103,7 @@ export default function GlobalNotFoundPage() {
                     )}
 
                     {/* Error heading */}
-                    <h1 className="text-foreground text-6xl font-bold mb-4">
-                      404
-                    </h1>
+                    <h1 className="text-foreground text-6xl font-bold mb-4">404</h1>
 
                     {/* Error title */}
                     <h2 className="text-foreground text-3xl font-semibold mb-3 text-center">
@@ -132,9 +112,8 @@ export default function GlobalNotFoundPage() {
 
                     {/* Error description */}
                     <p className="text-muted-foreground text-lg text-center mb-8 max-w-md">
-                      Could not find the requested resource. The page you are
-                      looking for might have been removed or is temporarily
-                      unavailable.
+                      Could not find the requested resource. The page you are looking for might have
+                      been removed or is temporarily unavailable.
                     </p>
 
                     {/* Action buttons */}
@@ -143,7 +122,8 @@ export default function GlobalNotFoundPage() {
                         <Link href="/home" className="flex-1">
                           Go to Home
                         </Link>
-                      </Button>Í
+                      </Button>
+                      Í
                     </div>
                   </div>
                 </div>
@@ -155,5 +135,5 @@ export default function GlobalNotFoundPage() {
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

@@ -1,7 +1,6 @@
 //components/github-link.tsx
 import Link from "next/link"
 
-
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { appConfig } from "@/config/app-config"
@@ -14,21 +13,22 @@ export function GitHubLink() {
       variant="ghost"
       className="h-8 text-white/70 shadow-none hover:bg-white/10 hover:text-white"
     >
-      <Link href={appConfig.seo.social?.github || "/"}  aria-label="Visit the GitHub repository of AIFA project" target="_blank" rel="noreferrer">
+      <Link
+        href={appConfig.seo.social?.github || "/"}
+        aria-label="Visit the GitHub repository of AIFA project"
+        target="_blank"
+        rel="noreferrer"
+      >
         <Icons.gitHub />
-        
       </Link>
     </Button>
   )
 }
 
 export async function StarsCount() {
-  const data = await fetch(
-    "https://api.github.com/repos/creativetimofficial/ui",
-    {
-      next: { revalidate: 86400 }, // Cache for 1 day (86400 seconds)
-    }
-  )
+  const data = await fetch("https://api.github.com/repos/creativetimofficial/ui", {
+    next: { revalidate: 86400 }, // Cache for 1 day (86400 seconds)
+  })
   const json = await data.json()
 
   return (

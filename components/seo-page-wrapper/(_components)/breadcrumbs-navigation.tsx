@@ -1,6 +1,7 @@
 //components/seo-page-wrapper/(_components)/breadcrumbs-navigation.tsx
-import React from 'react';
-import Link from 'next/link';
+
+import Link from "next/link"
+import React from "react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,29 +9,29 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from "@/components/ui/breadcrumb"
 
 /**
  * Type definition for breadcrumb item
  */
 export type BreadcrumbItemType = {
-  name: string;
-  path: string;
-};
+  name: string
+  path: string
+}
 
 /**
  * Props for BreadcrumbsNavigation component
  */
 interface BreadcrumbsNavigationProps {
-  items: BreadcrumbItemType[];
+  items: BreadcrumbItemType[]
 }
 
 /**
  * BreadcrumbsNavigation Component
- * 
+ *
  * Displays hierarchical navigation path with shadcn/ui breadcrumb component.
  * Supports dynamic items with proper accessibility and SEO markup.
- * 
+ *
  * @param items - Array of breadcrumb items with name and path
  */
 export function BreadcrumbsNavigation({ items }: BreadcrumbsNavigationProps) {
@@ -46,7 +47,7 @@ export function BreadcrumbsNavigation({ items }: BreadcrumbsNavigationProps) {
                     <BreadcrumbPage>{item.name}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
-                      <Link href={item.path || '/'}>{item.name}</Link>
+                      <Link href={item.path || "/"}>{item.name}</Link>
                     </BreadcrumbLink>
                   )}
                 </BreadcrumbItem>
@@ -57,5 +58,5 @@ export function BreadcrumbsNavigation({ items }: BreadcrumbsNavigationProps) {
         </Breadcrumb>
       </div>
     </div>
-  );
+  )
 }

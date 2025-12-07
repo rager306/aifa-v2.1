@@ -1,12 +1,12 @@
 //app/@rightStatic/(_PUBLIC)/(_FEATURES)/(_components)/features-page-component.tsx
 
-import Link from 'next/link';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { contentData } from '@/config/content-data';
-import type { PageData } from '@/types/page-types';
-import type { MenuCategory } from '@/types/menu-types';
+import { ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { contentData } from "@/config/content-data"
+import type { MenuCategory } from "@/types/menu-types"
+import type { PageData } from "@/types/page-types"
 
 // ============================================================================
 // DATA EXTRACTION FROM CONFIG
@@ -20,31 +20,31 @@ function getFeaturesData() {
   // Check if contentData has categories property or is array directly
   const categories: MenuCategory[] = Array.isArray(contentData)
     ? contentData
-    : contentData.categories || [];
+    : contentData.categories || []
 
   // Find Features section in content data
   const featuresSection = categories.find(
-    (section: MenuCategory) => section.title === 'Features' || section.href === '/features'
-  );
+    (section: MenuCategory) => section.title === "Features" || section.href === "/features",
+  )
 
   if (!featuresSection || !featuresSection.pages) {
-    return [];
+    return []
   }
 
   // Filter only published pages and sort by order
   const publishedPages = featuresSection.pages
     .filter((page: PageData) => page.isPublished === true)
-    .sort((a: PageData, b: PageData) => (a.order || 0) - (b.order || 0));
+    .sort((a: PageData, b: PageData) => (a.order || 0) - (b.order || 0))
 
   // Map to simplified structure for component
   return publishedPages.map((page: PageData) => ({
     id: page.id,
-    href: page.href || '#',
-    title: page.title || 'Untitled',
-    description: page.description || '',
+    href: page.href || "#",
+    title: page.title || "Untitled",
+    description: page.description || "",
     hasBadge: page.hasBadge || false,
     order: page.order || 0,
-  }));
+  }))
 }
 
 // ============================================================================
@@ -52,13 +52,13 @@ function getFeaturesData() {
 // ============================================================================
 
 type FeatureCard = {
-  id: string;
-  href: string;
-  title: string;
-  description: string;
-  hasBadge: boolean;
-  order: number;
-};
+  id: string
+  href: string
+  title: string
+  description: string
+  hasBadge: boolean
+  order: number
+}
 
 // ============================================================================
 // BADGE COMPONENT
@@ -69,7 +69,7 @@ function NewBadge() {
     <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
       Featured
     </span>
-  );
+  )
 }
 
 // ============================================================================
@@ -78,13 +78,13 @@ function NewBadge() {
 
 /**
  * Features Page Component
- * 
+ *
  * Note: Hero, Breadcrumbs, and Badges are handled by SeoPageWrapper
  * This component displays a grid of feature cards dynamically loaded from config
  */
 export default function FeaturesPageComponent() {
   // Get features data from central config
-  const featuresData: FeatureCard[] = getFeaturesData();
+  const featuresData: FeatureCard[] = getFeaturesData()
 
   // Handle empty state
   if (featuresData.length === 0) {
@@ -99,7 +99,7 @@ export default function FeaturesPageComponent() {
           </p>
         </Card>
       </section>
-    );
+    )
   }
 
   return (
@@ -111,7 +111,8 @@ export default function FeaturesPageComponent() {
             All Features
           </h2>
           <p className="text-sm text-muted-foreground">
-            Comprehensive collection of {featuresData.length} advanced features covering routing, SEO, performance, and modern web development patterns.
+            Comprehensive collection of {featuresData.length} advanced features covering routing,
+            SEO, performance, and modern web development patterns.
           </p>
         </div>
 
@@ -124,13 +125,11 @@ export default function FeaturesPageComponent() {
                 <div className="flex items-center gap-4 mb-4">
                   {/* Круг с номером */}
                   <div className="flex-shrink-0 w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center">
-                    <span className="text-xl font-semibold text-foreground">
-                      {index + 1}
-                    </span>
+                    <span className="text-xl font-semibold text-foreground">{index + 1}</span>
                   </div>
 
                   {/* Заголовок и бейдж */}
-                  
+
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <CardTitle className="text-lg font-medium leading-tight">
@@ -157,7 +156,6 @@ export default function FeaturesPageComponent() {
             </Card>
           ))}
         </div>
-
       </section>
 
       {/* CTA Section */}
@@ -165,28 +163,29 @@ export default function FeaturesPageComponent() {
         <Card className="p-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
-              <h3 className="text-lg font-bold text-foreground mb-2">
-                Ready to start building?
-              </h3>
+              <h3 className="text-lg font-bold text-foreground mb-2">Ready to start building?</h3>
               <p className="text-sm text-muted-foreground">
-                Get the AIFA starter template and explore all these features in action with production-ready code.
+                Get the AIFA starter template and explore all these features in action with
+                production-ready code.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <Button asChild>
-                <Link href="https://github.com/aifa-agi/aifa-v2.1" target="_blank" rel="noopener noreferrer">
+                <Link
+                  href="https://github.com/aifa-agi/aifa-v2.1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   Get Starter
                 </Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/">
-                  Back to Home
-                </Link>
+                <Link href="/">Back to Home</Link>
               </Button>
             </div>
           </div>
         </Card>
       </section>
     </>
-  );
+  )
 }
