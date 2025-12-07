@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+knip-report.json
 
 # debug
 npm-debug.log*
