@@ -24,13 +24,13 @@
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
   "labels": ["dependencies", "renovate"],
-  "assignees": ["@bolshiyanov"],
-  "reviewers": ["@bolshiyanov"],
+  "assignees": ["bolshiyanov"],
+  "reviewers": ["bolshiyanov"],
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": ["security", "vulnerability"],
-    "assignees": ["@bolshiyanov"],
-    "reviewers": ["@bolshiyanov"],
+    "assignees": ["bolshiyanov"],
+    "reviewers": ["bolshiyanov"],
     "schedule": ["at any time"],
     "prCreation": "immediate"
   },
@@ -62,7 +62,7 @@
       "matchPackageNames": ["next", "react", "react-dom"],
       "automerge": false,
       "labels": ["dependencies", "critical", "manual-review"],
-      "reviewers": ["@bolshiyanov"],
+      "reviewers": ["bolshiyanov"],
       "schedule": ["before 6am on the first day of the month"]
     },
     {
@@ -70,7 +70,7 @@
       "matchPackagePatterns": ["^@ai-sdk/", "^ai$"],
       "automerge": false,
       "labels": ["dependencies", "ai-sdk", "manual-review"],
-      "reviewers": ["@bolshiyanov"]
+      "reviewers": ["bolshiyanov"]
     },
     {
       "description": "Tailwind CSS - group updates",
@@ -134,14 +134,14 @@
       "matchPackageNames": ["next-pwa"],
       "automerge": false,
       "labels": ["dependencies", "pwa", "manual-review"],
-      "reviewers": ["@bolshiyanov"]
+      "reviewers": ["bolshiyanov"]
     },
     {
       "description": "JWT and security libs - manual review",
       "matchPackageNames": ["jose", "zod"],
       "automerge": false,
       "labels": ["dependencies", "security", "manual-review"],
-      "reviewers": ["@bolshiyanov"]
+      "reviewers": ["bolshiyanov"]
     }
   ],
   "ignoreDeps": [],
