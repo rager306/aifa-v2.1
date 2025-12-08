@@ -45,10 +45,10 @@ export default function GlobalNotFoundPage() {
         <meta name="theme-color" content={META_THEME_COLORS.light} />
 
         {/* Скрипт для установки темы перед рендерингом */}
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization */}
         <Script
           id="theme-init"
           strategy="beforeInteractive"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization
           dangerouslySetInnerHTML={{
             __html: `
               try {

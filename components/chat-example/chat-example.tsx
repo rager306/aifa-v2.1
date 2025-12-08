@@ -3,6 +3,11 @@
 "use client"
 
 import type { UIMessage as AIMessage } from "ai"
+
+interface Source {
+  href: string
+  title?: string
+}
 import { GlobeIcon, MicIcon } from "lucide-react"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
@@ -77,7 +82,7 @@ const ChatExample = () => {
     setInput(e.target.value)
   }
 
-  const submit = (_message: any) => {
+  const submit = (_message: PromptInputMessage) => {
     // TODO: Implement for AI SDK v5
   }
 
@@ -108,7 +113,7 @@ const ChatExample = () => {
     versions: [
       {
         id: msg.id,
-        content: (msg as any).content || "",
+        content: msg.content || "",
       },
     ],
     avatar:
@@ -116,13 +121,13 @@ const ChatExample = () => {
         ? "https://github.com/haydenbleasel.png"
         : "https://github.com/minimax-ai.png",
     name: msg.role === "user" ? "User" : "MiniMax AI",
-    reasoning: (msg as any).reasoning_details
+    reasoning: msg.reasoning_details
       ? {
-          content: (msg as any).reasoning_details,
+          content: msg.reasoning_details,
           duration: 0,
         }
       : undefined,
-    sources: (msg as any).sources,
+    sources: msg.sources,
   }))
 
   return (
@@ -139,7 +144,7 @@ const ChatExample = () => {
                         <Sources>
                           <SourcesTrigger count={message.sources.length} />
                           <SourcesContent>
-                            {message.sources.map((source: any) => (
+                            {message.sources.map((source: Source) => (
                               <Source href={source.href} key={source.href} title={source.title} />
                             ))}
                           </SourcesContent>

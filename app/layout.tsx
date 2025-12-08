@@ -101,10 +101,10 @@ export default async function RootLayout({
         <meta name="theme-color" content={META_THEME_COLORS.light} />
 
         {/* Theme script - must be inline for no-flash */}
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization */}
         <Script
           id="theme-init"
           strategy="beforeInteractive"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -120,18 +120,18 @@ export default async function RootLayout({
         />
 
         {/* JSON-LD schemas for SEO - MOVED TO HEAD with native script tags */}
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas */}
         <Script
           id="jsonld-website"
           type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLdWebSite),
           }}
         />
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas */}
         <Script
           id="jsonld-organization"
           type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLdOrganization),
           }}
