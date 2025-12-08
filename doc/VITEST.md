@@ -20,6 +20,8 @@ Configuration is provided in `vitest.config.ts` with:
 - Coverage threshold set to 80%
 - Multiple reporters (text, JSON, HTML, LCOV)
 
+**Note on Coverage Provider**: The project uses `@vitest/coverage-v8` instead of `c8`. This is the modern, native coverage provider for Vitest that provides better integration and performance compared to the standalone `c8` package. It is the recommended approach in the official Vitest documentation.
+
 ## Running Tests
 
 ### Development Mode (Watch Mode)
@@ -107,16 +109,25 @@ afterEach(() => {
 ```
 
 ### Module Mocking
-Mock entire modules with `vi.mock()`:
+Mock entire modules with `vi.mock()`. For maintainability, use dedicated mock files:
 
 ```typescript
+// Good: Use a dedicated mock file
+vi.mock('@/config/app-config', async () => {
+  const mock = await vi.importActual('./__mocks__/app-config.mock')
+  return {
+    ...mock,
+  }
+})
+
+// Or for inline mocks (use sparingly for simple cases)
 vi.mock('@/config/app-config', () => ({
   appConfig: { /* mock data */ },
   getOgImagePath: () => '/mock-image.jpg',
 }))
 ```
 
-See `lib/__tests__/__mocks__/app-config.mock.ts` for a complete example.
+See `lib/__tests__/__mocks__/app-config.mock.ts` for a complete example. The dedicated mock file provides a single source of truth for test data, avoiding duplication across test files.
 
 ### Partial Mocking
 Mock specific exports:
@@ -124,6 +135,45 @@ Mock specific exports:
 ```typescript
 vi.mocked(functionName).mockImplementation(() => 'mocked')
 ```
+
+### Next.js Module Mocks
+Common Next.js modules are mocked in `lib/__tests__/__mocks__/next.mocks.ts`. Import these mocks in your test files as needed.
+
+Available mocks:
+- **next/navigation**: `useRouter`, `useSearchParams`, `usePathname`, `useParams`, `redirect`, `notFound`
+- **next/headers**: `headers`, `cookies`
+- **next/cookies**: `cookies`
+- **next/image**: Mocked component
+- **next/link**: Mocked component
+- **next/script**: Mocked component
+- **next/server**: `NextResponse`, `NextRequest`
+
+#### Usage Example
+```typescript
+import { mockPush, mockUseRouter } from '@/lib/__tests__/__mocks__/next.mocks'
+
+it('should navigate on click', () => {
+  // Import and use the mocked functions
+  render(<Component />)
+
+  fireEvent.click(screen.getByText('Click me'))
+
+  expect(mockPush).toHaveBeenCalledWith('/expected-path')
+})
+```
+
+#### Resetting Mocks
+To reset all Next.js mocks before each test:
+
+```typescript
+import { setupNextMocks } from '@/lib/__tests__/__mocks__/next.mocks'
+
+beforeEach(() => {
+  setupNextMocks()
+})
+```
+
+**Note**: These mocks return simple objects and can be imported on-demand in test files that require Next.js functionality.
 
 ## Coverage
 

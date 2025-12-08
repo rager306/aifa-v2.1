@@ -8,7 +8,6 @@ import {
 import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
 import { appConfig } from "@/config/app-config"
 import { constructMetadata } from "@/lib/construct-metadata"
-import { CodeBlock } from "../(_components)/code-block"
 import { ArticleContent } from "./(_components)/article-content"
 
 // ============================================================================

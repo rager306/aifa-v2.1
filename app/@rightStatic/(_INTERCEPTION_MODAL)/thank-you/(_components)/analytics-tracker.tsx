@@ -3,11 +3,20 @@
 
 import { useEffect } from "react"
 
+// Define types for analytics libraries
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+    fbq?: (...args: unknown[]) => void
+    dataLayer?: unknown[]
+  }
+}
+
 export function AnalyticsTracker() {
   useEffect(() => {
     // Google Analytics conversion tracking
-    if (typeof window !== "undefined" && (window as any).gtag) {
-      ;(window as any).gtag("event", "conversion", {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "conversion", {
         send_to: "CONVERSION_ID", // Replace with your actual conversion ID
         event_category: "Lead Generation",
         event_label: "Thank You Page View",
@@ -15,13 +24,13 @@ export function AnalyticsTracker() {
     }
 
     // Facebook Pixel tracking
-    if (typeof window !== "undefined" && (window as any).fbq) {
-      ;(window as any).fbq("track", "Lead")
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead")
     }
 
     // Custom analytics event
-    if (typeof window !== "undefined" && (window as any).dataLayer) {
-      ;(window as any).dataLayer.push({
+    if (typeof window !== "undefined" && window.dataLayer) {
+      window.dataLayer.push({
         event: "lead_submitted",
         event_category: "conversion",
         event_action: "thank_you_page_view",

@@ -27,7 +27,9 @@ const setIsAuthenticated = (newValue: boolean) => {
   isAuthenticatedState = newValue
 
   // Notify all subscribed components of state change
-  subscribers.forEach((callback) => callback(isAuthenticatedState))
+  subscribers.forEach((callback) => {
+    callback(isAuthenticatedState)
+  })
 }
 
 /**

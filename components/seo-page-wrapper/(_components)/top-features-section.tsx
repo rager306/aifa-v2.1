@@ -1,5 +1,3 @@
-//components/seo-page-wrapper/(_components)/top-features-section.tsx
-import React from "react"
 import { Card } from "@/components/ui/card"
 
 export type TopFeatureItem = {
@@ -21,7 +19,7 @@ interface TopFeaturesSectionProps {
   show?: boolean
 }
 
-function FeaturePill({ label }: { label: string }) {
+function _FeaturePill({ label }: { label: string }) {
   return (
     <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
       {label}

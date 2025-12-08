@@ -74,12 +74,12 @@ export function LoginForm({ className, onSuccess, ...props }: LoginFormProps) {
         <Field>
           <div className="flex items-center gap-2">
             <FieldLabel htmlFor="password">Password</FieldLabel>
-            <a
-              href="#"
+            <button
+              type="button"
               className="ml-auto inline-block text-sm underline-offset-4 hover:underline truncate max-w-[150px]"
             >
               Forgot your password?
-            </a>
+            </button>
           </div>
           <Input
             id="password"
@@ -108,9 +108,9 @@ export function LoginForm({ className, onSuccess, ...props }: LoginFormProps) {
           </Button>
           <FieldDescription className="text-center">
             Don&apos;t have an account?{" "}
-            <a href="#" className="underline">
+            <button type="button" className="underline">
               Sign up
-            </a>
+            </button>
           </FieldDescription>
         </Field>
       </FieldGroup>

@@ -1,10 +1,10 @@
 //app/@rightStatic/(_INTERCEPTION_MODAL)/thank-you/page.tsx
 
-import { ArrowLeft, CheckCircle, Clock, Users } from "lucide-react"
+import { ArrowLeft, CheckCircle, Clock } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { appConfig, getHomePageIllustration } from "@/config/app-config"
+import { getHomePageIllustration } from "@/config/app-config"
 import { AnalyticsTracker } from "./(_components)/analytics-tracker"
 
 export const dynamic = "force-static"

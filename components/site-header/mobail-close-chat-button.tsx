@@ -2,7 +2,6 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import * as React from "react"
 import { Button } from "@/components/ui/button"
 
 export function MobailCloseChatButton() {

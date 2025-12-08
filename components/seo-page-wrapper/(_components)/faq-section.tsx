@@ -1,5 +1,3 @@
-//components/seo-page-wrapper/(_components)/faq-section.tsx
-import React from "react"
 import { Card } from "@/components/ui/card"
 
 /**

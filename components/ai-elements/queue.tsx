@@ -2,6 +2,7 @@
 
 import { ChevronDownIcon, PaperclipIcon } from "lucide-react"
 import type { ComponentProps } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -128,11 +129,12 @@ export const QueueItemAttachment = ({ className, ...props }: QueueItemAttachment
 export type QueueItemImageProps = ComponentProps<"img">
 
 export const QueueItemImage = ({ className, ...props }: QueueItemImageProps) => (
-  <img
+  <Image
     alt=""
     className={cn("h-8 w-8 rounded border object-cover", className)}
     height={32}
     width={32}
+    unoptimized
     {...props}
   />
 )

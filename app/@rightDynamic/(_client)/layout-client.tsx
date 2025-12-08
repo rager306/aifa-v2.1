@@ -12,8 +12,8 @@ interface RightDynamicLayoutClientProps {
 
 export function RightDynamicLayoutClient({ children, initialAuth }: RightDynamicLayoutClientProps) {
   const { isAuthenticated } = useAuth()
-  const router = useRouter()
-  const pathname = usePathname()
+  const _router = useRouter()
+  const _pathname = usePathname()
 
   // Initialize auth state from server
   useEffect(() => {
@@ -25,14 +25,11 @@ export function RightDynamicLayoutClient({ children, initialAuth }: RightDynamic
   }
 
   return (
-    <>
-      <div
-        className="absolute inset-0 z-50 bg-background overflow-y-auto hide-scrollbar"
-        role="main"
-        aria-label="Dynamic admin content"
-      >
-        {children}
-      </div>
-    </>
+    <main
+      className="absolute inset-0 z-50 bg-background overflow-y-auto hide-scrollbar"
+      aria-label="Dynamic admin content"
+    >
+      {children}
+    </main>
   )
 }

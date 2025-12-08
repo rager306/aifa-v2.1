@@ -454,12 +454,10 @@ export function generateMultipleSEOScripts(schemas: JsonLdBase[]): string[] {
 
 export function validateSchema(schema: JsonLdBase): boolean {
   if (!schema["@context"] || schema["@context"] !== "https://schema.org") {
-    console.error("Invalid schema: missing or incorrect @context")
     return false
   }
 
   if (!schema["@type"]) {
-    console.error("Invalid schema: missing @type")
     return false
   }
 

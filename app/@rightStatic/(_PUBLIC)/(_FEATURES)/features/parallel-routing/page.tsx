@@ -192,7 +192,7 @@ const PAGE_CONFIG: PageWrapperConfig = {
  * PAGE COMPONENT
  * ============================================ */
 export default function ParallelRoutingPage() {
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs!)
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs)
   const faqJsonLd = buildFaqJsonLd(PAGE_CONFIG.faqs ?? [])
 
   return (

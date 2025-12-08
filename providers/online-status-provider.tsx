@@ -8,5 +8,5 @@ import { useOnlineStatus } from "@/hooks/use-online-status"
 
 export function OnlineStatusProvider({ children }: { children: React.ReactNode }) {
   const isOnline = useOnlineStatus()
-  return isOnline ? <>{children}</> : <OfflinePlaceholder />
+  return isOnline ? children : <OfflinePlaceholder />
 }

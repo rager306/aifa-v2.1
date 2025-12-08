@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       message: "Your request has been sent successfully. We will contact you shortly.",
       mock: true,
     })
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json(
       {
         success: false,
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Handle CORS preflight requests
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS(_request: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {

@@ -19,7 +19,7 @@ import { redirect } from "next/navigation"
  * @param formData - Form data containing email and password
  * @returns Object with success status and message
  */
-export async function loginAction(prevState: any, formData: FormData) {
+export async function loginAction(_prevState: unknown, formData: FormData) {
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 

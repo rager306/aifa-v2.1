@@ -13,9 +13,7 @@ interface ErrorProps {
 }
 
 export default function Error({ error, reset }: ErrorProps) {
-  useEffect(() => {
-    console.error("[Error Boundary]", error.message, error.digest)
-  }, [error])
+  useEffect(() => {}, [])
 
   const isDark =
     typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches
@@ -54,6 +52,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
       <div className="flex flex-col gap-3 sm:flex-row">
         <button
+          type="button"
           onClick={() => reset()}
           className="rounded-lg bg-primary px-6 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >

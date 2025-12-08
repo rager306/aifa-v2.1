@@ -2,7 +2,6 @@
 
 "use client"
 
-import { useChat } from "@ai-sdk/react"
 import type { UIMessage as AIMessage } from "ai"
 import { GlobeIcon, MicIcon } from "lucide-react"
 import { useCallback, useState } from "react"
@@ -78,7 +77,7 @@ const ChatExample = () => {
     setInput(e.target.value)
   }
 
-  const submit = (message: any) => {
+  const submit = (_message: any) => {
     // TODO: Implement for AI SDK v5
   }
 
@@ -99,12 +98,9 @@ const ChatExample = () => {
     submit(message)
   }
 
-  const handleSuggestionClick = useCallback(
-    (suggestion: string) => {
-      submit({ text: suggestion, files: [] })
-    },
-    [submit],
-  )
+  const handleSuggestionClick = useCallback((suggestion: string) => {
+    submit({ text: suggestion, files: [] })
+  }, [])
 
   const displayMessages = messages.map((msg: AIMessage) => ({
     key: msg.id,

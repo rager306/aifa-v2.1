@@ -20,7 +20,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
   const [isInstalled, setIsInstalled] = useState(false)
   const [showBadge, setShowBadge] = useState(false)
   const [isIOS, setIsIOS] = useState(false)
-  const [isAndroid, setIsAndroid] = useState(false)
+  const [_isAndroid, setIsAndroid] = useState(false)
   const [primaryColor, setPrimaryColor] = useState("#3b82f6")
 
   useEffect(() => {
@@ -113,9 +113,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
       }
 
       setDeferredPrompt(null)
-    } catch (error) {
-      console.error("[PWA] Installation failed:", error)
-    }
+    } catch (_error) {}
   }
 
   const handleDismiss = () => {
@@ -155,7 +153,6 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
             color: "white",
             boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
           }}
-          role="button"
           aria-label="Install app"
           title="Install app"
         >

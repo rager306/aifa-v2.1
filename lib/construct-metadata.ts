@@ -122,7 +122,7 @@ const normalizePath = (p?: string): string => {
 
 const truncateDescription = (desc: string, maxLength: number = MAX_DESCRIPTION_LENGTH): string => {
   if (desc.length <= maxLength) return desc
-  return desc.substring(0, maxLength - 3) + "..."
+  return `${desc.substring(0, maxLength - 3)}...`
 }
 
 const normalizeOpenGraphType = (contentType: ContentType): OpenGraphType => {

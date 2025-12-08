@@ -1,7 +1,5 @@
 //components/seo-page-wrapper/(_components)/tech-badges.tsx
 
-import React from "react"
-
 /**
  * Type definition for badge item
  */

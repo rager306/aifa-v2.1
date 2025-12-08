@@ -2,7 +2,6 @@
 "use client"
 
 import { WifiOff } from "lucide-react"
-import React from "react"
 import { getOfflineTranslation } from "./offline-translation"
 
 export function OfflinePlaceholder() {

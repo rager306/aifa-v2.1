@@ -20,7 +20,7 @@ export default function ErrorExamplePage() {
   const lightSrc =
     lightPath && typeof lightPath === "string" && lightPath.length > 0 ? lightPath : null
 
-  const fakeMessage =
+  const _fakeMessage =
     "This is a FAKE error message for demonstration. When a real error occurs on this page, you will see the actual error details here."
 
   return (

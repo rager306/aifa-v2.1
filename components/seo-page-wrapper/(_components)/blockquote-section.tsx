@@ -15,7 +15,7 @@ interface BlockquoteProps {
 export function BlockquoteSection({ config, show = true }: BlockquoteProps) {
   const { text } = config
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
-  const [isAnimating, setIsAnimating] = useState(false)
+  const [_isAnimating, setIsAnimating] = useState(false)
 
   // ✅ Правильная типизация useRef
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -36,7 +36,7 @@ export function BlockquoteSection({ config, show = true }: BlockquoteProps) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show, text])
+  }, [show, text, startAnimation])
 
   const startAnimation = () => {
     setIsAnimating(true)

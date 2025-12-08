@@ -1,17 +1,13 @@
 // app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/dynamic-generation/page.tsx
 
-import { CheckCircle2Icon, Sparkles } from "lucide-react"
 import type { Metadata } from "next"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import {
   type PageWrapperConfig,
   SeoPageWrapper,
 } from "@/components/seo-page-wrapper/seo-page-wrapper"
 import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { appConfig } from "@/config/app-config"
 import { constructMetadata } from "@/lib/construct-metadata"
-import { CodeBlock } from "../(_components)/code-block"
 import { ArticleContent } from "./(_components)/article-content"
 
 /* ============================================
@@ -194,7 +190,7 @@ const PAGE_CONFIG: PageWrapperConfig = {
  * PAGE COMPONENT
  * ============================================ */
 export default function DynamicGenerationPage() {
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs!)
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(PAGE_CONFIG.breadcrumbs)
   const faqJsonLd = buildFaqJsonLd(PAGE_CONFIG.faqs ?? [])
 
   return (

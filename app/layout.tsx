@@ -5,7 +5,6 @@ import { constructMetadata } from "@/lib/construct-metadata"
 import { fontVariables } from "@/lib/fonts"
 import "./styles/globals.css"
 import { GoogleAnalytics } from "@next/third-parties/google"
-import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from "sonner"
 import AifaFooter from "@/components/aifa-footer"
@@ -169,9 +168,8 @@ export default async function RootLayout({
 
         {/* No JavaScript fallback message */}
         <noscript>
-          <div
+          <section
             className="fixed inset-x-0 bottom-0 z-50 w-full bg-neutral-900 text-white border-t border-white/20 shadow-[0_-8px_24px_rgba(0,0,0,0.25)]"
-            role="region"
             aria-label="JavaScript disabled notice"
           >
             <div className="mx-auto max-w-7xl px-4 py-4 md:px-6">
@@ -195,14 +193,14 @@ export default async function RootLayout({
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </noscript>
 
         <CookieBanner />
         {process.env.NODE_ENV === "development" && <TailwindIndicator />}
         <Toaster position="top-center" />
-        {process.env.NODE_ENV === "production" && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} />
+        {process.env.NODE_ENV === "production" && process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         )}
         <SpeedInsights />
       </body>
