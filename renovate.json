@@ -1,0 +1,174 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":enablePreCommit",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 6am on Monday"],
+  "prConcurrentLimit": 10,
+  "prCreation": "not-pending",
+  "prHourlyLimit": 0,
+  "rebaseWhen": "behind-base-branch",
+  "automerge": false,
+  "platformAutomerge": false,
+  "rangeStrategy": "bump",
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
+  "labels": ["dependencies", "renovate"],
+  "assignees": ["@bolshiyanov"],
+  "reviewers": ["@bolshiyanov"],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security", "vulnerability"],
+    "assignees": ["@bolshiyanov"],
+    "reviewers": ["@bolshiyanov"],
+    "schedule": ["at any time"],
+    "prCreation": "immediate"
+  },
+  "packageRules": [
+    {
+      "description": "Automerge patch updates with passing CI",
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "ignoreTests": false,
+      "labels": ["dependencies", "automerge", "patch"]
+    },
+    {
+      "description": "Group all minor updates",
+      "matchUpdateTypes": ["minor"],
+      "groupName": "minor dependencies",
+      "labels": ["dependencies", "minor"]
+    },
+    {
+      "description": "Group all major updates",
+      "matchUpdateTypes": ["major"],
+      "groupName": "major dependencies",
+      "labels": ["dependencies", "major"],
+      "schedule": ["before 6am on the first day of the month"]
+    },
+    {
+      "description": "Next.js and React - manual review required",
+      "matchPackageNames": ["next", "react", "react-dom"],
+      "automerge": false,
+      "labels": ["dependencies", "critical", "manual-review"],
+      "reviewers": ["@bolshiyanov"],
+      "schedule": ["before 6am on the first day of the month"]
+    },
+    {
+      "description": "AI SDK packages - manual review",
+      "matchPackagePatterns": ["^@ai-sdk/", "^ai$"],
+      "automerge": false,
+      "labels": ["dependencies", "ai-sdk", "manual-review"],
+      "reviewers": ["@bolshiyanov"]
+    },
+    {
+      "description": "Tailwind CSS - group updates",
+      "matchPackagePatterns": ["^tailwind", "^@tailwindcss/"],
+      "groupName": "Tailwind CSS",
+      "labels": ["dependencies", "tailwind"]
+    },
+    {
+      "description": "Radix UI - group all updates",
+      "matchPackagePatterns": ["^@radix-ui/"],
+      "groupName": "Radix UI",
+      "labels": ["dependencies", "radix-ui"]
+    },
+    {
+      "description": "Vercel packages - group updates",
+      "matchPackagePatterns": ["^@vercel/"],
+      "groupName": "Vercel packages",
+      "labels": ["dependencies", "vercel"]
+    },
+    {
+      "description": "Testing tools - group updates",
+      "matchPackageNames": [
+        "vitest",
+        "@vitest/ui",
+        "@vitest/coverage-v8",
+        "@playwright/test"
+      ],
+      "groupName": "Testing tools",
+      "labels": ["dependencies", "testing"]
+    },
+    {
+      "description": "Linting and formatting - group updates",
+      "matchPackageNames": [
+        "@biomejs/biome",
+        "eslint",
+        "eslint-config-next",
+        "@eslint/eslintrc",
+        "knip",
+        "lefthook",
+        "lint-staged"
+      ],
+      "groupName": "Linting and formatting",
+      "labels": ["dependencies", "tooling"]
+    },
+    {
+      "description": "Security tools - immediate updates",
+      "matchPackageNames": ["snyk"],
+      "schedule": ["at any time"],
+      "automerge": true,
+      "labels": ["dependencies", "security"]
+    },
+    {
+      "description": "TypeScript types - monthly updates",
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "TypeScript types",
+      "schedule": ["before 6am on the first day of the month"],
+      "labels": ["dependencies", "types"]
+    },
+    {
+      "description": "PWA packages - manual review",
+      "matchPackageNames": ["next-pwa"],
+      "automerge": false,
+      "labels": ["dependencies", "pwa", "manual-review"],
+      "reviewers": ["@bolshiyanov"]
+    },
+    {
+      "description": "JWT and security libs - manual review",
+      "matchPackageNames": ["jose", "zod"],
+      "automerge": false,
+      "labels": ["dependencies", "security", "manual-review"],
+      "reviewers": ["@bolshiyanov"]
+    }
+  ],
+  "ignoreDeps": [],
+  "ignorePresets": [],
+  "postUpdateOptions": ["pnpmDedupe"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on the first day of the month"],
+    "automerge": true,
+    "automergeType": "pr",
+    "commitMessageAction": "Lock file maintenance"
+  },
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "🤖 Renovate Dependency Dashboard",
+  "dependencyDashboardHeader": "This dashboard provides an overview of all pending dependency updates. Click on a PR to review and merge.",
+  "dependencyDashboardFooter": "Managed by Renovate Bot. Questions? Check [doc/RENOVATE.md](doc/RENOVATE.md)",
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}",
+  "prBodyColumns": [
+    "Package",
+    "Type",
+    "Update",
+    "Change",
+    "Pending"
+  ],
+  "prBodyNotes": [
+    "⚠️ **Before merging**: Ensure all CI checks pass (security.yml, future CI/CD from Phase 10)",
+    "📚 **Documentation**: See [doc/RENOVATE.md](doc/RENOVATE.md) for troubleshooting",
+    "🔒 **Security**: Vulnerability alerts are created immediately with `security` label"
+  ]
+}
