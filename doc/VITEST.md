@@ -328,10 +328,22 @@ Lefthook настроен для запуска тестов перед комм
 Конфигурация в `lefthook.yml`:
 ```yaml
 pre-commit:
+  parallel: true
   commands:
+    # 1. Biome: форматирование и линтинг измененных файлов
+    biome:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: npx biome check --write --changed --no-errors-on-unmatched
+      stage_fixed: true
+
+    # 2. lint-staged: ESLint, Vitest, knip на измененных файлах
     lint-staged:
       run: npx lint-staged
 ```
+
+**Разделение обязанностей:**
+- `biome` запускается отдельной командой Lefthook с опцией `--changed` для быстрого форматирования и базового линтинга
+- `lint-staged` уже внутри себя вызывает Vitest (через `vitest related`), ESLint и knip на изменённых файлах
 
 Тесты запускаются только для измененных файлов через `vitest related`.
 

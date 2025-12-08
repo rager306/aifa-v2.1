@@ -102,21 +102,39 @@ Contains:
     sarif_file: semgrep.sarif
 ```
 
-### Pre-commit Hook (Lefthook)
+### Pre-push Hook (Lefthook)
 
 Semgrep интегрирован в pre-push хук (не pre-commit для скорости):
 
 ```yaml
 # lefthook.yml
 pre-push:
+  parallel: true
   commands:
+    # 1. Snyk: сканирование зависимостей на уязвимости
+    snyk:
+      run: npm run snyk:test
+      skip:
+        - merge
+        - rebase
+
+    # 2. Semgrep: SAST-анализ кода (AI, Auth, API)
     semgrep:
       run: npm run semgrep
+      skip:
+        - merge
+        - rebase
 ```
+
+В pre-push хук входят оба сканера — **Snyk** и **Semgrep** — для комплексной безопасности:
+- **Snyk** сканирует зависимости на известные уязвимости (CVE)
+- **Semgrep** анализирует код на потенциальные проблемы безопасности
+
+Semgrep остаётся фокусом этого документа, но работает в связке с Snyk для полной защиты.
 
 Для локальной проверки перед коммитом:
 ```bash
-npm run lefthook:run:pre-push
+pnpm run lefthook:run:pre-push
 ```
 
 ## False Positives

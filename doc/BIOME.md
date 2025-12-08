@@ -193,10 +193,23 @@ npx biome lint --formatter-enabled=false --write=false --output-format=json
 ```
 
 ### Интеграция с pre-commit
-```bash
-# .husky/pre-commit
-npx biome check --changed
-npm run lint
+
+Проект использует [Lefthook](https://github.com/evilmartians/lefthook) для управления Git hooks. См. `doc/LEFTHOOK.md` для детальной информации.
+
+Конфигурация в `lefthook.yml`:
+```yaml
+pre-commit:
+  parallel: true
+  commands:
+    # 1. Biome: форматирование и линтинг
+    biome:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: npx biome check --write --changed --no-errors-on-unmatched
+      stage_fixed: true
+
+    # 2. lint-staged: ESLint, Vitest, knip
+    lint-staged:
+      run: npx lint-staged
 ```
 
 ## Статистика проекта

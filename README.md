@@ -314,18 +314,18 @@ git push origin feature/amazing-feature
 Проект использует [Lefthook](https://github.com/evilmartians/lefthook) для автоматизации проверок качества кода.
 
 ### Автоматическая установка
-Хуки устанавливаются автоматически при `npm install`.
+Хуки устанавливаются автоматически при `pnpm install`.
 
 ### Ручное управление
 ```bash
 # Установить хуки
-npm run lefthook:install
+pnpm run lefthook:install
 
 # Удалить хуки
-npm run lefthook:uninstall
+pnpm run lefthook:uninstall
 
 # Запустить pre-commit вручную
-npm run lefthook:run:pre-commit
+pnpm run lefthook:run:pre-commit
 
 # Пропустить хуки (emergency)
 LEFTHOOK=0 git commit -m "WIP"

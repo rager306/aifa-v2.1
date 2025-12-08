@@ -49,8 +49,7 @@
     "lefthook:install": "lefthook install",
     "lefthook:uninstall": "lefthook uninstall",
     "lefthook:run:pre-commit": "lefthook run pre-commit",
-    "lefthook:run:pre-push": "lefthook run pre-push",
-    "lefthook:skip": "LEFTHOOK=0"
+    "lefthook:run:pre-push": "lefthook run pre-push"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
