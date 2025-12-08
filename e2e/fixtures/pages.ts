@@ -44,14 +44,14 @@ export class ParallelRoutes {
   constructor(private page: Page) {}
 
   async getLeftSlot() {
-    return this.page.locator('[class*="md:flex"][class*="lg:w-[50%]"]');
+    return this.page.getByTestId('left-slot');
   }
 
   async getRightStaticSlot() {
-    return this.page.locator('main');
+    return this.page.getByTestId('main-content');
   }
 
   async getRightDynamicSlot() {
-    return this.page.locator('[class*="absolute"][class*="inset-0"]');
+    return this.page.getByTestId('rightDynamic-slot');
   }
 }

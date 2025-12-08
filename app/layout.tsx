@@ -152,17 +152,17 @@ export default async function RootLayout({
 
                   <div className="flex-1 min-h-0 w-full">
                     <div className="h-full flex">
-                      <div className="hidden md:flex md:w-0 lg:w-[50%] xl:w-[35%] border-r border-border">
+                      <div className="hidden md:flex md:w-0 lg:w-[50%] xl:w-[35%] border-r border-border" data-testid="left-slot">
                         <OnlineStatusProvider>
                           <div className="h-full w-full overflow-hidden">{left}</div>
                         </OnlineStatusProvider>
                       </div>
 
-                      <div className="w-full md:w-full lg:w-[50%] xl:w-[65%] relative">
-                        <main className="absolute inset-0 overflow-y-auto hide-scrollbar">
+                      <div className="w-full md:w-full lg:w-[50%] xl:w-[65%] relative" data-testid="rightStatic-slot">
+                        <main className="absolute inset-0 overflow-y-auto hide-scrollbar" data-testid="main-content">
                           {rightStatic}
                         </main>
-                        {rightDynamic}
+                        <div data-testid="rightDynamic-slot">{rightDynamic}</div>
                       </div>
                     </div>
                   </div>

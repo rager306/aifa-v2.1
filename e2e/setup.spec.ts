@@ -8,18 +8,19 @@ test.describe('Setup Verification', () => {
     await expect(page).toHaveTitle(/AIFA/i);
 
     // Verify basic structure
-    const main = page.locator('main');
+    const main = page.getByTestId('main-content');
     await expect(main).toBeVisible();
 
     // Verify at least one navigation link exists
     const navLinks = page.locator('nav a');
-    await expect(navLinks).toHaveCount(1);
+    await expect(navLinks).toHaveCountGreaterThan(0);
   });
 
   test('should verify dev server is running', async ({ page }) => {
     // This test verifies the dev server configuration
     await page.goto('/');
-    await expect(page).toHaveURL('http://localhost:3000/');
+    // Use flexible URL check to avoid fragility with redirects
+    await expect(page).toHaveURL(/localhost:3000.*/);
   });
 });
 

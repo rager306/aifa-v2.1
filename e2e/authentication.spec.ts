@@ -13,11 +13,11 @@ test.describe('Authentication Flow', () => {
     await expect(page).toHaveURL('/chat', { timeout: 5000 });
 
     // @rightDynamic overlay should appear (authenticated state)
-    const rightDynamicSlot = page.locator('[class*="absolute"][class*="inset-0"]');
+    const rightDynamicSlot = page.getByTestId('rightDynamic-slot');
     await expect(rightDynamicSlot).toBeVisible();
 
     // Chat should be visible in @left slot
-    const leftSlot = page.locator('[class*="md:flex"]');
+    const leftSlot = page.getByTestId('left-slot');
     await expect(leftSlot).toContainText(/Chat|Message/i);
   });
 
@@ -33,11 +33,11 @@ test.describe('Authentication Flow', () => {
     await page.click('button:has-text("Logout")');
 
     // @rightDynamic overlay should disappear
-    const rightDynamicSlot = page.locator('[class*="absolute"][class*="inset-0"]');
+    const rightDynamicSlot = page.getByTestId('rightDynamic-slot');
     await expect(rightDynamicSlot).toBeHidden();
 
     // Should show @rightStatic content
-    const rightStaticSlot = page.locator('main');
+    const rightStaticSlot = page.getByTestId('main-content');
     await expect(rightStaticSlot).toBeVisible();
   });
 });
