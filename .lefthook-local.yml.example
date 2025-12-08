@@ -1,0 +1,16 @@
+# .lefthook-local.yml.example
+# Copy to .lefthook-local.yml and customize
+
+# Example: Skip slow commands locally
+pre-push:
+  commands:
+    snyk:
+      skip: true  # Skip Snyk locally, run in CI only
+    semgrep:
+      skip: false  # Keep Semgrep
+
+# Example: Add custom local commands
+pre-commit:
+  commands:
+    custom-lint:
+      run: echo "Running custom checks..."

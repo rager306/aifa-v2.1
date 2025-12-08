@@ -104,11 +104,19 @@ Contains:
 
 ### Pre-commit Hook (Lefthook)
 
+Semgrep интегрирован в pre-push хук (не pre-commit для скорости):
+
 ```yaml
-pre-commit:
+# lefthook.yml
+pre-push:
   commands:
     semgrep:
-      run: npm run semgrep:ai && npm run semgrep:auth
+      run: npm run semgrep
+```
+
+Для локальной проверки перед коммитом:
+```bash
+npm run lefthook:run:pre-push
 ```
 
 ## False Positives

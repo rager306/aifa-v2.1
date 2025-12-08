@@ -1,0 +1,46 @@
+# Lefthook Configuration for AIFA v2.1
+# Docs: https://github.com/evilmartians/lefthook
+
+# Pre-commit: Fast checks on staged files only
+pre-commit:
+  parallel: true  # Run commands in parallel for speed
+  commands:
+    # 1. Format & Lint with Biome (fastest, ~50ms)
+    biome:
+      glob: "*.{ts,tsx,js,jsx,json}"
+      run: npx biome check --write --changed --no-errors-on-unmatched
+      stage_fixed: true  # Auto-stage fixed files
+
+    # 2. Lint staged files with lint-staged
+    lint-staged:
+      run: npx lint-staged
+
+# Pre-push: Security & comprehensive checks
+pre-push:
+  parallel: true
+  commands:
+    # 1. Snyk vulnerability scan (medium+ severity)
+    snyk:
+      run: npm run snyk:test
+      skip:
+        - merge
+        - rebase
+
+    # 2. Semgrep security scan (AI, Auth, API)
+    semgrep:
+      run: npm run semgrep
+      skip:
+        - merge
+        - rebase
+
+    # 3. Type check (optional, can be slow)
+    # typecheck:
+    #   run: npx tsc --noEmit
+    #   skip:
+    #     - merge
+    #     - rebase
+
+# Skip hooks for specific scenarios
+skip_output:
+  - meta  # Hide meta info for cleaner output
+  - summary  # Hide summary for faster feedback

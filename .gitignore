@@ -44,3 +44,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Lefthook
+.lefthook/
+.lefthook-local.yml
+
+# lint-staged
+.lintstagedrc*

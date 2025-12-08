@@ -322,14 +322,18 @@ test:
 ```
 
 ### Local Pre-commit Hooks
-Consider using Lefthook to run tests before commits:
+
+Lefthook настроен для запуска тестов перед коммитом. См. `doc/LEFTHOOK.md` для деталей.
+
+Конфигурация в `lefthook.yml`:
 ```yaml
 pre-commit:
   commands:
-    test:
-      glob: "*.{ts,tsx}"
-      run: npm run test:run
+    lint-staged:
+      run: npx lint-staged
 ```
+
+Тесты запускаются только для измененных файлов через `vitest related`.
 
 ## Additional Resources
 
