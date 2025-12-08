@@ -1,0 +1,11 @@
+# Playwright
+/playwright-report/
+/playwright/.cache/
+/test-results/
+
+# Test artifacts
+*.png
+*.jpg
+*.mp4
+*.webm
+trace.zip
