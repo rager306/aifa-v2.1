@@ -1,5 +1,6 @@
 // app/layout.tsx
 import type { Metadata, Viewport } from "next"
+import Script from "next/script"
 import { appConfig, META_THEME_COLORS } from "@/config/app-config"
 import { constructMetadata } from "@/lib/construct-metadata"
 import { fontVariables } from "@/lib/fonts"
@@ -100,7 +101,10 @@ export default async function RootLayout({
         <meta name="theme-color" content={META_THEME_COLORS.light} />
 
         {/* Theme script - must be inline for no-flash */}
-        <script
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization */}
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -116,13 +120,17 @@ export default async function RootLayout({
         />
 
         {/* JSON-LD schemas for SEO - MOVED TO HEAD with native script tags */}
-        <script
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas */}
+        <Script
+          id="jsonld-website"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLdWebSite),
           }}
         />
-        <script
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas */}
+        <Script
+          id="jsonld-organization"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(jsonLdOrganization),

@@ -137,6 +137,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
       {/* Badge - Non-intrusive trigger button */}
       {showBadge && !showPrompt && (
         <button
+          type="button"
           onClick={handleBadgeClick}
           className={`
             fixed bottom-10 right-6 z-40
@@ -225,6 +226,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
               {/* Actions */}
               <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800 flex gap-3">
                 <button
+                  type="button"
                   onClick={handleDismiss}
                   className={`
                     flex-1 px-4 py-2 rounded-md font-medium transition-colors
@@ -238,6 +240,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
                   Not now
                 </button>
                 <button
+                  type="button"
                   onClick={isIOS ? handleIOSInstall : handleInstall}
                   className={`
                     flex-1 px-4 py-2 rounded-md font-medium transition-all
@@ -257,6 +260,7 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
 
               {/* Close Button */}
               <button
+                type="button"
                 onClick={handleDismiss}
                 className={`
                   absolute top-3 right-3
