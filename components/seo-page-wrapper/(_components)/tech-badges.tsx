@@ -55,8 +55,8 @@ export function TechBadges({ badges, show = true }: TechBadgesProps) {
 
   return (
     <div className="flex justify-center flex-wrap gap-2 px-4 mb-8 max-h-[4rem] overflow-hidden">
-      {badges.map((badge, index) => (
-        <Badge key={index} text={badge.text} />
+      {badges.map((badge) => (
+        <Badge key={badge.text} text={badge.text} />
       ))}
     </div>
   )

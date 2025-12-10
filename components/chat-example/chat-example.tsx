@@ -3,12 +3,6 @@
 "use client"
 
 import type { UIMessage as AIMessage } from "ai"
-
-interface Source {
-  href: string
-  title?: string
-}
-
 import { GlobeIcon, MicIcon } from "lucide-react"
 import { useCallback, useState } from "react"
 import { toast } from "sonner"
@@ -50,7 +44,7 @@ import {
 } from "@/components/ai-elements/prompt-input"
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning"
 import { Response } from "@/components/ai-elements/response"
-import { Source, Sources, SourcesContent, SourcesTrigger } from "@/components/ai-elements/sources"
+import { Source, type SourceProps, Sources, SourcesContent, SourcesTrigger } from "@/components/ai-elements/sources"
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
 
 const models = [
@@ -83,9 +77,9 @@ const ChatExample = () => {
     setInput(e.target.value)
   }
 
-  const submit = (_message: PromptInputMessage) => {
+  const submit = useCallback((_message: PromptInputMessage) => {
     // TODO: Implement for AI SDK v5
-  }
+  }, [])
 
   const handleFormSubmit = (message: PromptInputMessage) => {
     const hasText = Boolean(message.text)
@@ -104,32 +98,47 @@ const ChatExample = () => {
     submit(message)
   }
 
-  const handleSuggestionClick = useCallback((suggestion: string) => {
-    submit({ text: suggestion, files: [] })
-  }, [])
+  const handleSuggestionClick = useCallback(
+    (suggestion: string) => {
+      submit({ text: suggestion, files: [] })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- submit is a stable function from useChat hook but changes reference on every render by design
+    [submit],
+  )
 
-  const displayMessages = messages.map((msg: AIMessage) => ({
-    key: msg.id,
-    from: msg.role === "user" ? ("user" as const) : ("assistant" as const),
-    versions: [
-      {
-        id: msg.id,
-        content: msg.content || "",
-      },
-    ],
-    avatar:
-      msg.role === "user"
-        ? "https://github.com/haydenbleasel.png"
-        : "https://github.com/minimax-ai.png",
-    name: msg.role === "user" ? "User" : "MiniMax AI",
-    reasoning: msg.reasoning_details
-      ? {
-          content: msg.reasoning_details,
-          duration: 0,
-        }
-      : undefined,
-    sources: msg.sources,
-  }))
+  const displayMessages = messages.map((msg: AIMessage) => {
+    // Extract text content from message - UIMessage type doesn't expose these directly
+    const msgAny = msg as unknown as {
+      content?: string
+      reasoning_details?: string
+      sources?: unknown
+    }
+
+    const content = typeof msgAny.content === "string" ? msgAny.content : ""
+
+    return {
+      key: msg.id,
+      from: msg.role === "user" ? ("user" as const) : ("assistant" as const),
+      versions: [
+        {
+          id: msg.id,
+          content,
+        },
+      ],
+      avatar:
+        msg.role === "user"
+          ? "https://github.com/haydenbleasel.png"
+          : "https://github.com/minimax-ai.png",
+      name: msg.role === "user" ? "User" : "MiniMax AI",
+      reasoning: msgAny.reasoning_details
+        ? {
+            content: msgAny.reasoning_details,
+            duration: 0,
+          }
+        : undefined,
+      sources: msgAny.sources,
+    }
+  })
 
   return (
     <div className="relative flex size-full flex-col divide-y overflow-hidden">
@@ -141,11 +150,11 @@ const ChatExample = () => {
                 {versions.map((version) => (
                   <Message from={message.from} key={`${message.key}-${version.id}`}>
                     <div>
-                      {message.sources?.length && (
+                      {Array.isArray(message.sources) && message.sources.length > 0 && (
                         <Sources>
                           <SourcesTrigger count={message.sources.length} />
                           <SourcesContent>
-                            {message.sources.map((source: Source) => (
+                            {message.sources.map((source: SourceProps) => (
                               <Source href={source.href} key={source.href} title={source.title} />
                             ))}
                           </SourcesContent>

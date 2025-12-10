@@ -1,4 +1,69 @@
 // next.config.mjs
+import bundleAnalyzer from '@next/bundle-analyzer';
+import withPWA from 'next-pwa';
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+  openAnalyzer: true,
+});
+
+const pwaConfig = withPWA({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  register: true,
+  skipWaiting: true,
+  runtimeCaching: [
+    // Images - specific pattern matched first
+    {
+      urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'images',
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        },
+      },
+    },
+    // Fonts - specific pattern matched second
+    {
+      urlPattern: /\.(?:woff|woff2|ttf|otf|eot)$/,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'fonts',
+        expiration: {
+          maxEntries: 20,
+          maxAgeSeconds: 365 * 24 * 60 * 60, // 1 year
+        },
+      },
+    },
+    // API routes - specific pattern matched third
+    {
+      urlPattern: /^\/api\/.*/,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'api-cache',
+        expiration: {
+          maxEntries: 50,
+          maxAgeSeconds: 5 * 60, // 5 minutes
+        },
+        networkTimeoutSeconds: 10,
+      },
+    },
+    // Generic catch-all - matched last (narrowed to same-origin only)
+    {
+      urlPattern: ({ url }) => url.origin === self.location.origin,
+      handler: 'NetworkFirst',
+      options: {
+        cacheName: 'offlineCache',
+        expiration: {
+          maxEntries: 200,
+          maxAgeSeconds: 24 * 60 * 60, // 24 hours
+        },
+      },
+    },
+  ],
+});
 
 export default () => {
   /**
@@ -61,5 +126,5 @@ export default () => {
 
   };
 
-  return nextConfig;
+  return withBundleAnalyzer(pwaConfig(nextConfig));
 };

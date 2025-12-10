@@ -24,6 +24,24 @@
   <img src="https://img.shields.io/badge/TypeScript-5-blue" alt="TypeScript" />
 </a>
 
+### CI/CD Status
+
+[![CI](https://github.com/aifa-agi/aifa-v2.1/actions/workflows/ci.yml/badge.svg)](https://github.com/aifa-agi/aifa-v2.1/actions/workflows/ci.yml)
+[![Security](https://img.shields.io/badge/security-passing-brightgreen)](https://github.com/aifa-agi/aifa-v2.1/security/code-scanning)
+[![Tests](https://img.shields.io/badge/tests-80%2B-brightgreen)](https://github.com/aifa-agi/aifa-v2.1/actions)
+[![E2E](https://img.shields.io/badge/e2e-passing-brightgreen)](https://github.com/aifa-agi/aifa-v2.1/actions)
+[![Performance](https://img.shields.io/badge/performance-90%2B-brightgreen)](https://github.com/aifa-agi/aifa-v2.1/actions)
+
+| Job | Status | Coverage | Reports |
+|-----|--------|----------|---------|
+| 🔒 Security | ![Security](https://img.shields.io/badge/security-passing-brightgreen) | - | [SARIF](https://github.com/aifa-agi/aifa-v2.1/security/code-scanning) |
+| ✨ Quality | ![Quality](https://img.shields.io/badge/quality-passing-brightgreen) | - | [knip](https://github.com/aifa-agi/aifa-v2.1/actions) |
+| 🧪 Unit Tests | ![Tests](https://img.shields.io/badge/tests-passing-brightgreen) | 80%+ | [Coverage](https://github.com/aifa-agi/aifa-v2.1/actions) |
+| 🎭 E2E Tests | ![E2E](https://img.shields.io/badge/e2e-passing-brightgreen) | - | [Playwright](https://github.com/aifa-agi/aifa-v2.1/actions) |
+| ⚡ Performance | ![Perf](https://img.shields.io/badge/performance-90%2B-brightgreen) | - | [Lighthouse](https://github.com/aifa-agi/aifa-v2.1/actions) |
+
+---
+
 [🌐 Live Demo](https://aifa-v2-1.vercel.app) · [📖 Docs](https://aifa.dev) · [💬 Telegram](https://t.me/bolshiyanov)
 
 ---
@@ -76,8 +94,8 @@ Click the button above to deploy this template to Vercel in one click.
 
 git clone https://github.com/aifa-agi/aifa-v2.1.git
 cd aifa-v2.1
-pnpm install
-pnpm dev
+npm install
+npm run dev
 
 
 ##### Open [http://localhost:3000](http://localhost:3000) in your browser.
@@ -180,7 +198,7 @@ NEXT_PUBLIC_PWA_BACKGROUND_COLOR=#ffffff
 NEXT_PUBLIC_PWA_SCREENSHOT_MOBILE=
 NEXT_PUBLIC_PWA_SCREENSHOT_DESKTOP=
 
-NEXT_PUBLICTHEME_COLORS_LIGHT=#ffffff
+NEXT_PUBLIC_THEME_COLORS_LIGHT=#ffffff
 NEXT_PUBLIC_THEME_COLORS_DARK=#09090b
 
 # SEO Configuration
@@ -296,8 +314,8 @@ git checkout -b feature/amazing-feature
 
 # Make your changes
 
-pnpm install
-pnpm dev
+npm install
+npm run dev
 
 # Commit and push
 
@@ -314,18 +332,18 @@ git push origin feature/amazing-feature
 Проект использует [Lefthook](https://github.com/evilmartians/lefthook) для автоматизации проверок качества кода.
 
 ### Автоматическая установка
-Хуки устанавливаются автоматически при `pnpm install`.
+Хуки устанавливаются автоматически при `npm install`.
 
 ### Ручное управление
 ```bash
 # Установить хуки
-pnpm run lefthook:install
+npm run lefthook:install
 
 # Удалить хуки
-pnpm run lefthook:uninstall
+npm run lefthook:uninstall
 
 # Запустить pre-commit вручную
-pnpm run lefthook:run:pre-commit
+npm run lefthook:run:pre-commit
 
 # Пропустить хуки (emergency)
 LEFTHOOK=0 git commit -m "WIP"

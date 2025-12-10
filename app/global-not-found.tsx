@@ -62,9 +62,6 @@ export default function GlobalNotFoundPage() {
             `,
           }}
         />
-
-        {/* ✅ ИСПРАВЛЕНО: Используется компонент Script вместо встроенного скрипта */}
-        <Script src="/register-sw.js" strategy="beforeInteractive" async={false} />
       </head>
       <body
         className={cn(
@@ -126,7 +123,6 @@ export default function GlobalNotFoundPage() {
                           Go to Home
                         </Link>
                       </Button>
-                      Í
                     </div>
                   </div>
                 </div>

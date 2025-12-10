@@ -1,10 +1,13 @@
-name: Security Scan
+# DEPRECATED: This workflow is kept for reference only.
+# The main security pipeline is now integrated into .github/workflows/ci.yml
+# This workflow runs only on schedule for periodic security scans.
+
+name: Security Scan (Legacy)
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
+  schedule:
+    # Run daily at 00:00 UTC (midnight)
+    - cron: '0 0 * * *'
 
 jobs:
   semgrep:

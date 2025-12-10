@@ -44,8 +44,8 @@ export function FAQSection({
         {title}
       </h2>
       <div className="space-y-4">
-        {faqs.map((faq, index) => (
-          <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+        {faqs.map((faq) => (
+          <Card key={faq.question} className="p-6 hover:shadow-lg transition-shadow">
             <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
             <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
           </Card>

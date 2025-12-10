@@ -28,7 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}${page.href}`,
       lastModified: currentDate,
       changeFrequency: getChangeFrequency(page.type),
-      priority: getPriority(page.type, page.href),
+      priority: getPriority(page.type, page.href || ""),
     }))
 
   // Static routes: keep only canonical root, remove "/home"

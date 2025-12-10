@@ -1,5 +1,3 @@
-import { Card } from "@/components/ui/card"
-
 export type TopFeatureItem = {
   title: string
   description: string
@@ -52,7 +50,7 @@ function normalizeConfig(input: TopFeaturesConfig | TopFeatureItem[]) {
 }
 
 export function TopFeaturesSection({ config, show = true }: TopFeaturesSectionProps) {
-  const { items, title, subtitle, columns, compact, forceFixedWidth } = normalizeConfig(config)
+  const { items, title, subtitle, compact } = normalizeConfig(config)
 
   if (!show || !Array.isArray(items) || items.length === 0) {
     return null
@@ -68,7 +66,7 @@ export function TopFeaturesSection({ config, show = true }: TopFeaturesSectionPr
       </h2>
       {subtitle ? <p className="text-muted-foreground mb-4">{subtitle}</p> : null}
 
-      <div
+      <ul
         className="
           relative
           overflow-x-auto
@@ -77,14 +75,12 @@ export function TopFeaturesSection({ config, show = true }: TopFeaturesSectionPr
           [scrollbar-width:thin]
           [-webkit-overflow-scrolling:touch]
         "
-        role="list"
         aria-label="Top features list"
       >
         <div className="inline-flex flex-nowrap gap-3 pr-2">
-          {items.map((feature, index) => (
-            <Card
-              key={index}
-              role="listitem"
+          {items.map((feature) => (
+            <li
+              key={`${feature.title}-${feature.description.substring(0, 20)}`}
               className={[
                 "rounded-lg border border-primary bg-card hover:shadow-sm transition-shadow",
                 "snap-start",
@@ -107,10 +103,10 @@ export function TopFeaturesSection({ config, show = true }: TopFeaturesSectionPr
                   {feature.description}
                 </p>
               </div>
-            </Card>
+            </li>
           ))}
         </div>
-      </div>
+      </ul>
     </section>
   )
 }

@@ -99,6 +99,7 @@ export default async function RootLayout({
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta name="format-detection" content="telephone=no, date=no, email=no, address=no" />
         <meta name="theme-color" content={META_THEME_COLORS.light} />
+        <link rel="manifest" href="/manifest.webmanifest" />
 
         {/* Theme script - must be inline for no-flash */}
         <Script

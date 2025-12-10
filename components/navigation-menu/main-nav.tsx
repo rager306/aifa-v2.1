@@ -182,6 +182,7 @@ export function MainNav({ items, className }: MainNavProps) {
 }
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
+  href: string
   title: string
   isActive?: boolean
 }
