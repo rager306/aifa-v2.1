@@ -1,0 +1,179 @@
+# CodeRabbit AI Code Review Configuration
+# https://docs.coderabbit.ai/guides/configure-coderabbit
+
+# Path filters to limit reviews to essential source code files
+# This keeps reviews under the 100-file limit for CodeRabbit Free
+path_filters:
+  # Include main application source code directories
+  - "app/**"
+  - "components/**"
+  - "lib/**"
+  - "hooks/**"
+  - "providers/**"
+  - "types/**"
+  - "config/**"
+  - "scripts/**"
+  - "public/**/*.ts"
+  - "public/**/*.tsx"
+  - "public/**/*.js"
+  - "public/**/*.jsx"
+
+  # Exclude documentation directories
+  - "!doc/**"
+  - "!docs/**"
+  - "!*.md"
+  - "!**/*.md"
+
+  # Exclude test directories and files
+  - "!e2e/**"
+  - "!tests/**"
+  - "!test-results/**"
+  - "!playwright-report/**"
+  - "!**/__tests__/**"
+  - "!**/__mocks__/**"
+  - "!*.test.ts"
+  - "!*.test.tsx"
+  - "!*.spec.ts"
+  - "!*.spec.tsx"
+
+  # Exclude build and dependency directories
+  - "!node_modules/**"
+  - "!.next/**"
+  - "!out/**"
+  - "!build/**"
+  - "!dist/**"
+  - "!coverage/**"
+
+  # Exclude IDE and editor configurations
+  - "!.vscode/**"
+  - "!.idea/**"
+  - "!*.code-workspace"
+
+  # Exclude lock files and generated files
+  - "!package-lock.json"
+  - "!pnpm-lock.yaml"
+  - "!yarn.lock"
+  - "!*.generated.*"
+
+  # Exclude coordination and memory directories (Claude Flow internal)
+  - "!coordination/**"
+  - "!memory/**"
+
+# Review settings
+reviews:
+  # Request changes workflow
+  request_changes_workflow: true
+
+  # High level summary
+  high_level_summary: true
+
+  # Poem generation (optional, can disable to save tokens)
+  poem: false
+
+  # Review status
+  review_status: true
+
+  # Collapse walkthrough
+  collapse_walkthrough: false
+
+  # Auto review triggers
+  auto_review:
+    enabled: true
+    # Only auto-review when draft is false
+    drafts: false
+    # Review base branches
+    base_branches:
+      - main
+      - master
+      - develop
+      - dev
+
+# Language settings
+language: en-US
+
+# Tone of reviews
+tone_instructions: |
+  Be constructive, concise, and focus on:
+  - Security vulnerabilities (XSS, SQL injection, authentication)
+  - Performance issues
+  - Code maintainability
+  - Best practices for Next.js, React, and TypeScript
+  - Accessibility (a11y) concerns
+
+  Avoid nitpicking on:
+  - Minor style preferences (handled by Biome)
+  - Formatting (handled by Biome)
+  - Simple refactoring opportunities unless they improve security or performance
+
+# Early access features
+early_access: false
+
+# Knowledge base (custom rules and context)
+knowledge_base:
+  # Learnings from past reviews
+  learnings:
+    enabled: true
+
+  # Custom instructions for this project
+  custom_instructions: |
+    This is a Next.js 15 application with:
+    - TypeScript for type safety
+    - Biome for linting and formatting
+    - Semgrep for security scanning
+    - PostgreSQL with Neon for database
+    - Upstash Redis for rate limiting
+    - Production-grade authentication with bcrypt
+
+    Focus reviews on:
+    1. Security (especially authentication, XSS, injection vulnerabilities)
+    2. Performance (Next.js optimization, React rendering)
+    3. Type safety (TypeScript usage)
+    4. Accessibility (semantic HTML, ARIA)
+
+    This project already uses:
+    - Biome for code formatting (don't suggest Prettier/ESLint)
+    - Semgrep for security (complement, don't duplicate its findings)
+    - Proper error boundaries and suspense
+    - Server actions with "use server"
+    - Parallel routes and intercepting routes
+
+# Chat settings
+chat:
+  # Enable auto-reply
+  auto_reply: true
+
+# Tools and integrations
+tools:
+  # GitHub Actions integration
+  github_actions:
+    enabled: true
+
+  # Shellcheck for shell scripts
+  shellcheck:
+    enabled: true
+
+  # AST-based grep (for complex code patterns)
+  ast_grep:
+    enabled: true
+
+# Performance settings
+performance:
+  # Limit review size (number of lines)
+  max_files: 100
+
+  # Skip large files
+  max_file_size: 50000  # 50KB per file
+
+# Ignore patterns (additional to path_filters)
+ignore:
+  # Generated files
+  - "**/*.generated.*"
+  - "**/generated/**"
+
+  # Snapshots
+  - "**/__snapshots__/**"
+
+  # Lock files
+  - "**/package-lock.json"
+  - "**/pnpm-lock.yaml"
+  - "**/yarn.lock"
