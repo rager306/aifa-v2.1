@@ -3,7 +3,7 @@ import path from 'path'
 
 export default defineConfig({
   test: {
-    environment: 'node',
+    environment: 'jsdom',
     globals: true,
     coverage: {
       provider: 'v8',
@@ -11,11 +11,16 @@ export default defineConfig({
       include: [
         'lib/utils.ts',
         'lib/themes.ts',
-        'lib/construct-metadata.ts'
+        'lib/construct-metadata.ts',
+        'lib/rate-limiter.ts',
+        'lib/schemas/chat-schema.ts',
+        'components/icons.tsx'
       ],
       exclude: [
         'lib/**/*.test.ts',
         'lib/__tests__/**',
+        'components/**/*.test.tsx',
+        'components/__tests__/**',
         'node_modules',
         '.next',
         'coverage'

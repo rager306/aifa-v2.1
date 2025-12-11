@@ -1,4 +1,5 @@
 //components/icons.tsx
+import React from "react"
 import { FileIcon } from "lucide-react"
 
 type IconProps = React.HTMLAttributes<SVGElement>

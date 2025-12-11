@@ -1,11 +1,21 @@
-import { Page } from '@playwright/test';
+/**
+ * Page Object Models for E2E Tests
+ */
+
+import { Page, Locator } from '@playwright/test';
 
 export class LeadFormModal {
-  constructor(private page: Page) {}
+  private page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
 
   async open() {
-    await this.page.click('a[href="/interception_modal/lead-form"]');
-    await this.page.waitForSelector('[class*="backdrop-blur"]', { state: 'visible' });
+    await this.page.goto('/');
+    await this.page.click('button:has-text("Get Started")').catch(() => {
+      return this.page.click('a[href*="lead-form"]');
+    });
   }
 
   async fillForm(data: { name: string; phone: string; email: string }) {
@@ -18,40 +28,52 @@ export class LeadFormModal {
     await this.page.click('button[type="submit"]');
   }
 
-  async close() {
-    await this.page.keyboard.press('Escape');
+  async waitForSuccess() {
+    await this.page.waitForSelector('text=Lead Form Submitted', { timeout: 5000 });
   }
 
-  async waitForSuccess() {
-    await this.page.waitForSelector('text=Lead Form Submitted', { state: 'visible' });
+  async close() {
+    await this.page.keyboard.press('Escape');
   }
 }
 
 export class ChatModal {
-  constructor(private page: Page) {}
+  private page: Page;
+
+  constructor(page: Page) {
+    this.page = page;
+  }
 
   async open() {
-    await this.page.click('a[href="/chat"]');
-    await this.page.waitForSelector('[class*="translate-x-0"]', { state: 'visible' });
+    await this.page.goto('/');
+    await this.page.click('button:has-text("Chat")').catch(() => {
+      return this.page.click('a[href*="chat"]');
+    });
   }
 
   async close() {
-    await this.page.click('button:has-text("Close chat")');
+    await this.page.click('button:has-text("Close chat")').catch(() => {
+      return this.page.keyboard.press('Escape');
+    });
   }
 }
 
 export class ParallelRoutes {
-  constructor(private page: Page) {}
+  private page: Page;
 
-  async getLeftSlot() {
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async getLeftSlot(): Promise<Locator> {
     return this.page.getByTestId('left-slot');
   }
 
-  async getRightStaticSlot() {
+  async getRightStaticSlot(): Promise<Locator> {
     return this.page.getByTestId('main-content');
   }
 
-  async getRightDynamicSlot() {
+  async getRightDynamicSlot(): Promise<Locator> {
     return this.page.getByTestId('rightDynamic-slot');
   }
 }

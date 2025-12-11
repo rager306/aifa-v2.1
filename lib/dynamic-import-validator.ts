@@ -53,7 +53,13 @@ export async function safeDynamicImport<T>(path: AllowedImport): Promise<T> {
   if (!validateDynamicImport(path)) {
     throw new Error(`Unauthorized dynamic import: ${path}`)
   }
-  return import(path) as Promise<T>
+  // Use dynamic import with string literal to avoid webpack bundling issues
+  switch (path) {
+    case '@/components/pwa-install-prompt':
+      return import('@/components/pwa-install-prompt') as Promise<T>
+    default:
+      throw new Error(`Unauthorized dynamic import: ${path}`)
+  }
 }
 
 /**
