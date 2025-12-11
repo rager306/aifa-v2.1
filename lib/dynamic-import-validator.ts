@@ -55,8 +55,8 @@ export async function safeDynamicImport<T>(path: AllowedImport): Promise<T> {
   }
   // Use dynamic import with string literal to avoid webpack bundling issues
   switch (path) {
-    case '@/components/pwa-install-prompt':
-      return import('@/components/pwa-install-prompt') as Promise<T>
+    case "@/components/pwa-install-prompt":
+      return import("@/components/pwa-install-prompt") as Promise<T>
     default:
       throw new Error(`Unauthorized dynamic import: ${path}`)
   }

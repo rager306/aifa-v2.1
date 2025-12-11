@@ -4,15 +4,15 @@
 import { randomUUID } from "node:crypto"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
-import { checkLoginRateLimit } from "@/lib/auth/upstash-rate-limiter"
 import { verifyPassword } from "@/lib/auth/password"
+import { checkLoginRateLimit } from "@/lib/auth/upstash-rate-limiter"
 import {
-  findUserByEmail,
   createSession,
-  findSessionByToken,
   deleteSession,
-  updateLastLogin,
+  findSessionByToken,
+  findUserByEmail,
   type User,
+  updateLastLogin,
 } from "@/lib/db/client"
 
 /**
@@ -65,8 +65,7 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
           message: `Too many login attempts. ${remaining} attempts remaining. Try again in 15 minutes.`,
         }
       }
-    } catch (error) {
-      console.error("Rate limiter configuration error:", error)
+    } catch (_error) {
       return {
         success: false,
         message: "Authentication service unavailable. Please contact support.",
@@ -80,7 +79,6 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
     } catch (error) {
       // Database not configured - check if we're in development mode
       if (process.env.NODE_ENV === "development") {
-        console.error("Database not configured. Using demo mode.")
         return {
           success: false,
           message:
@@ -107,9 +105,7 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
     // Get request headers for security tracking
     const headersList = await headers()
     const ipAddress =
-      headersList.get("x-forwarded-for")?.split(",")[0] ||
-      headersList.get("x-real-ip") ||
-      "unknown"
+      headersList.get("x-forwarded-for")?.split(",")[0] || headersList.get("x-real-ip") || "unknown"
     const userAgent = headersList.get("user-agent") || "unknown"
 
     // Generate secure session token
@@ -135,8 +131,7 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
     })
 
     return { success: true, message: "Login successful" }
-  } catch (error) {
-    console.error("Login error:", error)
+  } catch (_error) {
     return {
       success: false,
       message: "An error occurred during login. Please try again.",
@@ -159,17 +154,14 @@ export async function logoutAction() {
       // Delete session from database
       try {
         await deleteSession(authCookie.value)
-      } catch (error) {
-        console.error("Error deleting session:", error)
+      } catch (_error) {
         // Continue with cookie deletion even if database fails
       }
     }
 
     // Delete authentication cookie
     cookieStore.delete("auth_session")
-  } catch (error) {
-    console.error("Logout error:", error)
-  }
+  } catch (_error) {}
 
   // Redirect to home page after logout
   redirect("/")
@@ -200,19 +192,14 @@ export async function isAuthenticated(): Promise<boolean> {
     try {
       const session = await findSessionByToken(authCookie.value)
       return session !== null && session.expires_at > new Date()
-    } catch (error) {
+    } catch (_error) {
       // Database not configured - in development, check cookie only
       if (process.env.NODE_ENV === "development") {
-        console.warn(
-          "Database not configured. Session validation skipped in development."
-        )
         return !!authCookie.value
       }
-      console.error("Session validation error:", error)
       return false
     }
-  } catch (error) {
-    console.error("Authentication check error:", error)
+  } catch (_error) {
     return false
   }
 }
@@ -246,7 +233,6 @@ export async function getUserSession() {
     } catch (error) {
       // Database not configured - return mock data in development
       if (process.env.NODE_ENV === "development") {
-        console.warn("Database not configured. Returning mock user data.")
         return {
           id: "dev-user",
           email: "dev@example.com",
@@ -270,8 +256,7 @@ export async function getUserSession() {
       role: "user", // TODO: Get from database
       name: "User", // TODO: Get from database
     }
-  } catch (error) {
-    console.error("Get user session error:", error)
+  } catch (_error) {
     return null
   }
 }

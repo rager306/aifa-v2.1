@@ -5,20 +5,17 @@
  * Prevents brute force attacks with sliding window algorithm.
  */
 
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit"
+import { Redis } from "@upstash/redis"
 
 // Initialize Redis client from environment variables
 // Required: UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN
-let redis: Redis | null = null;
-let loginRateLimiter: Ratelimit | null = null;
+let redis: Redis | null = null
+let loginRateLimiter: Ratelimit | null = null
 
 try {
-  if (
-    process.env.UPSTASH_REDIS_REST_URL &&
-    process.env.UPSTASH_REDIS_REST_TOKEN
-  ) {
-    redis = Redis.fromEnv();
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    redis = Redis.fromEnv()
 
     // Create rate limiter instance
     // 5 login attempts per 15 minutes per identifier (email/IP)
@@ -27,23 +24,21 @@ try {
       limiter: Ratelimit.slidingWindow(5, "15 m"),
       analytics: true,
       prefix: "ratelimit:login",
-    });
+    })
   }
-} catch (error) {
-  console.error("Failed to initialize Upstash Redis:", error);
-}
+} catch (_error) {}
 
 /**
  * Check if rate limiter is properly configured
  * Throws an error in production if rate limiter is not configured
  */
-function checkRateLimiterConfig(): void {
+function _checkRateLimiterConfig(): void {
   if (!loginRateLimiter && process.env.NODE_ENV === "production") {
     throw new Error(
       "UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN environment variables are not configured. " +
         "Rate limiting is required in production to prevent brute force attacks. " +
-        "Please configure Upstash Redis credentials in your environment variables."
-    );
+        "Please configure Upstash Redis credentials in your environment variables.",
+    )
   }
 }
 
@@ -54,10 +49,10 @@ function checkRateLimiterConfig(): void {
  * @returns Rate limit result with success status and metadata
  */
 export async function checkLoginRateLimit(identifier: string): Promise<{
-  success: boolean;
-  limit: number;
-  remaining: number;
-  reset: number;
+  success: boolean
+  limit: number
+  remaining: number
+  reset: number
 }> {
   // Check rate limiter configuration
   // In production: fail closed (throw error if not configured)
@@ -66,37 +61,27 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
     if (process.env.NODE_ENV === "production") {
       throw new Error(
         "Rate limiter not configured. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN " +
-          "environment variables are required in production to prevent brute force attacks."
-      );
+          "environment variables are required in production to prevent brute force attacks.",
+      )
     }
-
-    // Development mode: Allow requests with enhanced warning
-    console.warn(
-      "⚠️  DEVELOPMENT MODE: Upstash rate limiter not configured. " +
-        "Using permissive fallback. This is NOT secure for production. " +
-        "Configure UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN."
-    );
     return {
       success: true,
       limit: 5,
       remaining: 5,
       reset: Date.now() + 15 * 60 * 1000,
-    };
+    }
   }
 
   try {
-    const { success, limit, remaining, reset } =
-      await loginRateLimiter.limit(identifier);
+    const { success, limit, remaining, reset } = await loginRateLimiter.limit(identifier)
 
     return {
       success,
       limit,
       remaining,
       reset,
-    };
-  } catch (error) {
-    console.error("Rate limit check failed:", error);
-    
+    }
+  } catch (_error) {
     // Fail closed in production on errors
     if (process.env.NODE_ENV === "production") {
       return {
@@ -104,20 +89,14 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
         limit: 0,
         remaining: 0,
         reset: Date.now(),
-      };
+      }
     }
-
-    // Development mode: Allow request but log the issue
-    console.warn(
-      "⚠️  DEVELOPMENT MODE: Rate limit check failed but allowing request. " +
-        "This would be blocked in production."
-    );
     return {
       success: true,
       limit: 5,
       remaining: 5,
       reset: Date.now() + 15 * 60 * 1000,
-    };
+    }
   }
 }
 
@@ -132,11 +111,10 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
 export function createCustomRateLimiter(
   maxAttempts: number,
   windowMs: number,
-  prefix: string
+  prefix: string,
 ): Ratelimit | null {
   if (!redis) {
-    console.warn("Redis not configured for custom rate limiter");
-    return null;
+    return null
   }
 
   return new Ratelimit({
@@ -144,7 +122,7 @@ export function createCustomRateLimiter(
     limiter: Ratelimit.slidingWindow(maxAttempts, `${windowMs}ms`),
     analytics: true,
     prefix: `ratelimit:${prefix}`,
-  });
+  })
 }
 
 /**
@@ -155,15 +133,12 @@ export function createCustomRateLimiter(
  */
 export async function resetRateLimit(identifier: string): Promise<void> {
   if (!redis) {
-    console.warn("Redis not configured, cannot reset rate limit");
-    return;
+    return
   }
 
   try {
-    await redis.del(`ratelimit:login:${identifier}`);
-  } catch (error) {
-    console.error("Failed to reset rate limit:", error);
-  }
+    await redis.del(`ratelimit:login:${identifier}`)
+  } catch (_error) {}
 }
 
 /**
@@ -172,31 +147,30 @@ export async function resetRateLimit(identifier: string): Promise<void> {
  * @param identifier - Unique identifier to check
  */
 export async function getRateLimitStatus(identifier: string): Promise<{
-  remaining: number;
-  reset: number;
+  remaining: number
+  reset: number
 } | null> {
   if (!redis) {
-    return null;
+    return null
   }
 
   try {
-    const key = `ratelimit:login:${identifier}`;
-    const data = await redis.get(key);
+    const key = `ratelimit:login:${identifier}`
+    const data = await redis.get(key)
 
     if (!data) {
-      return { remaining: 5, reset: Date.now() + 15 * 60 * 1000 };
+      return { remaining: 5, reset: Date.now() + 15 * 60 * 1000 }
     }
 
     // Parse Upstash rate limit data structure
     // This is a simplified version - actual implementation may vary
     return {
-      remaining: 5 - (typeof data === 'number' ? data : 0),
+      remaining: 5 - (typeof data === "number" ? data : 0),
       reset: Date.now() + 15 * 60 * 1000,
-    };
-  } catch (error) {
-    console.error("Failed to get rate limit status:", error);
-    return null;
+    }
+  } catch (_error) {
+    return null
   }
 }
 
-export { redis, loginRateLimiter };
+export { redis, loginRateLimiter }

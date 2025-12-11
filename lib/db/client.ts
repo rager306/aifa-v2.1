@@ -15,37 +15,37 @@
  * User interface matching database schema
  */
 export interface User {
-  id: string;
-  email: string;
-  password_hash: string;
-  name: string | null;
-  role: string;
-  email_verified: boolean;
-  created_at: Date;
-  updated_at: Date;
+  id: string
+  email: string
+  password_hash: string
+  name: string | null
+  role: string
+  email_verified: boolean
+  created_at: Date
+  updated_at: Date
 }
 
 /**
  * Session interface for authentication tokens
  */
 export interface Session {
-  id: string;
-  user_id: string;
-  token: string;
-  expires_at: Date;
-  ip_address?: string | null;
-  user_agent?: string | null;
-  created_at: Date;
+  id: string
+  user_id: string
+  token: string
+  expires_at: Date
+  ip_address?: string | null
+  user_agent?: string | null
+  created_at: Date
 }
 
 /**
  * Create user data (for registration)
  */
 export interface CreateUserData {
-  email: string;
-  password_hash: string;
-  name?: string;
-  role?: string;
+  email: string
+  password_hash: string
+  name?: string
+  role?: string
 }
 
 /**
@@ -55,8 +55,8 @@ function checkDatabaseConfig(): void {
   if (!process.env.DATABASE_URL) {
     throw new Error(
       "DATABASE_URL environment variable is not configured. " +
-        "Please set up your database connection in .env.local"
-    );
+        "Please set up your database connection in .env.local",
+    )
   }
 }
 
@@ -66,8 +66,8 @@ function checkDatabaseConfig(): void {
  * @param email - User's email address
  * @returns User object or null if not found
  */
-export async function findUserByEmail(email: string): Promise<User | null> {
-  checkDatabaseConfig();
+export async function findUserByEmail(_email: string): Promise<User | null> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL (pg):
@@ -90,9 +90,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   //   .single();
   // return data;
 
-  throw new Error(
-    "Database not configured. Please implement findUserByEmail() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement findUserByEmail() in lib/db/client.ts")
 }
 
 /**
@@ -101,17 +99,15 @@ export async function findUserByEmail(email: string): Promise<User | null> {
  * @param id - User's unique identifier
  * @returns User object or null if not found
  */
-export async function findUserById(id: string): Promise<User | null> {
-  checkDatabaseConfig();
+export async function findUserById(_id: string): Promise<User | null> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
   // const result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
   // return result.rows[0] || null;
 
-  throw new Error(
-    "Database not configured. Please implement findUserById() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement findUserById() in lib/db/client.ts")
 }
 
 /**
@@ -120,8 +116,8 @@ export async function findUserById(id: string): Promise<User | null> {
  * @param userData - User data for registration
  * @returns Created user object
  */
-export async function createUser(userData: CreateUserData): Promise<User> {
-  checkDatabaseConfig();
+export async function createUser(_userData: CreateUserData): Promise<User> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
@@ -131,9 +127,7 @@ export async function createUser(userData: CreateUserData): Promise<User> {
   // );
   // return result.rows[0];
 
-  throw new Error(
-    "Database not configured. Please implement createUser() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement createUser() in lib/db/client.ts")
 }
 
 /**
@@ -147,13 +141,13 @@ export async function createUser(userData: CreateUserData): Promise<User> {
  * @returns Created session object
  */
 export async function createSession(
-  userId: string,
-  token: string,
-  expiresAt: Date,
-  ipAddress?: string,
-  userAgent?: string
+  _userId: string,
+  _token: string,
+  _expiresAt: Date,
+  _ipAddress?: string,
+  _userAgent?: string,
 ): Promise<Session> {
-  checkDatabaseConfig();
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
@@ -163,9 +157,7 @@ export async function createSession(
   // );
   // return result.rows[0];
 
-  throw new Error(
-    "Database not configured. Please implement createSession() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement createSession() in lib/db/client.ts")
 }
 
 /**
@@ -174,10 +166,8 @@ export async function createSession(
  * @param token - Session token
  * @returns Session object or null if not found/expired
  */
-export async function findSessionByToken(
-  token: string
-): Promise<Session | null> {
-  checkDatabaseConfig();
+export async function findSessionByToken(_token: string): Promise<Session | null> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
@@ -188,8 +178,8 @@ export async function findSessionByToken(
   // return result.rows[0] || null;
 
   throw new Error(
-    "Database not configured. Please implement findSessionByToken() in lib/db/client.ts"
-  );
+    "Database not configured. Please implement findSessionByToken() in lib/db/client.ts",
+  )
 }
 
 /**
@@ -197,16 +187,14 @@ export async function findSessionByToken(
  *
  * @param token - Session token to delete
  */
-export async function deleteSession(token: string): Promise<void> {
-  checkDatabaseConfig();
+export async function deleteSession(_token: string): Promise<void> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
   // await pool.query('DELETE FROM sessions WHERE token = $1', [token]);
 
-  throw new Error(
-    "Database not configured. Please implement deleteSession() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement deleteSession() in lib/db/client.ts")
 }
 
 /**
@@ -214,16 +202,16 @@ export async function deleteSession(token: string): Promise<void> {
  *
  * @param userId - User's unique identifier
  */
-export async function deleteAllUserSessions(userId: string): Promise<void> {
-  checkDatabaseConfig();
+export async function deleteAllUserSessions(_userId: string): Promise<void> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
   // await pool.query('DELETE FROM sessions WHERE user_id = $1', [userId]);
 
   throw new Error(
-    "Database not configured. Please implement deleteAllUserSessions() in lib/db/client.ts"
-  );
+    "Database not configured. Please implement deleteAllUserSessions() in lib/db/client.ts",
+  )
 }
 
 /**
@@ -231,7 +219,7 @@ export async function deleteAllUserSessions(userId: string): Promise<void> {
  * Should be called via cron job or background task
  */
 export async function cleanupExpiredSessions(): Promise<number> {
-  checkDatabaseConfig();
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
@@ -239,8 +227,8 @@ export async function cleanupExpiredSessions(): Promise<number> {
   // return result.rowCount || 0;
 
   throw new Error(
-    "Database not configured. Please implement cleanupExpiredSessions() in lib/db/client.ts"
-  );
+    "Database not configured. Please implement cleanupExpiredSessions() in lib/db/client.ts",
+  )
 }
 
 /**
@@ -249,14 +237,14 @@ export async function cleanupExpiredSessions(): Promise<number> {
  * @param userId - User's unique identifier
  */
 export async function updateLastLogin(userId: string): Promise<void> {
-  checkDatabaseConfig();
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
   // await pool.query('UPDATE users SET updated_at = NOW() WHERE id = $1', [userId]);
 
   // This is optional but useful for tracking user activity
-  console.log(`User ${userId} logged in at ${new Date().toISOString()}`);
+  console.log(`User ${userId} logged in at ${new Date().toISOString()}`)
 }
 
 /**
@@ -264,8 +252,8 @@ export async function updateLastLogin(userId: string): Promise<void> {
  *
  * @param userId - User's unique identifier
  */
-export async function verifyUserEmail(userId: string): Promise<void> {
-  checkDatabaseConfig();
+export async function verifyUserEmail(_userId: string): Promise<void> {
+  checkDatabaseConfig()
 
   // TODO: Implement with your database
   // Example with PostgreSQL:
@@ -274,7 +262,5 @@ export async function verifyUserEmail(userId: string): Promise<void> {
   //   [userId]
   // );
 
-  throw new Error(
-    "Database not configured. Please implement verifyUserEmail() in lib/db/client.ts"
-  );
+  throw new Error("Database not configured. Please implement verifyUserEmail() in lib/db/client.ts")
 }

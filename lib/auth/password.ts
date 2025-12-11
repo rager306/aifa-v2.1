@@ -5,12 +5,12 @@
  * Industry-standard implementation for production authentication.
  */
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"
 
 // Salt rounds for bcrypt (12 is a good balance between security and performance)
 // Higher values increase security but also increase hashing time
 // 10 = ~10 hashes/sec, 12 = ~2.5 hashes/sec, 14 = ~0.6 hashes/sec
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = 12
 
 /**
  * Hash a plain text password using bcrypt
@@ -25,20 +25,19 @@ const SALT_ROUNDS = 12;
  */
 export async function hashPassword(password: string): Promise<string> {
   if (!password || password.length === 0) {
-    throw new Error("Password cannot be empty");
+    throw new Error("Password cannot be empty")
   }
 
   // Validate password strength before hashing
   if (password.length < 8) {
-    throw new Error("Password must be at least 8 characters long");
+    throw new Error("Password must be at least 8 characters long")
   }
 
   try {
-    const hash = await bcrypt.hash(password, SALT_ROUNDS);
-    return hash;
-  } catch (error) {
-    console.error("Password hashing failed:", error);
-    throw new Error("Failed to hash password");
+    const hash = await bcrypt.hash(password, SALT_ROUNDS)
+    return hash
+  } catch (_error) {
+    throw new Error("Failed to hash password")
   }
 }
 
@@ -56,21 +55,17 @@ export async function hashPassword(password: string): Promise<string> {
  *   // Password is correct
  * }
  */
-export async function verifyPassword(
-  password: string,
-  hash: string
-): Promise<boolean> {
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
   if (!password || !hash) {
-    throw new Error("Password and hash are required");
+    throw new Error("Password and hash are required")
   }
 
   try {
-    const isValid = await bcrypt.compare(password, hash);
-    return isValid;
-  } catch (error) {
-    console.error("Password verification failed:", error);
+    const isValid = await bcrypt.compare(password, hash)
+    return isValid
+  } catch (_error) {
     // Return false instead of throwing to avoid leaking information
-    return false;
+    return false
   }
 }
 
@@ -81,56 +76,50 @@ export async function verifyPassword(
  * @returns Validation result with errors if any
  */
 export function validatePasswordStrength(password: string): {
-  valid: boolean;
-  errors: string[];
+  valid: boolean
+  errors: string[]
 } {
-  const errors: string[] = [];
+  const errors: string[] = []
 
   if (!password) {
-    errors.push("Password is required");
-    return { valid: false, errors };
+    errors.push("Password is required")
+    return { valid: false, errors }
   }
 
   if (password.length < 8) {
-    errors.push("Password must be at least 8 characters long");
+    errors.push("Password must be at least 8 characters long")
   }
 
   if (password.length > 128) {
-    errors.push("Password must be less than 128 characters");
+    errors.push("Password must be less than 128 characters")
   }
 
   if (!/[A-Z]/.test(password)) {
-    errors.push("Password must contain at least one uppercase letter");
+    errors.push("Password must contain at least one uppercase letter")
   }
 
   if (!/[a-z]/.test(password)) {
-    errors.push("Password must contain at least one lowercase letter");
+    errors.push("Password must contain at least one lowercase letter")
   }
 
   if (!/[0-9]/.test(password)) {
-    errors.push("Password must contain at least one number");
+    errors.push("Password must contain at least one number")
   }
 
   if (!/[^A-Za-z0-9]/.test(password)) {
-    errors.push("Password must contain at least one special character");
+    errors.push("Password must contain at least one special character")
   }
 
   // Check for common weak passwords
-  const commonPasswords = [
-    "password",
-    "12345678",
-    "qwerty",
-    "abc123",
-    "password123",
-  ];
+  const commonPasswords = ["password", "12345678", "qwerty", "abc123", "password123"]
   if (commonPasswords.some((weak) => password.toLowerCase().includes(weak))) {
-    errors.push("Password is too common");
+    errors.push("Password is too common")
   }
 
   return {
     valid: errors.length === 0,
     errors,
-  };
+  }
 }
 
 /**
@@ -141,11 +130,11 @@ export function validatePasswordStrength(password: string): {
  */
 export function needsRehash(hash: string): boolean {
   try {
-    const rounds = bcrypt.getRounds(hash);
-    return rounds < SALT_ROUNDS;
-  } catch (error) {
+    const rounds = bcrypt.getRounds(hash)
+    return rounds < SALT_ROUNDS
+  } catch (_error) {
     // If we can't determine rounds, assume it needs rehashing
-    return true;
+    return true
   }
 }
 
@@ -157,28 +146,28 @@ export function needsRehash(hash: string): boolean {
  * @returns Secure random password
  */
 export function generateSecurePassword(length: number = 16): string {
-  const lowercase = "abcdefghijklmnopqrstuvwxyz";
-  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const numbers = "0123456789";
-  const special = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-  const all = lowercase + uppercase + numbers + special;
+  const lowercase = "abcdefghijklmnopqrstuvwxyz"
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  const numbers = "0123456789"
+  const special = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+  const all = lowercase + uppercase + numbers + special
 
-  let password = "";
+  let password = ""
 
   // Ensure at least one of each type
-  password += lowercase[Math.floor(Math.random() * lowercase.length)];
-  password += uppercase[Math.floor(Math.random() * uppercase.length)];
-  password += numbers[Math.floor(Math.random() * numbers.length)];
-  password += special[Math.floor(Math.random() * special.length)];
+  password += lowercase[Math.floor(Math.random() * lowercase.length)]
+  password += uppercase[Math.floor(Math.random() * uppercase.length)]
+  password += numbers[Math.floor(Math.random() * numbers.length)]
+  password += special[Math.floor(Math.random() * special.length)]
 
   // Fill the rest randomly
   for (let i = password.length; i < length; i++) {
-    password += all[Math.floor(Math.random() * all.length)];
+    password += all[Math.floor(Math.random() * all.length)]
   }
 
   // Shuffle the password
   return password
     .split("")
     .sort(() => Math.random() - 0.5)
-    .join("");
+    .join("")
 }

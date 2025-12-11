@@ -15,7 +15,6 @@ export async function POST(req: Request) {
     const parsed = chatRequestSchema.safeParse(body)
 
     if (!parsed.success) {
-      console.error("Chat request validation failed:", parsed.error.issues)
       return new Response(
         JSON.stringify({
           error: "Invalid request",
@@ -38,8 +37,7 @@ export async function POST(req: Request) {
     })
 
     return result.toTextStreamResponse()
-  } catch (error) {
-    console.error("Chat API error:", error)
+  } catch (_error) {
     return new Response(
       JSON.stringify({
         error: "Internal server error",
