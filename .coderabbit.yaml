@@ -3,20 +3,34 @@
 
 # Path filters to limit reviews to essential source code files
 # This keeps reviews under the 100-file limit for CodeRabbit Free
+#
+# Current file counts (excluding tests/generated):
+#   app/: ~57 files, lib/: ~13 files = 70 total ✅ (under 100)
+#   components/: ~87 files (large, excluded to stay under limit)
+#   hooks/providers/types/config/scripts/: ~23 files
+#
+# Workflow: Adjust path_filters per PR type:
+#   - Backend/API work: Keep app/** and lib/** (default)
+#   - UI refactor: Temporarily switch to components/** only
+#   - Infrastructure: Add config/** and scripts/** as needed
 path_filters:
-  # Include main application source code directories
+  # Core application logic (routing, server actions, API routes)
   - "app/**"
-  - "components/**"
+
+  # Shared business logic and utilities
   - "lib/**"
-  - "hooks/**"
-  - "providers/**"
-  - "types/**"
-  - "config/**"
-  - "scripts/**"
-  - "public/**/*.ts"
-  - "public/**/*.tsx"
-  - "public/**/*.js"
-  - "public/**/*.jsx"
+
+  # Excluded to stay under 100-file limit (add back for specific PRs):
+  # - "components/**"    # ~87 files - UI components (enable for UI-focused PRs)
+  # - "hooks/**"         # React hooks
+  # - "providers/**"     # Context providers
+  # - "types/**"         # TypeScript type definitions
+  # - "config/**"        # Configuration files
+  # - "scripts/**"       # Build and utility scripts
+  # - "public/**/*.ts"   # Public directory TypeScript
+  # - "public/**/*.tsx"
+  # - "public/**/*.js"
+  # - "public/**/*.jsx"
 
   # Exclude documentation directories
   - "!doc/**"
