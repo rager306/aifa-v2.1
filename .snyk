@@ -3,11 +3,19 @@ version: v1.25.0
 
 # Ignore specific vulnerabilities
 ignore:
-  # Inflight - No upgrade available, transitive dependency through next-pwa (not used)
+  # Inflight - Transitive dependency through next-pwa workbox
   'SNYK-JS-INFLIGHT-6095116':
     - '*':
-        reason: 'Vulnerable code not included in production bundles - next-pwa is installed but not actively used in next.config.mjs'
-        expires: '2025-12-31T00:00:00.000Z'
+        reason: >-
+          next-pwa is actively used in production with withPWA configuration.
+          This vulnerability is in transitive dependencies (workbox) and is
+          mitigated by:
+          - PWA only serves static assets via service worker
+          - No user-controlled data passed to vulnerable functions
+          - Monitoring for updated next-pwa versions that resolve this
+          - Currently on latest next-pwa version (5.6.0)
+          Planned review: 2025-03-01
+        expires: '2025-03-01T00:00:00.000Z'
 
   # mdast-util-to-hast - Fixed in newer version but requires streamdown upgrade
   'SNYK-JS-MDASTUTILTOHAST-14157221':
@@ -15,11 +23,20 @@ ignore:
         reason: 'Transitive dependency through streamdown and react-markdown, requires upstream upgrade'
         expires: '2025-12-31T00:00:00.000Z'
 
-  # serialize-javascript - Transitive through workbox-webpack-plugin in next-pwa (not used)
+  # serialize-javascript - Transitive through workbox-webpack-plugin in next-pwa
   'SNYK-JS-SERIALIZEJAVASCRIPT-6147607':
     - '*':
-        reason: 'Vulnerable code not included in production bundles - next-pwa is installed but not actively configured or used'
-        expires: '2025-12-31T00:00:00.000Z'
+        reason: >-
+          next-pwa is actively used in production with withPWA configuration.
+          This vulnerability is in transitive dependencies (workbox) and is
+          mitigated by:
+          - PWA only serves static assets via service worker
+          - No user-controlled data passed to vulnerable functions
+          - Service worker runs in isolated context
+          - Monitoring for updated next-pwa versions that resolve this
+          - Currently on latest next-pwa version (5.6.0)
+          Planned review: 2025-03-01
+        expires: '2025-03-01T00:00:00.000Z'
 
 # Patch configuration
 patch: {}

@@ -11,14 +11,12 @@
  * Allowlist of permitted dynamic import paths.
  * All dynamic imports must be explicitly declared here.
  */
-const ALLOWED_DYNAMIC_IMPORTS = [
-  '@/components/pwa-install-prompt',
-] as const;
+const ALLOWED_DYNAMIC_IMPORTS = ["@/components/pwa-install-prompt"] as const
 
 /**
  * Type representing a valid dynamic import path
  */
-type AllowedImport = typeof ALLOWED_DYNAMIC_IMPORTS[number];
+type AllowedImport = (typeof ALLOWED_DYNAMIC_IMPORTS)[number]
 
 /**
  * Validates if a given path is in the allowlist of permitted dynamic imports
@@ -34,7 +32,7 @@ type AllowedImport = typeof ALLOWED_DYNAMIC_IMPORTS[number];
  * ```
  */
 export function validateDynamicImport(path: string): path is AllowedImport {
-  return ALLOWED_DYNAMIC_IMPORTS.includes(path as AllowedImport);
+  return ALLOWED_DYNAMIC_IMPORTS.includes(path as AllowedImport)
 }
 
 /**
@@ -53,9 +51,9 @@ export function validateDynamicImport(path: string): path is AllowedImport {
  */
 export async function safeDynamicImport<T>(path: AllowedImport): Promise<T> {
   if (!validateDynamicImport(path)) {
-    throw new Error(`Unauthorized dynamic import: ${path}`);
+    throw new Error(`Unauthorized dynamic import: ${path}`)
   }
-  return import(path) as Promise<T>;
+  return import(path) as Promise<T>
 }
 
 /**
@@ -73,5 +71,5 @@ export async function safeDynamicImport<T>(path: AllowedImport): Promise<T> {
  * ```
  */
 export function createSafeImporter<T>(path: AllowedImport): Promise<T> {
-  return safeDynamicImport<T>(path);
+  return safeDynamicImport<T>(path)
 }

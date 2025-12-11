@@ -104,6 +104,14 @@ npm run dev
 ##### !!! Use only Incognito Mode
 ---
 
+## 📦 Package Manager
+
+This project uses **npm** as the standard package manager. All scripts and CI pipelines are configured for npm.
+
+> ⚠️ **Note:** Using other package managers (pnpm, yarn) is not officially supported and may cause issues with lock files and scripts.
+
+---
+
 ## 📦 Tech Stack
 
 | Category       | Tools                                  |

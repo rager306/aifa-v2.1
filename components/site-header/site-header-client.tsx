@@ -41,9 +41,10 @@ export function SiteHeaderClient({ initialAuth }: SiteHeaderClientProps) {
   const pathname = usePathname()
   const [shouldShowCloseChat, setShouldShowCloseChat] = React.useState(false)
   const PWAInstallPrompt = dynamic(
-    () => safeDynamicImport<typeof import("@/components/pwa-install-prompt")>(
-      "@/components/pwa-install-prompt"
-    ).then((mod) => mod.PWAInstallPrompt),
+    () =>
+      safeDynamicImport<typeof import("@/components/pwa-install-prompt")>(
+        "@/components/pwa-install-prompt",
+      ).then((mod) => mod.PWAInstallPrompt),
     { ssr: false },
   )
   React.useEffect(() => {

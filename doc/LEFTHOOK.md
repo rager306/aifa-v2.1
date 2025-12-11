@@ -6,11 +6,11 @@ Lefthook — менеджер Git hooks, написанный на Go, обес�
 
 ## Установка
 
-Хуки устанавливаются автоматически при `pnpm install` через npm-скрипт `prepare`.
+Хуки устанавливаются автоматически при `npm install` через npm-скрипт `prepare`.
 
 Ручная установка:
 ```bash
-pnpm run lefthook:install
+npm run lefthook:install
 ```
 
 ## Конфигурация
@@ -35,10 +35,10 @@ git push  # Запустится pre-push
 ### Ручной запуск хуков
 ```bash
 # Проверить pre-commit без коммита
-pnpm run lefthook:run:pre-commit
+npm run lefthook:run:pre-commit
 
 # Проверить pre-push без push
-pnpm run lefthook:run:pre-push
+npm run lefthook:run:pre-push
 ```
 
 ### Пропуск хуков (emergency)
@@ -62,8 +62,8 @@ LEFTHOOK_EXCLUDE=snyk git push
 ### Хуки не запускаются
 ```bash
 # Переустановить хуки
-pnpm run lefthook:uninstall
-pnpm run lefthook:install
+npm run lefthook:uninstall
+npm run lefthook:install
 ```
 
 ### Ошибка "command not found"

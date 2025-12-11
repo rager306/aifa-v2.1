@@ -33,7 +33,7 @@ type SafeJsonLdProps = {
  */
 function isSafeValue(value: unknown): boolean {
   // Reject functions and symbols
-  if (typeof value === 'function' || typeof value === 'symbol') {
+  if (typeof value === "function" || typeof value === "symbol") {
     return false
   }
 
@@ -43,7 +43,7 @@ function isSafeValue(value: unknown): boolean {
   }
 
   // Allow primitives
-  if (value === null || typeof value !== 'object') {
+  if (value === null || typeof value !== "object") {
     return true
   }
 
@@ -75,25 +75,23 @@ function isSafeValue(value: unknown): boolean {
 export function SafeJsonLd({ data, id }: SafeJsonLdProps) {
   // Validate the entire data structure is safe
   if (!isSafeValue(data)) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('[SafeJsonLd] Unsafe data detected - contains functions, symbols, or undefined values')
+    if (process.env.NODE_ENV === "development") {
     }
     return null
   }
 
   // Sanitize data with custom replacer that removes unsafe values
-  const sanitizedData = JSON.stringify(data, (key, value) => {
+  const sanitizedData = JSON.stringify(data, (_key, value) => {
     // Filter out functions, symbols, and undefined
-    if (typeof value === 'function' || typeof value === 'symbol' || value === undefined) {
+    if (typeof value === "function" || typeof value === "symbol" || value === undefined) {
       return undefined
     }
     return value
   })
 
   // Additional validation: ensure no script tags in the serialized output
-  if (sanitizedData.includes('</script>') || sanitizedData.includes('<script')) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('[SafeJsonLd] Potential XSS detected - script tags found in data')
+  if (sanitizedData.includes("</script>") || sanitizedData.includes("<script")) {
+    if (process.env.NODE_ENV === "development") {
     }
     return null
   }

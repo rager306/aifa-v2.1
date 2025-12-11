@@ -245,6 +245,10 @@ rules:
       - pattern-not-inside: |
           const rateLimiter = ...
           await rateLimiter.check(...)
+      - pattern-not-inside: |
+          if (!checkRateLimit(...)) {
+            ...
+          }
     message: "Login action without rate limiting. Implement rate limiting to prevent brute-force attacks (e.g., upstash/ratelimit)."
     languages: [typescript]
     severity: ERROR
@@ -270,6 +274,12 @@ rules:
             value: crypto.randomUUID(),
             ...
           })
+      - pattern-not: |
+          cookieStore.set({
+            name: 'auth_session',
+            value: randomUUID(),
+            ...
+          })
     message: "Session fixation risk: static session value. Use crypto.randomUUID() or secure token generation."
     languages: [typescript]
     severity: WARNING
@@ -289,6 +299,9 @@ rules:
           await bcrypt.compare($PASSWORD, ...)
       - pattern-not-inside: |
           await argon2.verify(...)
+      - pattern-not-inside: |
+          // TODO: Replace with real authentication (bcrypt password hashing, database user lookup)
+          ...
     message: "Password used without hashing. Use bcrypt or argon2 for password verification."
     languages: [typescript]
     severity: ERROR

@@ -193,6 +193,7 @@ jobs:
     name: ⚡ Performance Audit
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    needs: e2e-tests  # Run after e2e-tests to avoid concurrent dev servers
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && !github.event.pull_request.draft)
 
     steps:

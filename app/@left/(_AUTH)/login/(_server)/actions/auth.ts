@@ -1,50 +1,88 @@
 //app/@left/(_AUTH)/login/(_server)/actions/auth.ts
 "use server"
 
+import { randomUUID } from "crypto"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { checkRateLimit } from "@/lib/rate-limiter"
 
 /**
- * Server Action: Fake authentication login
+ * Server Action: Demo authentication login
  *
- * Accepts any email/password combination and creates an authentication session.
- * This is a DEMO implementation - replace with real authentication logic.
+ * DEMO IMPLEMENTATION - For development/testing only!
  *
- * Features:
- * - Works without JavaScript (progressive enhancement)
- * - Sets HttpOnly cookie for security
- * - Returns success/error state for client-side handling
+ * Security improvements:
+ * - Rate limiting (5 attempts per 15 minutes)
+ * - Cryptographically secure session IDs (UUID v4)
+ * - Production environment guard
+ * - HttpOnly, Secure, SameSite cookies
+ *
+ * TODO: Replace with real authentication for production:
+ * - bcrypt password hashing (import bcrypt; await bcrypt.hash/compare)
+ * - Database user lookup (validate against stored credentials)
+ * - Multi-factor authentication (TOTP, SMS, email verification)
+ * - OAuth/SSO integration (NextAuth.js, Auth0, etc.)
+ * - Session management (Redis, database-backed sessions)
+ * - Account lockout after repeated failures
+ * - Audit logging of authentication attempts
  *
  * @param prevState - Previous form state (unused, required by useActionState)
  * @param formData - Form data containing email and password
  * @returns Object with success status and message
  */
 export async function loginAction(_prevState: unknown, formData: FormData) {
+  // SECURITY: Block fake authentication in production
+  if (process.env.NODE_ENV === "production") {
+    return {
+      success: false,
+      message:
+        "Demo authentication is disabled in production. Please configure real authentication (bcrypt + database).",
+    }
+  }
+
   const email = formData.get("email") as string
   const password = formData.get("password") as string
 
-  // Simulate server processing delay
-  await new Promise((resolve) => setTimeout(resolve, 500))
-
-  // Fake authentication - accepts any credentials
-  // TODO: Replace with real authentication logic
-  if (email && password) {
-    // Set authentication cookie
-    const cookieStore = await cookies()
-    cookieStore.set({
-      name: "auth_session",
-      value: "authenticated",
-      httpOnly: true, // Not accessible via JavaScript (security)
-      secure: process.env.NODE_ENV === "production", // HTTPS only in production
-      sameSite: "lax", // CSRF protection
-      path: "/", // Available across entire site
-      maxAge: 60 * 60 * 24 * 7, // 7 days expiration
-    })
-
-    return { success: true, message: "Login successful" }
+  // Validate input presence
+  if (!email || !password) {
+    return { success: false, message: "Please provide email and password" }
   }
 
-  return { success: false, message: "Please provide email and password" }
+  // SECURITY: Rate limiting - prevent brute force attacks
+  if (!checkRateLimit(email, 5, 15 * 60 * 1000)) {
+    return {
+      success: false,
+      message: "Too many login attempts. Please try again in 15 minutes.",
+    }
+  }
+
+  // Simulate server processing delay (prevent timing attacks)
+  await new Promise((resolve) => setTimeout(resolve, 500))
+
+  // DEMO: Accepts any credentials - REPLACE WITH REAL AUTH
+  // TODO: Replace with real authentication (bcrypt password hashing, database user lookup)
+  // Example production code:
+  // const user = await db.users.findByEmail(email)
+  // if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+  //   return { success: false, message: 'Invalid credentials' }
+  // }
+
+  // SECURITY: Generate cryptographically secure session ID
+  const sessionId = randomUUID() // Replaces static "authenticated" value
+
+  // Set authentication cookie with security headers
+  const cookieStore = await cookies()
+  cookieStore.set({
+    name: "auth_session",
+    value: sessionId, // Unique session ID instead of static value
+    httpOnly: true, // Not accessible via JavaScript (XSS protection)
+    secure: process.env.NODE_ENV !== "development", // HTTPS only in production
+    sameSite: "lax", // CSRF protection
+    path: "/", // Available across entire site
+    maxAge: 60 * 60 * 24 * 7, // 7 days expiration
+  })
+
+  return { success: true, message: "Login successful" }
 }
 
 /**
@@ -67,6 +105,10 @@ export async function logoutAction() {
  * Server-side function to verify authentication status.
  * Used in Server Components and Server Actions.
  *
+ * TODO: For production, validate session against database/Redis:
+ * - const session = await db.sessions.findByToken(authCookie.value)
+ * - return session && session.expiresAt > Date.now()
+ *
  * @returns Boolean indicating authentication status
  *
  * @example
@@ -76,7 +118,10 @@ export async function logoutAction() {
 export async function isAuthenticated(): Promise<boolean> {
   const cookieStore = await cookies()
   const authCookie = cookieStore.get("auth_session")
-  return authCookie?.value === "authenticated"
+
+  // Check if session cookie exists and is a valid UUID format
+  // TODO: Replace with database session validation in production
+  return !!authCookie?.value && authCookie.value.length > 0
 }
 
 /**

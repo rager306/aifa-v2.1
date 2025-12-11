@@ -4,11 +4,11 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import ArticleContent from "@/app/@rightStatic/(_PUBLIC)/(_HOME)/home/(_components)/article-content"
 import { AifaRoadmap } from "@/components/aifa-roadmap"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import {
   type PageWrapperConfig,
   SeoPageWrapper,
 } from "@/components/seo-page-wrapper/seo-page-wrapper"
-import { SafeJsonLd } from "@/components/safe-json-ld"
 import { Card } from "@/components/ui/card"
 import { appConfig } from "@/config/app-config"
 import { AIFA_ROADMAP_ITEMS } from "@/config/pages-config/aifa-roadmap-data"

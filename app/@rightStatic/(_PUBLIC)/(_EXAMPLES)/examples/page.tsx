@@ -1,11 +1,11 @@
 // app/@rightStatic/(_PUBLIC)/(_FEATURES)/features/page.tsx
 
 import type { Metadata } from "next"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import {
   type PageWrapperConfig,
   SeoPageWrapper,
 } from "@/components/seo-page-wrapper/seo-page-wrapper"
-import { SafeJsonLd } from "@/components/safe-json-ld"
 import { appConfig } from "@/config/app-config"
 import { constructMetadata } from "@/lib/construct-metadata"
 import FeaturesPageComponent from "../../(_FEATURES)/features/page"

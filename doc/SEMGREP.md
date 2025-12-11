@@ -134,7 +134,7 @@ Semgrep остаётся фокусом этого документа, но ра
 
 Для локальной проверки перед коммитом:
 ```bash
-pnpm run lefthook:run:pre-push
+npm run lefthook:run:pre-push
 ```
 
 ## False Positives

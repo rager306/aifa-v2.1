@@ -21,7 +21,7 @@ Renovate Bot автоматически создает Pull Request'ы для о
 
 После установки Renovate автоматически:
 1. Создаст **Dependency Dashboard** issue
-2. Просканирует `package.json` и `pnpm-lock.yaml`
+2. Просканирует `package.json` и `package-lock.json`
 3. Создаст первые PR (если есть обновления)
 
 **Ожидаемое время**: 5-10 минут после установки
@@ -193,12 +193,12 @@ Renovate PR автоматически запускают:
 2. Уменьшите `prConcurrentLimit` (по умолчанию 10)
 3. Измените расписание на реже (например, раз в 2 недели)
 
-### Проблема: Конфликты в pnpm-lock.yaml
+### Проблема: Конфликты в package-lock.json
 
 **Решение**:
 1. Renovate автоматически rebase PR при конфликтах
 2. Если не помогло, закройте PR и переоткройте через Dashboard
-3. Вручную: `pnpm install` → commit → push
+3. Вручную: `npm install` → commit → push
 
 ### Проблема: Breaking changes в major updates
 
@@ -206,7 +206,7 @@ Renovate PR автоматически запускают:
 1. Читайте changelog в PR description
 2. Проверяйте migration guides
 3. Тестируйте локально: `git checkout renovate/major-dependencies`
-4. Запускайте полный test suite: `pnpm test && pnpm test:e2e`
+4. Запускайте полный test suite: `npm test && npm run test:e2e`
 
 ## 📚 Полезные ссылки
 
@@ -240,10 +240,10 @@ Renovate проверяет:
 
 ### Lockfile Integrity
 
-Renovate обновляет `pnpm-lock.yaml` с:
+Renovate обновляет `package-lock.json` с:
 - ✅ Integrity hashes
 - ✅ Resolved URLs
-- ✅ Deduplicated dependencies (`pnpmDedupe`)
+- ✅ Deduplicated dependencies
 
 ## 🎓 Best Practices
 
@@ -260,11 +260,11 @@ Renovate обновляет `pnpm-lock.yaml` с:
 ```bash
 git fetch origin
 git checkout renovate/major-dependencies
-pnpm install
-pnpm dev  # Проверка в браузере
-pnpm test  # Unit tests
-pnpm test:e2e  # E2E tests
-pnpm build  # Production build
+npm install
+npm run dev  # Проверка в браузере
+npm test  # Unit tests
+npm run test:e2e  # E2E tests
+npm run build  # Production build
 ```
 
 ### 3. Changelog review
