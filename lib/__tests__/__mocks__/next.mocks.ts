@@ -58,7 +58,7 @@ vi.mock("next/cookies", () => ({
 
 // Mock next/image
 vi.mock("next/image", () => ({
-  default: (props: any) => {
+  default: (props: Record<string, unknown>) => {
     // Return a simple object instead of JSX to avoid transpilation issues
     return {
       type: "img",
@@ -69,7 +69,7 @@ vi.mock("next/image", () => ({
 
 // Mock next/link
 vi.mock("next/link", () => ({
-  default: (props: any) => {
+  default: (props: Record<string, unknown>) => {
     // Return a simple object instead of JSX to avoid transpilation issues
     return {
       type: "a",
@@ -80,7 +80,7 @@ vi.mock("next/link", () => ({
 
 // Mock next/script
 vi.mock("next/script", () => ({
-  default: (props: any) => {
+  default: (props: Record<string, unknown>) => {
     // Return a simple object instead of JSX to avoid transpilation issues
     return {
       type: "script",
@@ -92,12 +92,12 @@ vi.mock("next/script", () => ({
 // Mock next/server
 vi.mock("next/server", () => ({
   NextResponse: {
-    json: vi.fn((data: any, init?: any) => ({
+    json: vi.fn((data: unknown, init?: { status?: number; headers?: Record<string, string> }) => ({
       json: async () => data,
       status: init?.status || 200,
       headers: init?.headers || {},
     })),
-    redirect: vi.fn((url: string, init?: any) => ({
+    redirect: vi.fn((url: string, init?: { status?: number }) => ({
       redirect: url,
       status: init?.status || 307,
     })),

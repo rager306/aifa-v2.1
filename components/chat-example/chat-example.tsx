@@ -44,7 +44,13 @@ import {
 } from "@/components/ai-elements/prompt-input"
 import { Reasoning, ReasoningContent, ReasoningTrigger } from "@/components/ai-elements/reasoning"
 import { Response } from "@/components/ai-elements/response"
-import { Source, type SourceProps, Sources, SourcesContent, SourcesTrigger } from "@/components/ai-elements/sources"
+import {
+  Source,
+  type SourceProps,
+  Sources,
+  SourcesContent,
+  SourcesTrigger,
+} from "@/components/ai-elements/sources"
 import { Suggestion, Suggestions } from "@/components/ai-elements/suggestion"
 
 const models = [

@@ -20,19 +20,28 @@ export function useCopyToClipboard({
 
     if (!value) return
 
-    navigator.clipboard.writeText(value).then(() => {
-      setIsCopied(true)
+    navigator.clipboard
+      .writeText(value)
+      .then(() => {
+        setIsCopied(true)
 
-      if (onCopy) {
-        onCopy()
-      }
+        if (onCopy) {
+          onCopy()
+        }
 
-      if (timeout !== 0) {
-        setTimeout(() => {
-          setIsCopied(false)
-        }, timeout)
-      }
-    }, console.error)
+        if (timeout !== 0) {
+          setTimeout(() => {
+            setIsCopied(false)
+          }, timeout)
+        }
+      })
+      .catch((error: unknown) => {
+        // Handle clipboard write errors silently or log to error monitoring service
+        if (process.env.NODE_ENV === "development") {
+          // biome-ignore lint/suspicious/noConsole: Error logging in development
+          console.error("Failed to copy to clipboard:", error)
+        }
+      })
   }
 
   return { isCopied, copyToClipboard }

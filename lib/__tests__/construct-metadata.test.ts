@@ -129,7 +129,7 @@ describe("constructMetadata", () => {
     })
 
     // sameAs should be undefined when no social URLs are provided
-    expect((schema.author as any).sameAs).toBeUndefined()
+    expect((schema.author as Record<string, unknown>).sameAs).toBeUndefined()
   })
 
   it("should handle author with social URLs", () => {
@@ -145,8 +145,12 @@ describe("constructMetadata", () => {
     })
 
     // sameAs should be present when social URLs are provided
-    expect((schema.author as any).sameAs).toContain("https://twitter.com/johndoe")
-    expect((schema.author as any).sameAs).toContain("https://facebook.com/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://twitter.com/johndoe",
+    )
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://facebook.com/johndoe",
+    )
   })
 
   it("should format facebook URL without http prefix", () => {
@@ -156,7 +160,9 @@ describe("constructMetadata", () => {
       author: { name: "John Doe", email: "john@example.com", facebook: "johndoe" },
     })
 
-    expect((schema.author as any).sameAs).toContain("https://facebook.com/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://facebook.com/johndoe",
+    )
   })
 
   it("should handle author with facebook URL starting with http", () => {
@@ -170,7 +176,9 @@ describe("constructMetadata", () => {
       },
     })
 
-    expect((schema.author as any).sameAs).toContain("https://facebook.com/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://facebook.com/johndoe",
+    )
   })
 
   it("should handle author with url field", () => {
@@ -180,7 +188,7 @@ describe("constructMetadata", () => {
       author: { name: "John Doe", email: "john@example.com", url: "https://johndoe.com" },
     })
 
-    expect((schema.author as any).url).toBe("https://johndoe.com")
+    expect((schema.author as Record<string, unknown>).url).toBe("https://johndoe.com")
   })
 
   it("should handle author with linkedin URL starting with http", () => {
@@ -194,7 +202,9 @@ describe("constructMetadata", () => {
       },
     })
 
-    expect((schema.author as any).sameAs).toContain("https://linkedin.com/in/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://linkedin.com/in/johndoe",
+    )
   })
 
   it("should format linkedin URL without http prefix", () => {
@@ -204,7 +214,9 @@ describe("constructMetadata", () => {
       author: { name: "John Doe", email: "john@example.com", linkedin: "johndoe" },
     })
 
-    expect((schema.author as any).sameAs).toContain("https://linkedin.com/in/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://linkedin.com/in/johndoe",
+    )
   })
 
   it("should handle author with twitter URL starting with http", () => {
@@ -218,7 +230,9 @@ describe("constructMetadata", () => {
       },
     })
 
-    expect((schema.author as any).sameAs).toContain("https://twitter.com/johndoe")
+    expect((schema.author as Record<string, unknown>).sameAs).toContain(
+      "https://twitter.com/johndoe",
+    )
   })
 
   it("should use website as default content type", () => {
