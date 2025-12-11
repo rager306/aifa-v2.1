@@ -1,7 +1,7 @@
 //app/@left/(_AUTH)/login/(_server)/actions/auth.ts
 "use server"
 
-import { randomUUID } from "crypto"
+import { randomUUID } from "node:crypto"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { checkLoginRateLimit } from "@/lib/auth/upstash-rate-limiter"
@@ -57,11 +57,19 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
 
   try {
     // SECURITY: Rate limiting with Upstash Redis
-    const { success: rateLimitOk, remaining } = await checkLoginRateLimit(email)
-    if (!rateLimitOk) {
+    try {
+      const { success: rateLimitOk, remaining } = await checkLoginRateLimit(email)
+      if (!rateLimitOk) {
+        return {
+          success: false,
+          message: `Too many login attempts. ${remaining} attempts remaining. Try again in 15 minutes.`,
+        }
+      }
+    } catch (error) {
+      console.error("Rate limiter configuration error:", error)
       return {
         success: false,
-        message: `Too many login attempts. ${remaining} attempts remaining. Try again in 15 minutes.`,
+        message: "Authentication service unavailable. Please contact support.",
       }
     }
 

@@ -34,6 +34,20 @@ try {
 }
 
 /**
+ * Check if rate limiter is properly configured
+ * Throws an error in production if rate limiter is not configured
+ */
+function checkRateLimiterConfig(): void {
+  if (!loginRateLimiter && process.env.NODE_ENV === "production") {
+    throw new Error(
+      "UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN environment variables are not configured. " +
+        "Rate limiting is required in production to prevent brute force attacks. " +
+        "Please configure Upstash Redis credentials in your environment variables."
+    );
+  }
+}
+
+/**
  * Check rate limit for login attempts
  *
  * @param identifier - Unique identifier (email or IP address)
@@ -45,10 +59,22 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
   remaining: number;
   reset: number;
 }> {
-  // Fallback if Upstash is not configured (development mode)
+  // Check rate limiter configuration
+  // In production: fail closed (throw error if not configured)
+  // In development: fail open (allow requests with warning)
   if (!loginRateLimiter) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "Rate limiter not configured. UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN " +
+          "environment variables are required in production to prevent brute force attacks."
+      );
+    }
+
+    // Development mode: Allow requests with enhanced warning
     console.warn(
-      "Upstash rate limiter not configured. Using in-memory fallback."
+      "⚠️  DEVELOPMENT MODE: Upstash rate limiter not configured. " +
+        "Using permissive fallback. This is NOT secure for production. " +
+        "Configure UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN."
     );
     return {
       success: true,
@@ -70,7 +96,22 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
     };
   } catch (error) {
     console.error("Rate limit check failed:", error);
-    // On error, allow request but log the issue
+    
+    // Fail closed in production on errors
+    if (process.env.NODE_ENV === "production") {
+      return {
+        success: false,
+        limit: 0,
+        remaining: 0,
+        reset: Date.now(),
+      };
+    }
+
+    // Development mode: Allow request but log the issue
+    console.warn(
+      "⚠️  DEVELOPMENT MODE: Rate limit check failed but allowing request. " +
+        "This would be blocked in production."
+    );
     return {
       success: true,
       limit: 5,
