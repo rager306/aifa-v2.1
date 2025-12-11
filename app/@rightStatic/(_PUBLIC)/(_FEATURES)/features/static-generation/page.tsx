@@ -5,7 +5,7 @@ import {
   type PageWrapperConfig,
   SeoPageWrapper,
 } from "@/components/seo-page-wrapper/seo-page-wrapper"
-import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import { appConfig } from "@/config/app-config"
 import { constructMetadata } from "@/lib/construct-metadata"
 import { ArticleContent } from "./(_components)/article-content"
@@ -187,8 +187,8 @@ export default function StaticGenerationPage() {
 
   return (
     <>
-      <StructuredDataWrapper data={breadcrumbJsonLd} />
-      <StructuredDataWrapper data={faqJsonLd} />
+      <SafeJsonLd data={breadcrumbJsonLd} />
+      <SafeJsonLd data={faqJsonLd} />
 
       <SeoPageWrapper config={PAGE_CONFIG}>
         <ArticleContent />

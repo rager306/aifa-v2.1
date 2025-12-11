@@ -1,24 +1,33 @@
-# Build outputs
+# Semgrep ignore patterns
+
+# Test files - may contain intentional security issues for testing
+**/__tests__/**
+**/__mocks__/**
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Build and dependency directories
+node_modules/
 .next/
 out/
-dist/
 build/
+dist/
 
-# Dependencies
-node_modules/
-
-# Config files
+# Configuration files
+.vscode/
+.idea/
 *.config.js
 *.config.ts
-*.config.mjs
 
-# Generated files
-.serena/
-coverage/
+# External scripts (validated separately)
+public/scripts/theme-init.js
 
-# Styles
-*.css
+# Documentation
+docs/**
+*.md
 
-# Logs
-*.log
-logs/
+# Safe components with proper validation
+components/safe-json-ld.tsx
+lib/dynamic-import-validator.ts

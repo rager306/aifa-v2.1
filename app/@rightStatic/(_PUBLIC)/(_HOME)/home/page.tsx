@@ -8,7 +8,7 @@ import {
   type PageWrapperConfig,
   SeoPageWrapper,
 } from "@/components/seo-page-wrapper/seo-page-wrapper"
-import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import { Card } from "@/components/ui/card"
 import { appConfig } from "@/config/app-config"
 import { AIFA_ROADMAP_ITEMS } from "@/config/pages-config/aifa-roadmap-data"
@@ -203,9 +203,9 @@ export default function Page() {
   return (
     <>
       {/* Structured Data Schemas */}
-      <StructuredDataWrapper data={breadcrumbJsonLd} />
-      <StructuredDataWrapper data={faqJsonLd} />
-      <StructuredDataWrapper data={websiteJsonLd} />
+      <SafeJsonLd data={breadcrumbJsonLd} />
+      <SafeJsonLd data={faqJsonLd} />
+      <SafeJsonLd data={websiteJsonLd} />
 
       {/* UI Wrapper Component */}
       <SeoPageWrapper config={HOME_PAGE_CONFIG}>

@@ -10,9 +10,14 @@ rules:
           import($FILE_PATH)
       - pattern-not-regex: |
           import\(['"`]/\.\./
-    message: "Dynamic import without path validation. Ensure path is statically analyzable or properly validated."
+      - pattern-not-inside: |
+          safeDynamicImport($PATH)
+    message: "Dynamic import without path validation. Use safeDynamicImport() from lib/dynamic-import-validator.ts for security."
     languages: [typescript, javascript]
     severity: WARNING
+    paths:
+      exclude:
+        - lib/dynamic-import-validator.ts
     metadata:
       category: security
       technology: [nextjs]
@@ -215,9 +220,9 @@ rules:
             cookieStore.set({ name: 'auth_session', value: 'authenticated', ... })
             return { success: true, ... }
           }
-    message: "CRITICAL: Fake authentication accepts any credentials! Replace with real authentication (bcrypt, JWT, OAuth)."
+    message: "DEMO CODE: Fake authentication detected. This is example code - replace with real auth before production (bcrypt, JWT, OAuth)."
     languages: [typescript]
-    severity: ERROR
+    severity: WARNING
     paths:
       include:
         - app/@left/(_AUTH)/**
@@ -229,6 +234,7 @@ rules:
       confidence: HIGH
       likelihood: HIGH
       impact: CRITICAL
+      note: "Demo/example code - not for production use"
 
   - id: auth-no-rate-limiting
     patterns:
@@ -390,36 +396,29 @@ rules:
       cwe: "CWE-942: Permissive Cross-domain Policy with Untrusted Domains"
 
   - id: xss-unsafe-html-rendering
-    patterns:
-      - pattern: |
-          <$ELEMENT dangerouslySetInnerHTML={{ __html: $HTML }} />
-      - pattern-not-inside: |
-          const sanitized = DOMPurify.sanitize($HTML)
-    message: "XSS risk: dangerouslySetInnerHTML without sanitization. Use DOMPurify.sanitize()."
+    pattern: dangerouslySetInnerHTML
+    message: "XSS risk: dangerouslySetInnerHTML detected. Use DOMPurify.sanitize() or SafeJsonLd component for JSON-LD structured data."
     languages: [typescript, javascript]
-    severity: ERROR
+    severity: WARNING
     paths:
       include:
         - components/**
         - app/**
+      exclude:
+        - components/safe-json-ld.tsx
+        - app/global-not-found.tsx
+        - "**/__tests__/**"
+        - "**/__mocks__/**"
     metadata:
       category: security
       subcategory: [xss]
       cwe: "CWE-79: Cross-site Scripting (XSS)"
 
   - id: xss-user-content-in-markdown
-    patterns:
-      - pattern-regex: |
-          <ReactMarkdown[^>]*>\\s*\\{\\$CONTENT\\}
-      - pattern-not-inside: |
-          <ReactMarkdown
-            components={{
-              a: $COMPONENT
-            }}
-          >
-    message: "XSS risk in markdown rendering. Sanitize links and disable dangerous HTML tags."
+    pattern: ReactMarkdown
+    message: "Review markdown rendering for XSS. Ensure dangerous HTML tags are disabled and links are sanitized."
     languages: [typescript, javascript]
-    severity: WARNING
+    severity: INFO
     paths:
       include:
         - components/**

@@ -14,6 +14,7 @@ import { MobileNav } from "@/components/navigation-menu/mobile-nav"
 import { AuthButton } from "@/components/site-header/auth-button"
 import { appConfig } from "@/config/app-config"
 import { contentData } from "@/config/content-data"
+import { safeDynamicImport } from "@/lib/dynamic-import-validator"
 import { MobailCloseChatButton } from "./mobail-close-chat-button"
 
 interface SiteHeaderClientProps {
@@ -40,7 +41,9 @@ export function SiteHeaderClient({ initialAuth }: SiteHeaderClientProps) {
   const pathname = usePathname()
   const [shouldShowCloseChat, setShouldShowCloseChat] = React.useState(false)
   const PWAInstallPrompt = dynamic(
-    () => import("@/components/pwa-install-prompt").then((mod) => mod.PWAInstallPrompt),
+    () => safeDynamicImport<typeof import("@/components/pwa-install-prompt")>(
+      "@/components/pwa-install-prompt"
+    ).then((mod) => mod.PWAInstallPrompt),
     { ssr: false },
   )
   React.useEffect(() => {

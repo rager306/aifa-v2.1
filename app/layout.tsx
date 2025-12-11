@@ -10,6 +10,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from "sonner"
 import AifaFooter from "@/components/aifa-footer"
 import { CookieBanner } from "@/components/cookie-banner/cookie-banner"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import { SiteHeader } from "@/components/site-header/site-header-wrapper"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { LayoutProvider } from "@/hooks/use-layout"
@@ -101,42 +102,18 @@ export default async function RootLayout({
         <meta name="theme-color" content={META_THEME_COLORS.light} />
         <link rel="manifest" href="/manifest.webmanifest" />
 
-        {/* Theme script - must be inline for no-flash */}
+        {/* Theme script - external file for security (prevents XSS) */}
         <Script
           id="theme-init"
+          src="/scripts/theme-init.js"
           strategy="beforeInteractive"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for theme initialization
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                if (localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.querySelector('meta[name="theme-color"]').setAttribute('content', '${META_THEME_COLORS.dark}')
-                }
-                if (localStorage.layout) {
-                  document.documentElement.classList.add('layout-' + localStorage.layout)
-                }
-              } catch (_) {}
-            `,
-          }}
+          data-light-color={META_THEME_COLORS.light}
+          data-dark-color={META_THEME_COLORS.dark}
         />
 
-        {/* JSON-LD schemas for SEO - MOVED TO HEAD with native script tags */}
-        <Script
-          id="jsonld-website"
-          type="application/ld+json"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLdWebSite),
-          }}
-        />
-        <Script
-          id="jsonld-organization"
-          type="application/ld+json"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: Required for SEO JSON-LD schemas
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(jsonLdOrganization),
-          }}
-        />
+        {/* JSON-LD schemas for SEO - Using SafeJsonLd for XSS protection */}
+        <SafeJsonLd id="jsonld-website" data={jsonLdWebSite} />
+        <SafeJsonLd id="jsonld-organization" data={jsonLdOrganization} />
       </head>
       <body
         className={cn(

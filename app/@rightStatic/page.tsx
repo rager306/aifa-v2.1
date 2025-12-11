@@ -4,8 +4,8 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import ArticleContent from "@/app/@rightStatic/(_PUBLIC)/(_HOME)/home/(_components)/article-content"
 import { AifaRoadmap } from "@/components/aifa-roadmap"
+import { SafeJsonLd } from "@/components/safe-json-ld"
 import { SeoPageWrapper } from "@/components/seo-page-wrapper/seo-page-wrapper"
-import { StructuredDataWrapper } from "@/components/seo-page-wrapper/structured-data-wrapper"
 import { Card } from "@/components/ui/card"
 import { appConfig } from "@/config/app-config"
 import { AIFA_ROADMAP_ITEMS } from "@/config/pages-config/aifa-roadmap-data"
@@ -117,10 +117,10 @@ export default function Page() {
 
   return (
     <>
-      {/* Structured Data Schemas */}
-      <StructuredDataWrapper data={breadcrumbJsonLd} />
-      <StructuredDataWrapper data={faqJsonLd} />
-      <StructuredDataWrapper data={websiteJsonLd} />
+      {/* Structured Data Schemas - Using SafeJsonLd for XSS protection */}
+      <SafeJsonLd data={breadcrumbJsonLd} />
+      <SafeJsonLd data={faqJsonLd} />
+      <SafeJsonLd data={websiteJsonLd} />
 
       {/* UI Wrapper Component */}
       <SeoPageWrapper config={HOME_PAGE_CONFIG}>
