@@ -21,7 +21,6 @@ path_filters:
   # Exclude documentation directories
   - "!doc/**"
   - "!docs/**"
-  - "!*.md"
   - "!**/*.md"
 
   # Exclude test directories and files
@@ -48,12 +47,6 @@ path_filters:
   - "!.vscode/**"
   - "!.idea/**"
   - "!*.code-workspace"
-
-  # Exclude lock files and generated files
-  - "!package-lock.json"
-  - "!pnpm-lock.yaml"
-  - "!yarn.lock"
-  - "!*.generated.*"
 
   # Exclude coordination and memory directories (Claude Flow internal)
   - "!coordination/**"
