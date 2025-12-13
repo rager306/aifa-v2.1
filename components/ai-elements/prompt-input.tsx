@@ -127,6 +127,8 @@ export type PromptInputProviderProps = PropsWithChildren<{
 /**
  * Optional global provider that lifts PromptInput state outside of PromptInput.
  * If you don't use it, PromptInput stays fully self-managed.
+ *
+ * Automatically revokes Blob URLs on unmount to prevent memory leaks.
  */
 export function PromptInputProvider({
   initialInput: initialTextInput = "",
@@ -140,6 +142,12 @@ export function PromptInputProvider({
   const [attachements, setAttachements] = useState<(FileUIPart & { id: string })[]>([])
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const openRef = useRef<() => void>(() => {})
+  const attachmentsRef = useRef(attachements)
+
+  // Keep ref in sync with attachments state
+  useEffect(() => {
+    attachmentsRef.current = attachements
+  }, [attachements])
 
   const add = useCallback((files: File[] | FileList) => {
     const incoming = Array.from(files)
@@ -176,6 +184,17 @@ export function PromptInputProvider({
   const openFileDialog = useCallback(() => {
     openRef.current?.()
   }, [])
+
+  // Cleanup Blob URLs on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      for (const attachment of attachmentsRef.current) {
+        if (attachment.url) {
+          URL.revokeObjectURL(attachment.url)
+        }
+      }
+    }
+  }, []) // Empty deps = runs only on unmount
 
   const attachments = useMemo<AttachmentsContext>(
     () => ({
