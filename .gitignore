@@ -28,6 +28,10 @@
 *.pem
 knip-report.json
 
+# temporary files
+/tmp/
+tmp/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

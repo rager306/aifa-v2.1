@@ -64,7 +64,6 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
 
     // Listen for app installed event
     const handleAppInstalled = () => {
-      console.log("[PWA] App installed successfully")
       setIsInstalled(true)
       setShowPrompt(false)
       setShowBadge(false)
@@ -104,11 +103,9 @@ export function PWAInstallPrompt({ dismissDuration = 86400000 }: PWAInstallPromp
       const { outcome } = await deferredPrompt.userChoice
 
       if (outcome === "accepted") {
-        console.log("[PWA] Installation accepted")
         setShowPrompt(false)
         setShowBadge(false)
       } else {
-        console.log("[PWA] Installation dismissed by user")
         handleDismiss()
       }
 

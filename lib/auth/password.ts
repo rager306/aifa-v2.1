@@ -142,8 +142,12 @@ export function needsRehash(hash: string): boolean {
  * Generate a secure random password
  * Useful for temporary passwords or password reset
  *
- * @param length - Length of password (default: 16)
- * @returns Secure random password
+ * @param length - Length of password (default: 16, minimum: 4)
+ * @returns Secure random password containing at least one uppercase, lowercase, number, and special character
+ *
+ * @note The minimum effective password length is 4 characters because this function ensures
+ *       at least one character from each required category (uppercase, lowercase, number, special).
+ *       If a length less than 4 is provided, it will be clamped to 4 to maintain security guarantees.
  */
 export function generateSecurePassword(length: number = 16): string {
   const lowercase = "abcdefghijklmnopqrstuvwxyz"
@@ -152,22 +156,30 @@ export function generateSecurePassword(length: number = 16): string {
   const special = "!@#$%^&*()_+-=[]{}|;:,.<>?"
   const all = lowercase + uppercase + numbers + special
 
-  let password = ""
+  // Ensure minimum length of 4 to accommodate one character from each required category
+  const minLength = 4
+  const effectiveLength = Math.max(length, minLength)
+
+  const chars: string[] = []
 
   // Ensure at least one of each type
-  password += lowercase[Math.floor(Math.random() * lowercase.length)]
-  password += uppercase[Math.floor(Math.random() * uppercase.length)]
-  password += numbers[Math.floor(Math.random() * numbers.length)]
-  password += special[Math.floor(Math.random() * special.length)]
+  chars.push(lowercase[Math.floor(Math.random() * lowercase.length)])
+  chars.push(uppercase[Math.floor(Math.random() * uppercase.length)])
+  chars.push(numbers[Math.floor(Math.random() * numbers.length)])
+  chars.push(special[Math.floor(Math.random() * special.length)])
 
   // Fill the rest randomly
-  for (let i = password.length; i < length; i++) {
-    password += all[Math.floor(Math.random() * all.length)]
+  for (let i = chars.length; i < effectiveLength; i++) {
+    chars.push(all[Math.floor(Math.random() * all.length)])
   }
 
-  // Shuffle the password
-  return password
-    .split("")
-    .sort(() => Math.random() - 0.5)
-    .join("")
+  // Fisher-Yates shuffle algorithm for uniform randomness
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = chars[i]
+    chars[i] = chars[j]
+    chars[j] = temp
+  }
+
+  return chars.join("")
 }

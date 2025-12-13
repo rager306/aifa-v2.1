@@ -244,7 +244,9 @@ export async function updateLastLogin(userId: string): Promise<void> {
   // await pool.query('UPDATE users SET updated_at = NOW() WHERE id = $1', [userId]);
 
   // This is optional but useful for tracking user activity
-  console.log(`User ${userId} logged in at ${new Date().toISOString()}`)
+  if (process.env.NODE_ENV === "development") {
+    console.log(`User ${userId} logged in at ${new Date().toISOString()}`)
+  }
 }
 
 /**

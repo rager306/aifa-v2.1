@@ -2,10 +2,13 @@ import { z } from "zod"
 
 // Sanitize message content by removing potentially harmful patterns
 export function sanitizeMessageContent(content: string): string {
-  return content
-    .trim()
-    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "") // Remove control characters
-    .substring(0, 10000) // Enforce max length
+  return (
+    content
+      .trim()
+      // biome-ignore lint/suspicious/noControlCharactersInRegex: Removing control characters is intentional
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/gu, "") // Remove control characters
+      .substring(0, 10000)
+  ) // Enforce max length
 }
 
 export const chatRequestSchema = z.object({

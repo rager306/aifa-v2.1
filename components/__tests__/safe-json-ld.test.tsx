@@ -45,6 +45,7 @@ describe("SafeJsonLd", () => {
 
     // Component should return null for unsafe data
     expect(container.querySelector("script")).not.toBeInTheDocument()
+    // biome-ignore lint/suspicious/noConsole: Testing console output
     expect(console.error).toHaveBeenCalledWith(expect.stringContaining("Unsafe data detected"))
   })
 
@@ -75,6 +76,7 @@ describe("SafeJsonLd", () => {
 
     const { container } = render(<SafeJsonLd data={data} />)
     expect(container.querySelector("script")).not.toBeInTheDocument()
+    // biome-ignore lint/suspicious/noConsole: Testing console output
     expect(console.error).toHaveBeenCalledWith(expect.stringContaining("Potential XSS detected"))
   })
 
@@ -160,6 +162,7 @@ describe("SafeJsonLd", () => {
 
     const { container } = render(<SafeJsonLd data={data} />)
     expect(container.querySelector("script")).not.toBeInTheDocument()
+    // biome-ignore lint/suspicious/noConsole: Testing console output
     expect(console.error).not.toHaveBeenCalled() // No console.error in production
 
     process.env.NODE_ENV = originalEnv

@@ -21,8 +21,6 @@ type ApiResponse = {
 }
 
 export default function LeadFormModal() {
-  console.log("(...)interception_modal/lead-form/page.tsx loaded")
-
   const router = useRouter()
   const { t } = getModalTranslation()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -34,8 +32,6 @@ export default function LeadFormModal() {
     if (!isSuccess) return
 
     const timer = setTimeout(() => {
-      console.log("[Modal] Success! Closing modal and redirecting to /thank-you")
-
       setTimeout(() => {
         router.push("/thank-you")
       }, 50)
@@ -85,7 +81,6 @@ export default function LeadFormModal() {
       const result: ApiResponse = await response.json()
 
       if (result.success) {
-        console.log("[Modal] Form submitted successfully")
         setIsSuccess(true)
       } else {
         if (result.errors) {

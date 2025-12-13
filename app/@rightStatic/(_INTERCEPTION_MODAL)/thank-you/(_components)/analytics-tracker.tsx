@@ -37,7 +37,9 @@ export function AnalyticsTracker() {
       })
     }
 
-    console.log("[Analytics] Thank You page view tracked")
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Analytics] Thank You page view tracked")
+    }
   }, [])
 
   // This component renders nothing

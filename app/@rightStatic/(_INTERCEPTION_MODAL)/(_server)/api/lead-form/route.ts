@@ -24,13 +24,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { name, phone, email } = validationResult.data
-
-    // Log form submission for testing purposes
-    console.log("[MOCK EMAIL] Lead form submitted:", { name, phone, email })
-
-    // Simulate successful email sending (mock response)
-    console.log(`[MOCK EMAIL] Sent to: noreply@usauto.test | Reply to: ${email}`)
+    const { name: _name, phone: _phone, email: _email } = validationResult.data
 
     // Return success response
     return NextResponse.json({

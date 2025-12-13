@@ -100,6 +100,7 @@ export function SafeJsonLd({ data, id }: SafeJsonLdProps) {
     <script
       {...(id && { id })}
       type="application/ld+json"
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires dangerouslySetInnerHTML
       dangerouslySetInnerHTML={{ __html: sanitizedData }}
       suppressHydrationWarning
     />

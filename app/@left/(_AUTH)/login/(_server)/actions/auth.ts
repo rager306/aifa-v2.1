@@ -11,6 +11,7 @@ import {
   deleteSession,
   findSessionByToken,
   findUserByEmail,
+  type Session,
   type User,
   updateLastLogin,
 } from "@/lib/db/client"
@@ -227,7 +228,7 @@ export async function getUserSession() {
     }
 
     // Get session from database
-    let session
+    let session: Session | null
     try {
       session = await findSessionByToken(authCookie.value)
     } catch (error) {
