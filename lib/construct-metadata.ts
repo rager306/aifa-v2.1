@@ -31,6 +31,10 @@ type OpenGraphType = "website" | "article" | undefined
 
 const MAX_DESCRIPTION_LENGTH = 160
 
+const BASE_URL = appConfig.url
+const BASE_URL_ORIGIN = BASE_URL.replace(/\/+$/, "")
+const METADATA_BASE_URL = new URL(BASE_URL)
+
 const buildIconUrl = (path?: string): string | null => {
   if (!path || typeof path !== "string" || path.length === 0) {
     return null
@@ -122,7 +126,18 @@ const normalizePath = (p?: string): string => {
 
 const truncateDescription = (desc: string, maxLength: number = MAX_DESCRIPTION_LENGTH): string => {
   if (desc.length <= maxLength) return desc
-  return `${desc.substring(0, maxLength - 3)}...`
+  if (maxLength <= 3) {
+    return desc.length > 0 ? "..." : desc
+  }
+  return `${desc.slice(0, maxLength - 3)}...`
+}
+
+const joinBaseUrl = (relative: string): string => {
+  if (relative.startsWith("http")) {
+    return relative
+  }
+  const normalizedRelative = relative.startsWith("/") ? relative : `/${relative}`
+  return `${BASE_URL_ORIGIN}${normalizedRelative}`
 }
 
 const normalizeOpenGraphType = (contentType: ContentType): OpenGraphType => {
@@ -180,7 +195,7 @@ const buildSocialUrls = (author: AuthorConfig): string[] => {
     urls.push(author.url)
   }
 
-  return urls.filter((url, index, array) => array.indexOf(url) === index)
+  return Array.from(new Set(urls))
 }
 
 const buildPersonSchema = (author: AuthorConfig): JsonLdSchema => {
@@ -235,7 +250,7 @@ const buildOrganizationSchema = (): JsonLdSchema => {
     "@type": "Organization",
     name: appConfig.short_name,
     url: appConfig.url,
-    logo: new URL(appConfig.logo, appConfig.url).toString(),
+    logo: joinBaseUrl(appConfig.logo),
     description: appConfig.description,
     contactPoint: {
       "@type": "ContactPoint",
@@ -263,8 +278,9 @@ export function constructMetadata({
   author,
 }: ConstructArgs = {}): Metadata {
   const base = appConfig.seo?.canonicalBase ?? appConfig.url
+  const baseOrigin = base.replace(/\/+$/, "")
   const path = normalizePath(pathname)
-  const canonical = new URL(path, base).toString()
+  const canonical = `${baseOrigin}${path}`
   const validDescription = truncateDescription(description)
 
   const verification: Record<string, string> = {}
@@ -293,7 +309,7 @@ export function constructMetadata({
       template: titleTemplate,
     },
     description: validDescription,
-    metadataBase: new URL(appConfig.url),
+    metadataBase: METADATA_BASE_URL,
     alternates: { canonical },
     manifest: appConfig.manifest,
     icons: CACHED_ICONS,
@@ -463,7 +479,7 @@ export function buildBreadcrumbSchema(
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: new URL(item.url, appConfig.url).toString(),
+      item: joinBaseUrl(item.url),
     })),
   }
 }
@@ -491,7 +507,7 @@ export function buildCollectionSchema({
         "@type": "ListItem",
         position: index + 1,
         name: item.name,
-        url: new URL(item.url, appConfig.url).toString(),
+        url: joinBaseUrl(item.url),
         ...(item.image && { image: item.image }),
       })),
     },

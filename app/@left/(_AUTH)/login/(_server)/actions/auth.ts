@@ -67,6 +67,8 @@ export async function loginAction(_prevState: unknown, formData: FormData) {
         }
       }
     } catch (_error) {
+      // biome-ignore lint/suspicious/noConsole: Rate limiter errors need visibility in production
+      console.error("Rate limiter configuration error:", _error)
       return {
         success: false,
         message: "Authentication service unavailable. Please contact support.",

@@ -1,15 +1,19 @@
 // components/__tests__/safe-json-ld.test.tsx
+
 import { render } from "@testing-library/react"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { SafeJsonLd } from "../safe-json-ld"
 
 describe("SafeJsonLd", () => {
   beforeEach(() => {
+    // Set NODE_ENV to development to enable console.error logging
+    process.env.NODE_ENV = "development"
     // Suppress console.error in tests
-    jest.spyOn(console, "error").mockImplementation(() => {})
+    vi.spyOn(console, "error").mockImplementation(() => {})
   })
 
   afterEach(() => {
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   it("renders valid JSON-LD data", () => {
@@ -154,6 +158,8 @@ describe("SafeJsonLd", () => {
   it("does not render in production when data is unsafe", () => {
     const originalEnv = process.env.NODE_ENV
     process.env.NODE_ENV = "production"
+    // Clear any previous console.error calls
+    vi.clearAllMocks()
 
     const data = {
       name: "Test",

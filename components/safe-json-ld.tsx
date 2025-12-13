@@ -52,8 +52,10 @@ function isSafeValue(value: unknown): boolean {
     return value.every(isSafeValue)
   }
 
-  // Validate objects recursively
-  return Object.values(value as Record<string, unknown>).every(isSafeValue)
+  // Validate objects recursively (check all property keys, including symbols)
+  return Reflect.ownKeys(value as Record<string, unknown>).every((key) =>
+    isSafeValue((value as Record<string, unknown>)[key]),
+  )
 }
 
 /**
@@ -76,6 +78,8 @@ export function SafeJsonLd({ data, id }: SafeJsonLdProps) {
   // Validate the entire data structure is safe
   if (!isSafeValue(data)) {
     if (process.env.NODE_ENV === "development") {
+      // biome-ignore lint/suspicious/noConsole: Development error logging for security issues
+      console.error("Unsafe data detected in SafeJsonLd component")
     }
     return null
   }
@@ -92,6 +96,8 @@ export function SafeJsonLd({ data, id }: SafeJsonLdProps) {
   // Additional validation: ensure no script tags in the serialized output
   if (sanitizedData.includes("</script>") || sanitizedData.includes("<script")) {
     if (process.env.NODE_ENV === "development") {
+      // biome-ignore lint/suspicious/noConsole: Development error logging for XSS detection
+      console.error("Potential XSS detected in SafeJsonLd component")
     }
     return null
   }

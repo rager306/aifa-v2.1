@@ -168,7 +168,7 @@ const buildSocialUrls = (author: AuthorConfig): string[] => {
     urls.push(author.url)
   }
 
-  return urls.filter((url, index, array) => array.indexOf(url) === index)
+  return Array.from(new Set(urls))
 }
 
 const buildOrganizationSameAs = (): string[] => {
@@ -199,7 +199,7 @@ const buildOrganizationSameAs = (): string[] => {
     urls.push(url)
   }
 
-  return urls.filter((url, index, array) => array.indexOf(url) === index)
+  return Array.from(new Set(urls))
 }
 
 export function generateWebSiteSchema(searchEnabled: boolean = true): WebSiteSchema {

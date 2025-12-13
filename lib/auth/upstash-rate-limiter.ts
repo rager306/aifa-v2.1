@@ -64,6 +64,10 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
           "environment variables are required in production to prevent brute force attacks.",
       )
     }
+    // biome-ignore lint/suspicious/noConsole: Development warning for missing rate limiter configuration
+    console.warn(
+      "Upstash rate limiter not configured. Rate limiting is disabled in development mode.",
+    )
     return {
       success: true,
       limit: 5,
@@ -82,6 +86,8 @@ export async function checkLoginRateLimit(identifier: string): Promise<{
       reset,
     }
   } catch (_error) {
+    // biome-ignore lint/suspicious/noConsole: Production error logging for rate limiter failures
+    console.error("Rate limiter configuration error:", _error)
     // Fail closed in production on errors
     if (process.env.NODE_ENV === "production") {
       return {
@@ -138,7 +144,10 @@ export async function resetRateLimit(identifier: string): Promise<void> {
 
   try {
     await redis.del(`ratelimit:login:${identifier}`)
-  } catch (_error) {}
+  } catch (_error) {
+    // biome-ignore lint/suspicious/noConsole: Error logging for rate limit reset failures
+    console.error("Failed to reset rate limit:", _error)
+  }
 }
 
 /**
@@ -169,6 +178,8 @@ export async function getRateLimitStatus(identifier: string): Promise<{
       reset: Date.now() + 15 * 60 * 1000,
     }
   } catch (_error) {
+    // biome-ignore lint/suspicious/noConsole: Error logging for rate limit status check failures
+    console.error("Failed to get rate limit status:", _error)
     return null
   }
 }
