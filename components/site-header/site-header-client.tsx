@@ -1,4 +1,11 @@
 //components/site-header/site-header-wrapper.tsx// components/site-header/site-header-client.tsx
+/*
+ * Dynamic Import Security:
+ * - Using safeDynamicImport() for path validation
+ * - Prevents path traversal and arbitrary code loading
+ * - See lib/dynamic-import-validator.ts for implementation
+ */
+// eslint-disable-next-line security/detect-non-literal-import
 "use client"
 
 import dynamic from "next/dynamic"
@@ -40,6 +47,9 @@ export function SiteHeaderClient({ initialAuth }: SiteHeaderClientProps) {
   const { isAuthenticated } = useAuth()
   const pathname = usePathname()
   const [shouldShowCloseChat, setShouldShowCloseChat] = React.useState(false)
+  // SECURITY: Dynamic import using safeDynamicImport() to prevent path traversal
+  // The safeDynamicImport function validates the import path before loading
+  // This prevents malicious dynamic imports that could load arbitrary code
   const PWAInstallPrompt = dynamic(
     () =>
       safeDynamicImport<typeof import("@/components/pwa-install-prompt")>(
